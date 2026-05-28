@@ -160,106 +160,370 @@
 <section id="polynomial-regression-and-step-functions" class="slide level2">
 <h2>Polynomial Regression and Step Functions</h2>
 <p><strong>Exercise 1.</strong> Load the <code>Wage</code> data with <code>load_data('Wage')</code>. Store the response (<code>wage</code>) as <code>y</code> and the predictor (<code>age</code>) as <code>age</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>Throughout most of this lab, our response is <code>Wage['wage']</code>, which we have stored as <code>y</code> above.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 2.</strong> Use <code>poly()</code> inside <code>MS()</code> to build a 4th-degree polynomial in <code>age</code>, fit an OLS model of <code>y</code> on this basis, and print the coefficient summary.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p><code>poly()</code> is a <em>helper</em> that sets up the transformation; <code>Poly()</code> is the workhorse that computes it. The first line above runs the <code>fit()</code> method on <code>Wage</code>, which stores any parameters needed by <code>Poly()</code> on the training data so that subsequent <code>transform()</code> calls (on new data, or inside the plotting function below) use the same basis.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 3.</strong> Build a grid <code>age_grid</code> of 100 evenly spaced values spanning the observed range of <code>age</code>, and wrap it in a single-column <code>DataFrame</code> named <code>age_df</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
 <p><strong>Exercise 4.</strong> Write a function <code>plot_wage_fit(age_df, basis, title)</code> that fits OLS on the supplied <code>basis</code>, evaluates it on <code>age_df</code>, and plots the raw data with the fitted curve and its 95% confidence bands.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>The <code>alpha</code> argument to <code>ax.scatter()</code> adds transparency that gives a visual indication of density. <code>zip()</code> bundles the three lines (fitted mean and two confidence bands) with their colours and line types for the <code>for</code> loop.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 5.</strong> Use your helper to plot the degree-4 polynomial fit.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
 <p><strong>Exercise 6.</strong> With polynomial regression we must decide on the degree of the polynomial to use. Fit polynomial models in <code>age</code> of degrees 1 through 5, and use <code>anova_lm()</code> to test which degree is sufficient.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>The <code>*</code> unpacks the list of fitted models for <code>anova_lm()</code>’s variable argument list. The p-value comparing linear <code>models[0]</code> to quadratic <code>models[1]</code> is essentially zero, and the cubic-vs-quartic comparison is roughly 5%, while degree 5 is unnecessary (p = 0.37). Either a cubic or a quartic polynomial gives a reasonable fit.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 7.</strong> Repeat the ANOVA, but with a linear term in <code>education</code> included in each model alongside a polynomial in <code>age</code> of degrees 1, 2, 3.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>The ANOVA approach works whether or not the polynomials are orthogonal, provided the models are <em>nested</em>. As an alternative, we could choose the polynomial degree by cross-validation (Chapter 5).</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 8.</strong> Now consider predicting whether someone earns more than $250,000 per year. Fit a logistic regression (use <code>sm.GLM</code> with a <code>Binomial</code> family) of <code>wage &gt; 250</code> on the same 4th-degree polynomial basis in <code>age</code>, and produce a plot of the predicted probability vs. age (with confidence bands and a rug plot).</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>(The double assignment <code>high_earn = Wage['high_earn'] = y &gt; 250</code> both binds the local variable <code>high_earn</code> and stores the indicator as a new column on the <code>Wage</code> DataFrame. We’ll re-use that column in Exercises 29 and 30.)</p>
 <p>The <code>age</code> values above 250 are shown as gray marks at the top of the plot; those below 250 at the bottom. A small amount of jitter prevents identical-age points from overlapping. This is called a <em>rug plot</em>.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 9.</strong> Fit a step-function regression: discretise <code>age</code> into 4 quantile-based bins with <code>pd.qcut()</code>, build dummy columns with <code>pd.get_dummies()</code>, and fit OLS.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p><code>pd.qcut()</code> chose cutpoints at the 25%, 50% and 75% quantiles, so we get four bins. <code>pd.get_dummies()</code> (unlike the usual model-matrix convention) keeps <em>all</em> category levels; combined with no intercept, each coefficient is the average wage in its bin. For non-quantile cutpoints, use <code>pd.cut()</code> instead.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="splines" class="slide level2">
 <h2>Splines</h2>
 <p><strong>Exercise 10.</strong> Use <code>BSpline()</code> from <code>ISLP.transforms</code> with <code>internal_knots=[25, 40, 60]</code> and <code>intercept=True</code> to build a cubic B-spline basis for <code>age</code>. What shape is the resulting design matrix?</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>A cubic B-spline with 3 interior knots yields a 7-column matrix (<code>3 + degree + 1</code> with <code>intercept=True</code>).</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 11.</strong> Now fit a cubic spline regression of <code>wage</code> on <code>age</code> using the helper <code>bs()</code> inside <code>MS()</code>. Pass <code>name='bs(age)'</code> to clean up the column labels in the summary.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>Note there are 6 spline coefficients rather than 7 because <code>bs()</code> defaults to <code>intercept=False</code> — the basis would normally be 7 columns, but one is dropped to accommodate the model’s overall intercept.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 12.</strong> Instead of specifying knots, ask <code>BSpline</code> for <code>df=6</code>. Inspect <code>internal_knots_</code> to see where the knots ended up.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>With <code>df=6</code> and cubic splines, three knots are placed at the 25%, 50% and 75% quantiles of <code>age</code> — ages 33.75, 42.0, and 51.0.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 13.</strong> B-splines need not be cubic. Fit a degree-0 spline with <code>df=3</code> and compare the coefficients to your earlier <code>qcut()</code> step-function fit.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>Degree-0 B-splines are piecewise constant — equivalent to the step function from Exercise 9. With <code>df=3</code> (degree 0), the knots are again at the same three quantiles. The coefficients look different because of the coding: here the intercept is a column of ones and the remaining three coefficients are <em>increments</em> relative to the first bin. The sums approximately recover the per-bin means (slight differences are because <code>qcut()</code> uses <code>≤</code> while <code>bs()</code> uses <code>&lt;</code> at the boundaries).</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 14.</strong> Fit a natural cubic spline with 5 degrees of freedom using <code>ns()</code>, and plot the fit with <code>plot_wage_fit()</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
 </section>
 <section id="smoothing-splines-and-gams" class="slide level2">
 <h2>Smoothing Splines and GAMs</h2>
 <p><strong>Exercise 15.</strong> A smoothing spline is a special case of a GAM with squared-error loss and a single feature. Fit <code>LinearGAM(s_gam(0, lam=0.6))</code> to predict <code>wage</code> from <code>age</code>. (Remember <code>pygam</code> expects a 2-D feature matrix.)</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p><code>s_gam(0, ...)</code> says “apply a smoothing spline to column 0 of the feature matrix”. <code>lam</code> is the penalty parameter <span class="math inline">\(\lambda\)</span>. The <code>-1</code> inside <code>.reshape((-1, 1))</code> tells NumPy to infer that dimension’s size.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 16.</strong> Investigate how the fit changes with the smoothing parameter. Loop <code>lam</code> over <code>np.logspace(-2, 6, 5)</code> and plot each resulting fit.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
 <p><strong>Exercise 17.</strong> <code>pygam</code> can search for an optimal smoothing parameter. Reproduce the plot from Exercise 16, call <code>.gridsearch(X_age, y)</code>, and add the resulting fit on top.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
 <p><strong>Exercise 18.</strong> It’s often more interpretable to specify the <em>effective degrees of freedom</em> than <code>lam</code>. Use <code>approx_lam()</code> from <code>ISLP.pygam</code> to find a <code>lam</code> giving roughly 4 degrees of freedom for the age term, and verify with <code>degrees_of_freedom()</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>These degrees of freedom include the unpenalized intercept and linear term of the smoothing spline — so there are at least 2 df.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 19.</strong> Now loop over <code>df</code> values <code>[1, 3, 4, 8, 15]</code> (passing <code>df + 1</code> to <code>approx_lam()</code> to account for the intercept), refit, and plot each.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>A value of <code>df=1</code> corresponds to a straight-line fit.</p>
+</div>
+</div>
+</div>
 <h3 id="additive-models-with-several-terms">Additive Models with Several Terms</h3>
 <p><strong>Exercise 20.</strong> Build a GAM “by hand”: use natural splines (<code>NaturalSpline</code>) with <code>df=4</code> for <code>age</code> and <code>df=5</code> for <code>year</code>, get dummies for <code>education</code>, stack them all into a model matrix <code>X_bh</code>, and fit OLS.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>We use all columns of the indicator matrix for <code>education</code> (no intercept), and stack the three component matrices horizontally to form <code>X_bh</code>.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 21.</strong> Construct a partial-dependence plot for <code>age</code> from the by-hand GAM: predict on a matrix where all columns except those for <code>age</code> are held at their column means, and the <code>age</code> columns are swept across <code>age_grid</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>The idea is to create a new prediction matrix in which all but the columns for <code>age</code> are held constant at the training-data means; the four <code>age</code> columns are filled with the natural spline basis evaluated at the 100 values in <code>age_grid</code>.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 22.</strong> Do the same for <code>year</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
 <p><strong>Exercise 23.</strong> Now fit the same GAM using <em>smoothing</em> splines via <code>pygam</code>. Build <code>LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0))</code>, where <code>f_gam</code> is a factor term for <code>education</code>. (Convert <code>education</code> to numeric codes with <code>.cat.codes</code>.) Then plot the partial dependence for <code>age</code> using <code>plot_gam()</code> from <code>ISLP.pygam</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p><code>year</code> has only 7 unique values, so we use 7 basis functions. <code>lam=0</code> on the factor term avoids any shrinkage. The default <code>lam=0.6</code> for <code>age</code> produces a noticeably wiggly fit.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 24.</strong> Re-tune <code>gam_full</code> so that the <code>age</code> and <code>year</code> smoothers each have ~4 degrees of freedom (use <code>approx_lam()</code> with <code>df=4+1</code>), then re-plot the partial dependence for <code>age</code> and for <code>year</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>Note that updating <code>age_term.lam</code> updates <code>gam_full.terms[0]</code> in place.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 25.</strong> Plot the partial dependence for <code>education</code> — a categorical term gets a different style of plot, suited to a set of fitted constants per level.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
 <h3 id="anova-tests-for-additive-models">ANOVA Tests for Additive Models</h3>
 <p><strong>Exercise 26.</strong> In all our models, the function of <code>year</code> looks fairly linear. Compare three models by ANOVA: a GAM that <em>excludes</em> <code>year</code> (<span class="math inline">\(\mathcal{M}_1\)</span>), a GAM that uses a <em>linear</em> term in <code>year</code> (<span class="math inline">\(\mathcal{M}_2\)</span>), and the full GAM with a smoothing spline in <code>year</code> (<span class="math inline">\(\mathcal{M}_3\)</span>). What do you conclude?</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>Note the reuse of <code>age_term</code> — that term already has its <code>lam</code> set to yield 4 df, and we want to keep that across all three models.</p>
 <p>There is compelling evidence that a GAM with a linear <code>year</code> term is better than one that omits <code>year</code> (p ≈ 0.002). However, there is no evidence that a nonlinear function of <code>year</code> is needed (p ≈ 0.435). So <span class="math inline">\(\mathcal{M}_2\)</span> is preferred.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 27.</strong> Repeat the test for <code>age</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>Very strong evidence that a nonlinear term is required for <code>age</code>.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 28.</strong> Print <code>gam_full.summary()</code> and use <code>gam_full.predict()</code> to generate fitted values on the training set.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
+
+</div>
+</div>
+</div>
 <p><strong>Exercise 29.</strong> Fit a logistic GAM for <code>high_earn</code> (i.e.&nbsp;<code>wage &gt; 250</code>) using <code>LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0))</code>. Plot the partial dependence for <code>education</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>The fit looks flat with very wide error bars on the first category.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 30.</strong> Cross-tabulate <code>high_earn</code> against <code>education</code>. What do you see?</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>There are <em>no</em> high earners in the lowest education category, so the logistic GAM has nothing to estimate there.</p>
+</div>
+</div>
+</div>
 <p><strong>Exercise 31.</strong> Refit the logistic GAM excluding observations in the “1. &lt; HS Grad” category, then plot the partial dependence for <code>education</code>, <code>year</code>, and <code>age</code>.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>We subtract 1 from <code>cat.codes</code> to work around a <code>pygam</code> bug — the relabeling has no effect on the fit.</p>
+</div>
+</div>
+</div>
 </section>
 <section id="local-regression" class="slide level2">
 <h2>Local Regression</h2>
 <p><strong>Exercise 32.</strong> Finally, use <code>sm.nonparametric.lowess</code> to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; <code>pygam</code> does not.</p>
-<p><em>Solution.</em></p>
+<div class="callout callout-solution no-icon callout-titled callout-style-default">
+<div class="callout-body">
+<div class="callout-title">
+<p><strong>Solution</strong></p>
+</div>
+<div class="callout-content">
 <p>As expected, a span of 0.5 produces a smoother fit than 0.2.</p>
+</div>
+</div>
+</div>
 
 
 <script>
