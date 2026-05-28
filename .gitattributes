@@ -1,0 +1,15 @@
+# Force LF line endings on text files so cross-platform checkouts
+# (notably macOS + Windows with core.autocrlf=true) don't corrupt
+# shell scripts, YAML, or Quarto/Lua/Pandoc inputs that fail on CRLF.
+* text=auto eol=lf
+
+# Explicit overrides for files that must be LF.
+*.sh   text eol=lf
+*.yml  text eol=lf
+*.yaml text eol=lf
+*.qmd  text eol=lf
+*.lua  text eol=lf
+
+# Treat .ipynb and other JSON-y assets as text but leave their
+# end-of-line tools to handle them.
+*.ipynb text

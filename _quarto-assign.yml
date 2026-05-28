@@ -1,0 +1,15 @@
+project:
+  output-dir: _site/assign
+
+website:
+  title: "ISLP Labs — Student Worksheet"
+
+# Ideally the student worksheet would render HTML-only, but Quarto's profile
+# merging does not override per-document `format:` front matter; per-doc
+# format blocks in Ch07-nonlin-lab.qmd take precedence and still produce
+# PDF + revealjs in this profile.  This entry is aspirational: it correctly
+# restricts documents that do *not* declare their own format block (e.g. a
+# future index-only page), and documents intent for when upstream Quarto
+# gains format-scope control via profile.  Accept the extra renders for now.
+format:
+  html: default

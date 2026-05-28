@@ -1,0 +1,69 @@
+name: Publish website
+
+# The workflow fires on push to any branch (the `branches: ['**']` glob
+# under `push:` matches every branch but no tags) and then the job-level
+# `if:` below skips unless the pushed ref equals the repo's current
+# default branch (`github.event.repository.default_branch`). That keeps
+# publish-on-merge working without hard-coding `main` / `stable` — flip
+# the default branch in Settings → Branches and this workflow follows
+# along with no code change.
+on:
+  workflow_dispatch:
+  push:
+    # `'**'` matches every branch but no tags — keeps the default-branch
+    # gate in `jobs.build-deploy.if` doing the real filtering while
+    # avoiding extra skipped runs for tag pushes (which would never
+    # satisfy `refs/heads/{default}` anyway).
+    branches: ['**']
+
+jobs:
+  build-deploy:
+    if: >-
+      github.event_name == 'workflow_dispatch' ||
+      github.ref == format('refs/heads/{0}', github.event.repository.default_branch)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TZ: America/Los_Angeles
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
+
+      - name: Set up Python
+        uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: requirements-website.txt
+
+      - name: Install Python dependencies for chunk execution
+        run: pip install -r requirements-website.txt
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b  # v2
+        with:
+          tinytex: true
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Render (solution)
+        uses: quarto-dev/quarto-actions/render@8a96df13519ee81fd526f2dfca5962811136661b  # v2
+        env:
+          QUARTO_PROFILE: solution
+
+      - name: Render (assign)
+        uses: quarto-dev/quarto-actions/render@8a96df13519ee81fd526f2dfca5962811136661b  # v2
+        env:
+          QUARTO_PROFILE: assign
+
+      - name: Create landing page
+        run: bash .github/scripts/create-landing-page.sh
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f  # v4
+        with:
+          folder: _site
+          branch: gh-pages
+          clean-exclude: pr-preview/
+          force: false

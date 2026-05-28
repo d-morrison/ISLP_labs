@@ -3,3 +3,12 @@
 .RData
 .Ruserdata
 .positai
+
+# Quarto
+/.quarto/
+/_site/
+/_freeze/
+*_files/
+.DS_Store
+
+**/*.quarto_ipynb
