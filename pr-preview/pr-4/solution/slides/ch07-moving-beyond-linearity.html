@@ -519,7 +519,7 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div id="e7772f5a" class="cell" data-execution_count="1">
+<div id="7ec71791" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP <span class="im">import</span> load_data</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Wage <span class="op">=</span> load_data(<span class="st">'Wage'</span>)</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Wage[[<span class="st">'age'</span>, <span class="st">'year'</span>, <span class="st">'education'</span>, <span class="st">'wage'</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -610,7 +610,7 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div id="6278422b" class="cell" data-execution_count="2">
+<div id="fd0421d3" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.models <span class="im">import</span> poly, ModelSpec <span class="im">as</span> MS</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -717,7 +717,7 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div id="b859e846" class="cell" data-execution_count="3">
+<div id="3e6ee767" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>cut_age <span class="op">=</span> pd.qcut(Wage[<span class="st">'age'</span>], <span class="dv">4</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>sm.OLS(Wage[<span class="st">'wage'</span>], pd.get_dummies(cut_age, dtype<span class="op">=</span><span class="bu">float</span>)).fit().params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -731,12 +731,16 @@ dtype: float64</code></pre>
 </div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fit_step <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> <span class="fu">cut</span>(age, <span class="dv">4</span>), <span class="at">data =</span> Wage)</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_step)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>quartile_breaks <span class="ot">&lt;-</span> <span class="fu">quantile</span>(Wage<span class="sc">$</span>age, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.25</span>))</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fit_step <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  wage <span class="sc">~</span> <span class="fu">cut</span>(age, <span class="at">breaks =</span> quartile_breaks, <span class="at">include.lowest =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Wage</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_step)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<p><code>qcut(x, 4)</code> (and <code>cut(x, 4)</code> in R) splits at the 25 / 50 / 75 % quantiles, giving four bins. Each coefficient is the per-bin mean.</p>
+<p><code>pd.qcut(x, 4)</code> splits at the 25 / 50 / 75 % quantiles, giving four roughly equal-sized bins. R’s <code>cut(x, 4)</code> instead divides the <em>range</em> of <code>x</code> into four equal-width intervals (which usually leaves the extreme bins much sparser); so the R panel above passes quantile-based breaks explicitly to match Python’s behaviour. Each coefficient is then the average wage in its bin.</p>
 </section>
 <section id="try-it-yourself-exercise-9" class="level2">
 <h2 class="anchored" data-anchor-id="try-it-yourself-exercise-9">Try it yourself — Exercise 9</h2>
@@ -786,7 +790,7 @@ b_K(X)\)</span> and fit OLS in the new design matrix:</p>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<div id="4fe7b3e7" class="cell" data-execution_count="4">
+<div id="65813d30" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.models <span class="im">import</span> bs, ns</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>bs_age <span class="op">=</span> MS([bs(<span class="st">'age'</span>, df<span class="op">=</span><span class="dv">6</span>, name<span class="op">=</span><span class="st">'bs(age)'</span>)])</span>
@@ -849,7 +853,7 @@ dtype: float64</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<div id="308f3ed0" class="cell" data-execution_count="5">
+<div id="05b3153c" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> LinearGAM, s <span class="im">as</span> s_gam</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>X_age <span class="op">=</span> np.asarray(Wage[<span class="st">'age'</span>]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
@@ -903,7 +907,7 @@ dtype: float64</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
-<div id="c6fb61ce" class="cell" data-execution_count="6">
+<div id="6027e25a" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>lowess <span class="op">=</span> sm.nonparametric.lowess</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>age_grid <span class="op">=</span> np.linspace(Wage[<span class="st">'age'</span>].<span class="bu">min</span>(), Wage[<span class="st">'age'</span>].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>fitted <span class="op">=</span> lowess(Wage[<span class="st">'wage'</span>], Wage[<span class="st">'age'</span>], frac<span class="op">=</span><span class="fl">0.3</span>, xvals<span class="op">=</span>age_grid)</span>
@@ -960,7 +964,7 @@ dtype: float64</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
-<div id="a25d00aa" class="cell" data-execution_count="7">
+<div id="a25ce08d" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam, LinearGAM</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.column_stack([</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>    Wage[<span class="st">'age'</span>],</span>
@@ -994,7 +998,7 @@ dtype: float64</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
-<div id="00b307cb" class="cell" data-execution_count="8">
+<div id="4dee6447" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> plot <span class="im">as</span> plot_gam</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
@@ -1024,11 +1028,12 @@ dtype: float64</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
-<div id="4f0d3b41" class="cell" data-execution_count="9">
-<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> anova <span class="im">as</span> anova_gam</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>gam_no_year <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
-<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>gam_lin_yr <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
-<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>anova_gam(gam_no_year, gam_lin_yr, gam)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="deafd794" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> l <span class="im">as</span> l_gam</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> anova <span class="im">as</span> anova_gam</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>gam_no_year <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>gam_lin_yr  <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> l_gam(<span class="dv">1</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>anova_gam(gam_no_year, gam_lin_yr, gam)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="9">
 <div>
 
@@ -1057,21 +1062,21 @@ dtype: float64</code></pre>
 </tr>
 <tr class="even">
 <th data-quarto-table-cell-role="th">1</th>
-<td>104663.147348</td>
-<td>2976.214249</td>
-<td>404.521664</td>
-<td>4.581334</td>
-<td>2.510847</td>
-<td>0.062171</td>
+<td>104791.403410</td>
+<td>2979.796561</td>
+<td>276.265602</td>
+<td>0.999023</td>
+<td>7.863609</td>
+<td>0.009898</td>
 </tr>
 <tr class="odd">
 <th data-quarto-table-cell-role="th">2</th>
 <td>104663.147348</td>
 <td>2976.214249</td>
-<td>-0.000000</td>
-<td>-0.000000</td>
-<td>NaN</td>
-<td>NaN</td>
+<td>128.256061</td>
+<td>3.582312</td>
+<td>1.018087</td>
+<td>0.412203</td>
 </tr>
 </tbody>
 </table>
@@ -1096,7 +1101,7 @@ dtype: float64</code></pre>
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
-<div id="be2fba1e" class="cell" data-execution_count="10">
+<div id="5cb7b747" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> LogisticGAM, s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>high_earn <span class="op">=</span> (Wage[<span class="st">'wage'</span>] <span class="op">&gt;</span> <span class="dv">250</span>).astype(<span class="bu">int</span>)</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>gam_logit <span class="op">=</span> LogisticGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
@@ -2011,414 +2016,423 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
 <span id="cb26-146"><a href="#cb26-146" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
 <span id="cb26-147"><a href="#cb26-147" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb26-148"><a href="#cb26-148" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb26-149"><a href="#cb26-149" aria-hidden="true" tabindex="-1"></a>fit_step <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> <span class="fu">cut</span>(age, <span class="dv">4</span>), <span class="at">data =</span> Wage)</span>
-<span id="cb26-150"><a href="#cb26-150" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_step)</span>
-<span id="cb26-151"><a href="#cb26-151" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-152"><a href="#cb26-152" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-153"><a href="#cb26-153" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb26-154"><a href="#cb26-154" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-155"><a href="#cb26-155" aria-hidden="true" tabindex="-1"></a><span class="in">`qcut(x, 4)`</span> (and <span class="in">`cut(x, 4)`</span> in R) splits at the 25 / 50 / 75 %</span>
-<span id="cb26-156"><a href="#cb26-156" aria-hidden="true" tabindex="-1"></a>quantiles, giving four bins. Each coefficient is the per-bin mean.</span>
-<span id="cb26-157"><a href="#cb26-157" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-158"><a href="#cb26-158" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercise 9</span></span>
-<span id="cb26-159"><a href="#cb26-159" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-160"><a href="#cb26-160" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
-<span id="cb26-161"><a href="#cb26-161" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-162"><a href="#cb26-162" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 9.** Fit a step-function regression: discretise <span class="in">`age`</span> into 4 quantile-based bins with <span class="in">`pd.qcut()`</span>, build dummy columns with <span class="in">`pd.get_dummies()`</span>, and fit OLS.</span>
-<span id="cb26-163"><a href="#cb26-163" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-164"><a href="#cb26-164" aria-hidden="true" tabindex="-1"></a><span class="fu"># Basis Functions: A Common Framework</span></span>
+<span id="cb26-149"><a href="#cb26-149" aria-hidden="true" tabindex="-1"></a>quartile_breaks <span class="ot">&lt;-</span> <span class="fu">quantile</span>(Wage<span class="sc">$</span>age, <span class="at">probs =</span> <span class="fu">seq</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="at">by =</span> <span class="fl">0.25</span>))</span>
+<span id="cb26-150"><a href="#cb26-150" aria-hidden="true" tabindex="-1"></a>fit_step <span class="ot">&lt;-</span> <span class="fu">lm</span>(</span>
+<span id="cb26-151"><a href="#cb26-151" aria-hidden="true" tabindex="-1"></a>  wage <span class="sc">~</span> <span class="fu">cut</span>(age, <span class="at">breaks =</span> quartile_breaks, <span class="at">include.lowest =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb26-152"><a href="#cb26-152" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Wage</span>
+<span id="cb26-153"><a href="#cb26-153" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-154"><a href="#cb26-154" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_step)</span>
+<span id="cb26-155"><a href="#cb26-155" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-156"><a href="#cb26-156" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-157"><a href="#cb26-157" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb26-158"><a href="#cb26-158" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-159"><a href="#cb26-159" aria-hidden="true" tabindex="-1"></a><span class="in">`pd.qcut(x, 4)`</span> splits at the 25 / 50 / 75 % quantiles, giving four</span>
+<span id="cb26-160"><a href="#cb26-160" aria-hidden="true" tabindex="-1"></a>roughly equal-sized bins. R's <span class="in">`cut(x, 4)`</span> instead divides the *range*</span>
+<span id="cb26-161"><a href="#cb26-161" aria-hidden="true" tabindex="-1"></a>of <span class="in">`x`</span> into four equal-width intervals (which usually leaves the</span>
+<span id="cb26-162"><a href="#cb26-162" aria-hidden="true" tabindex="-1"></a>extreme bins much sparser); so the R panel above passes</span>
+<span id="cb26-163"><a href="#cb26-163" aria-hidden="true" tabindex="-1"></a>quantile-based breaks explicitly to match Python's behaviour. Each</span>
+<span id="cb26-164"><a href="#cb26-164" aria-hidden="true" tabindex="-1"></a>coefficient is then the average wage in its bin.</span>
 <span id="cb26-165"><a href="#cb26-165" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-166"><a href="#cb26-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## The pattern</span></span>
+<span id="cb26-166"><a href="#cb26-166" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercise 9</span></span>
 <span id="cb26-167"><a href="#cb26-167" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-168"><a href="#cb26-168" aria-hidden="true" tabindex="-1"></a>Polynomial regression and step functions both replace the original $X$</span>
-<span id="cb26-169"><a href="#cb26-169" aria-hidden="true" tabindex="-1"></a>with a fixed family of *basis functions* $b_1(X), b_2(X), \ldots,</span>
-<span id="cb26-170"><a href="#cb26-170" aria-hidden="true" tabindex="-1"></a>b_K(X)$ and fit OLS in the new design matrix:</span>
+<span id="cb26-168"><a href="#cb26-168" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
+<span id="cb26-169"><a href="#cb26-169" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-170"><a href="#cb26-170" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 9.** Fit a step-function regression: discretise <span class="in">`age`</span> into 4 quantile-based bins with <span class="in">`pd.qcut()`</span>, build dummy columns with <span class="in">`pd.get_dummies()`</span>, and fit OLS.</span>
 <span id="cb26-171"><a href="#cb26-171" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-172"><a href="#cb26-172" aria-hidden="true" tabindex="-1"></a>$$Y = \beta_0 + \beta_1 b_1(X) + \cdots + \beta_K b_K(X) + \varepsilon$$</span>
+<span id="cb26-172"><a href="#cb26-172" aria-hidden="true" tabindex="-1"></a><span class="fu"># Basis Functions: A Common Framework</span></span>
 <span id="cb26-173"><a href="#cb26-173" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-174"><a href="#cb26-174" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Polynomial: $b_k(X) = X^k$.</span>
-<span id="cb26-175"><a href="#cb26-175" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Step: $b_k(X) = \mathbf 1(c_k \le X &lt; c_{k+1})$.</span>
-<span id="cb26-176"><a href="#cb26-176" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-177"><a href="#cb26-177" aria-hidden="true" tabindex="-1"></a>Regression splines use a smarter family — piecewise polynomials</span>
-<span id="cb26-178"><a href="#cb26-178" aria-hidden="true" tabindex="-1"></a>joined smoothly at *knots* — which makes a flexible, local fit possible</span>
-<span id="cb26-179"><a href="#cb26-179" aria-hidden="true" tabindex="-1"></a>without exploding the parameter count.</span>
-<span id="cb26-180"><a href="#cb26-180" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-181"><a href="#cb26-181" aria-hidden="true" tabindex="-1"></a><span class="fu"># Regression Splines</span></span>
-<span id="cb26-182"><a href="#cb26-182" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-183"><a href="#cb26-183" aria-hidden="true" tabindex="-1"></a><span class="fu">## Piecewise polynomials, smoothly joined</span></span>
+<span id="cb26-174"><a href="#cb26-174" aria-hidden="true" tabindex="-1"></a><span class="fu">## The pattern</span></span>
+<span id="cb26-175"><a href="#cb26-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-176"><a href="#cb26-176" aria-hidden="true" tabindex="-1"></a>Polynomial regression and step functions both replace the original $X$</span>
+<span id="cb26-177"><a href="#cb26-177" aria-hidden="true" tabindex="-1"></a>with a fixed family of *basis functions* $b_1(X), b_2(X), \ldots,</span>
+<span id="cb26-178"><a href="#cb26-178" aria-hidden="true" tabindex="-1"></a>b_K(X)$ and fit OLS in the new design matrix:</span>
+<span id="cb26-179"><a href="#cb26-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-180"><a href="#cb26-180" aria-hidden="true" tabindex="-1"></a>$$Y = \beta_0 + \beta_1 b_1(X) + \cdots + \beta_K b_K(X) + \varepsilon$$</span>
+<span id="cb26-181"><a href="#cb26-181" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-182"><a href="#cb26-182" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Polynomial: $b_k(X) = X^k$.</span>
+<span id="cb26-183"><a href="#cb26-183" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Step: $b_k(X) = \mathbf 1(c_k \le X &lt; c_{k+1})$.</span>
 <span id="cb26-184"><a href="#cb26-184" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-185"><a href="#cb26-185" aria-hidden="true" tabindex="-1"></a>A cubic regression spline is piecewise cubic between knots, with the</span>
-<span id="cb26-186"><a href="#cb26-186" aria-hidden="true" tabindex="-1"></a>function value, first derivative, and second derivative continuous at</span>
-<span id="cb26-187"><a href="#cb26-187" aria-hidden="true" tabindex="-1"></a>each knot. The total number of free parameters is</span>
+<span id="cb26-185"><a href="#cb26-185" aria-hidden="true" tabindex="-1"></a>Regression splines use a smarter family — piecewise polynomials</span>
+<span id="cb26-186"><a href="#cb26-186" aria-hidden="true" tabindex="-1"></a>joined smoothly at *knots* — which makes a flexible, local fit possible</span>
+<span id="cb26-187"><a href="#cb26-187" aria-hidden="true" tabindex="-1"></a>without exploding the parameter count.</span>
 <span id="cb26-188"><a href="#cb26-188" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-189"><a href="#cb26-189" aria-hidden="true" tabindex="-1"></a>$$\underbrace{(K + 3)}_{\text{degrees of freedom}} = (\text{knots}) + (\text{degree}) + 1,$$</span>
+<span id="cb26-189"><a href="#cb26-189" aria-hidden="true" tabindex="-1"></a><span class="fu"># Regression Splines</span></span>
 <span id="cb26-190"><a href="#cb26-190" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-191"><a href="#cb26-191" aria-hidden="true" tabindex="-1"></a>equivalently the dimension of the cubic B-spline basis with $K$</span>
-<span id="cb26-192"><a href="#cb26-192" aria-hidden="true" tabindex="-1"></a>interior knots (no intercept).</span>
-<span id="cb26-193"><a href="#cb26-193" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-194"><a href="#cb26-194" aria-hidden="true" tabindex="-1"></a><span class="fu">## Natural cubic splines</span></span>
-<span id="cb26-195"><a href="#cb26-195" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-196"><a href="#cb26-196" aria-hidden="true" tabindex="-1"></a>A *natural* cubic spline adds boundary constraints (linear beyond the</span>
-<span id="cb26-197"><a href="#cb26-197" aria-hidden="true" tabindex="-1"></a>extreme knots), which trims four parameters off a cubic spline and</span>
-<span id="cb26-198"><a href="#cb26-198" aria-hidden="true" tabindex="-1"></a>prevents the wild tail behaviour cubic splines display at the edges of</span>
-<span id="cb26-199"><a href="#cb26-199" aria-hidden="true" tabindex="-1"></a>the data. Almost always preferred to plain cubic splines when knots</span>
-<span id="cb26-200"><a href="#cb26-200" aria-hidden="true" tabindex="-1"></a>extend to the boundary of $X$.</span>
+<span id="cb26-191"><a href="#cb26-191" aria-hidden="true" tabindex="-1"></a><span class="fu">## Piecewise polynomials, smoothly joined</span></span>
+<span id="cb26-192"><a href="#cb26-192" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-193"><a href="#cb26-193" aria-hidden="true" tabindex="-1"></a>A cubic regression spline is piecewise cubic between knots, with the</span>
+<span id="cb26-194"><a href="#cb26-194" aria-hidden="true" tabindex="-1"></a>function value, first derivative, and second derivative continuous at</span>
+<span id="cb26-195"><a href="#cb26-195" aria-hidden="true" tabindex="-1"></a>each knot. The total number of free parameters is</span>
+<span id="cb26-196"><a href="#cb26-196" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-197"><a href="#cb26-197" aria-hidden="true" tabindex="-1"></a>$$\underbrace{(K + 3)}_{\text{degrees of freedom}} = (\text{knots}) + (\text{degree}) + 1,$$</span>
+<span id="cb26-198"><a href="#cb26-198" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-199"><a href="#cb26-199" aria-hidden="true" tabindex="-1"></a>equivalently the dimension of the cubic B-spline basis with $K$</span>
+<span id="cb26-200"><a href="#cb26-200" aria-hidden="true" tabindex="-1"></a>interior knots (no intercept).</span>
 <span id="cb26-201"><a href="#cb26-201" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-202"><a href="#cb26-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Choosing knots and degrees of freedom</span></span>
+<span id="cb26-202"><a href="#cb26-202" aria-hidden="true" tabindex="-1"></a><span class="fu">## Natural cubic splines</span></span>
 <span id="cb26-203"><a href="#cb26-203" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-204"><a href="#cb26-204" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Place knots at quantiles of $X$ (uniform-by-density).</span>
-<span id="cb26-205"><a href="#cb26-205" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Specify *degrees of freedom* (e.g. <span class="in">`df = 4`</span>); the basis constructor</span>
-<span id="cb26-206"><a href="#cb26-206" aria-hidden="true" tabindex="-1"></a>  picks knot positions for you.</span>
-<span id="cb26-207"><a href="#cb26-207" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compare a few df values by cross-validation if it matters.</span>
-<span id="cb26-208"><a href="#cb26-208" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-209"><a href="#cb26-209" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
-<span id="cb26-210"><a href="#cb26-210" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-211"><a href="#cb26-211" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb26-212"><a href="#cb26-212" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-213"><a href="#cb26-213" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
-<span id="cb26-214"><a href="#cb26-214" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-217"><a href="#cb26-217" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb26-218"><a href="#cb26-218" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.models <span class="im">import</span> bs, ns</span>
-<span id="cb26-219"><a href="#cb26-219" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-220"><a href="#cb26-220" aria-hidden="true" tabindex="-1"></a>bs_age <span class="op">=</span> MS([bs(<span class="st">'age'</span>, df<span class="op">=</span><span class="dv">6</span>, name<span class="op">=</span><span class="st">'bs(age)'</span>)])</span>
-<span id="cb26-221"><a href="#cb26-221" aria-hidden="true" tabindex="-1"></a>sm.OLS(Wage[<span class="st">'wage'</span>], bs_age.fit_transform(Wage)).fit().params</span>
-<span id="cb26-222"><a href="#cb26-222" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-223"><a href="#cb26-223" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-224"><a href="#cb26-224" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
-<span id="cb26-225"><a href="#cb26-225" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-226"><a href="#cb26-226" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb26-227"><a href="#cb26-227" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(splines)</span>
-<span id="cb26-228"><a href="#cb26-228" aria-hidden="true" tabindex="-1"></a>fit_bs <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> <span class="fu">bs</span>(age, <span class="at">df =</span> <span class="dv">6</span>), <span class="at">data =</span> Wage)</span>
-<span id="cb26-229"><a href="#cb26-229" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_bs)</span>
+<span id="cb26-204"><a href="#cb26-204" aria-hidden="true" tabindex="-1"></a>A *natural* cubic spline adds boundary constraints (linear beyond the</span>
+<span id="cb26-205"><a href="#cb26-205" aria-hidden="true" tabindex="-1"></a>extreme knots), which trims four parameters off a cubic spline and</span>
+<span id="cb26-206"><a href="#cb26-206" aria-hidden="true" tabindex="-1"></a>prevents the wild tail behaviour cubic splines display at the edges of</span>
+<span id="cb26-207"><a href="#cb26-207" aria-hidden="true" tabindex="-1"></a>the data. Almost always preferred to plain cubic splines when knots</span>
+<span id="cb26-208"><a href="#cb26-208" aria-hidden="true" tabindex="-1"></a>extend to the boundary of $X$.</span>
+<span id="cb26-209"><a href="#cb26-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-210"><a href="#cb26-210" aria-hidden="true" tabindex="-1"></a><span class="fu">## Choosing knots and degrees of freedom</span></span>
+<span id="cb26-211"><a href="#cb26-211" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-212"><a href="#cb26-212" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Place knots at quantiles of $X$ (uniform-by-density).</span>
+<span id="cb26-213"><a href="#cb26-213" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Specify *degrees of freedom* (e.g. <span class="in">`df = 4`</span>); the basis constructor</span>
+<span id="cb26-214"><a href="#cb26-214" aria-hidden="true" tabindex="-1"></a>  picks knot positions for you.</span>
+<span id="cb26-215"><a href="#cb26-215" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Compare a few df values by cross-validation if it matters.</span>
+<span id="cb26-216"><a href="#cb26-216" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-217"><a href="#cb26-217" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
+<span id="cb26-218"><a href="#cb26-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-219"><a href="#cb26-219" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-220"><a href="#cb26-220" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-221"><a href="#cb26-221" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
+<span id="cb26-222"><a href="#cb26-222" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-225"><a href="#cb26-225" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb26-226"><a href="#cb26-226" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.models <span class="im">import</span> bs, ns</span>
+<span id="cb26-227"><a href="#cb26-227" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-228"><a href="#cb26-228" aria-hidden="true" tabindex="-1"></a>bs_age <span class="op">=</span> MS([bs(<span class="st">'age'</span>, df<span class="op">=</span><span class="dv">6</span>, name<span class="op">=</span><span class="st">'bs(age)'</span>)])</span>
+<span id="cb26-229"><a href="#cb26-229" aria-hidden="true" tabindex="-1"></a>sm.OLS(Wage[<span class="st">'wage'</span>], bs_age.fit_transform(Wage)).fit().params</span>
 <span id="cb26-230"><a href="#cb26-230" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb26-231"><a href="#cb26-231" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-232"><a href="#cb26-232" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb26-232"><a href="#cb26-232" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
 <span id="cb26-233"><a href="#cb26-233" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-234"><a href="#cb26-234" aria-hidden="true" tabindex="-1"></a>For a natural spline replace <span class="in">`bs(...)`</span> with <span class="in">`ns(...)`</span> in either</span>
-<span id="cb26-235"><a href="#cb26-235" aria-hidden="true" tabindex="-1"></a>language — the rest of the workflow is identical.</span>
-<span id="cb26-236"><a href="#cb26-236" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-237"><a href="#cb26-237" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercises 10–14 {.smaller}</span></span>
-<span id="cb26-238"><a href="#cb26-238" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-239"><a href="#cb26-239" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
-<span id="cb26-240"><a href="#cb26-240" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-241"><a href="#cb26-241" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 10.** Use <span class="in">`BSpline()`</span> with <span class="in">`internal_knots=[25, 40, 60]`</span> and <span class="in">`intercept=True`</span>; check the shape of the design matrix.</span>
-<span id="cb26-242"><a href="#cb26-242" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 11.** Fit a cubic spline regression with <span class="in">`bs()`</span> inside <span class="in">`MS()`</span>; pass <span class="in">`name='bs(age)'`</span> for cleaner column labels.</span>
-<span id="cb26-243"><a href="#cb26-243" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 12.** Ask <span class="in">`BSpline`</span> for <span class="in">`df=6`</span>; inspect <span class="in">`internal_knots_`</span> to see where knots ended up.</span>
-<span id="cb26-244"><a href="#cb26-244" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 13.** Fit a degree-0 spline with <span class="in">`df=3`</span>; compare its coefficients to the earlier <span class="in">`qcut`</span> step function.</span>
-<span id="cb26-245"><a href="#cb26-245" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 14.** Fit a natural cubic spline with <span class="in">`df=5`</span> via <span class="in">`ns()`</span>; plot the fit with <span class="in">`plot_wage_fit()`</span>.</span>
+<span id="cb26-234"><a href="#cb26-234" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb26-235"><a href="#cb26-235" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(splines)</span>
+<span id="cb26-236"><a href="#cb26-236" aria-hidden="true" tabindex="-1"></a>fit_bs <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> <span class="fu">bs</span>(age, <span class="at">df =</span> <span class="dv">6</span>), <span class="at">data =</span> Wage)</span>
+<span id="cb26-237"><a href="#cb26-237" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_bs)</span>
+<span id="cb26-238"><a href="#cb26-238" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-239"><a href="#cb26-239" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-240"><a href="#cb26-240" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb26-241"><a href="#cb26-241" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-242"><a href="#cb26-242" aria-hidden="true" tabindex="-1"></a>For a natural spline replace <span class="in">`bs(...)`</span> with <span class="in">`ns(...)`</span> in either</span>
+<span id="cb26-243"><a href="#cb26-243" aria-hidden="true" tabindex="-1"></a>language — the rest of the workflow is identical.</span>
+<span id="cb26-244"><a href="#cb26-244" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-245"><a href="#cb26-245" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercises 10–14 {.smaller}</span></span>
 <span id="cb26-246"><a href="#cb26-246" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-247"><a href="#cb26-247" aria-hidden="true" tabindex="-1"></a><span class="fu"># Smoothing Splines</span></span>
+<span id="cb26-247"><a href="#cb26-247" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
 <span id="cb26-248"><a href="#cb26-248" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-249"><a href="#cb26-249" aria-hidden="true" tabindex="-1"></a><span class="fu">## The motivation</span></span>
-<span id="cb26-250"><a href="#cb26-250" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-251"><a href="#cb26-251" aria-hidden="true" tabindex="-1"></a>Regression splines need you to pick knots and degrees of freedom.</span>
-<span id="cb26-252"><a href="#cb26-252" aria-hidden="true" tabindex="-1"></a>A *smoothing spline* puts a knot at every observation and controls</span>
-<span id="cb26-253"><a href="#cb26-253" aria-hidden="true" tabindex="-1"></a>flexibility through a penalty on roughness:</span>
+<span id="cb26-249"><a href="#cb26-249" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 10.** Use <span class="in">`BSpline()`</span> with <span class="in">`internal_knots=[25, 40, 60]`</span> and <span class="in">`intercept=True`</span>; check the shape of the design matrix.</span>
+<span id="cb26-250"><a href="#cb26-250" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 11.** Fit a cubic spline regression with <span class="in">`bs()`</span> inside <span class="in">`MS()`</span>; pass <span class="in">`name='bs(age)'`</span> for cleaner column labels.</span>
+<span id="cb26-251"><a href="#cb26-251" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 12.** Ask <span class="in">`BSpline`</span> for <span class="in">`df=6`</span>; inspect <span class="in">`internal_knots_`</span> to see where knots ended up.</span>
+<span id="cb26-252"><a href="#cb26-252" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 13.** Fit a degree-0 spline with <span class="in">`df=3`</span>; compare its coefficients to the earlier <span class="in">`qcut`</span> step function.</span>
+<span id="cb26-253"><a href="#cb26-253" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 14.** Fit a natural cubic spline with <span class="in">`df=5`</span> via <span class="in">`ns()`</span>; plot the fit with <span class="in">`plot_wage_fit()`</span>.</span>
 <span id="cb26-254"><a href="#cb26-254" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-255"><a href="#cb26-255" aria-hidden="true" tabindex="-1"></a>$$\hat g = \arg\min_{g}\;\sum_{i=1}^n \bigl(y_i - g(x_i)\bigr)^2</span>
-<span id="cb26-256"><a href="#cb26-256" aria-hidden="true" tabindex="-1"></a>  \;+\; \lambda \int g''(t)^2\,\mathrm dt$$</span>
-<span id="cb26-257"><a href="#cb26-257" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-258"><a href="#cb26-258" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\lambda = 0$ — interpolating, infinitely wiggly.</span>
-<span id="cb26-259"><a href="#cb26-259" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\lambda \to \infty$ — a straight-line OLS fit.</span>
-<span id="cb26-260"><a href="#cb26-260" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Intermediate $\lambda$ — a smooth natural cubic spline.</span>
-<span id="cb26-261"><a href="#cb26-261" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-262"><a href="#cb26-262" aria-hidden="true" tabindex="-1"></a><span class="fu">## Effective degrees of freedom</span></span>
-<span id="cb26-263"><a href="#cb26-263" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-264"><a href="#cb26-264" aria-hidden="true" tabindex="-1"></a>The fit $\hat{\mathbf y} = \mathbf S_\lambda \mathbf y$ is linear in</span>
-<span id="cb26-265"><a href="#cb26-265" aria-hidden="true" tabindex="-1"></a>$\mathbf y$ via a smoother matrix $\mathbf S_\lambda$. Its trace gives</span>
-<span id="cb26-266"><a href="#cb26-266" aria-hidden="true" tabindex="-1"></a>the *effective* degrees of freedom:</span>
-<span id="cb26-267"><a href="#cb26-267" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-268"><a href="#cb26-268" aria-hidden="true" tabindex="-1"></a>$$\text{df}_\lambda = \operatorname{tr}(\mathbf S_\lambda).$$</span>
+<span id="cb26-255"><a href="#cb26-255" aria-hidden="true" tabindex="-1"></a><span class="fu"># Smoothing Splines</span></span>
+<span id="cb26-256"><a href="#cb26-256" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-257"><a href="#cb26-257" aria-hidden="true" tabindex="-1"></a><span class="fu">## The motivation</span></span>
+<span id="cb26-258"><a href="#cb26-258" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-259"><a href="#cb26-259" aria-hidden="true" tabindex="-1"></a>Regression splines need you to pick knots and degrees of freedom.</span>
+<span id="cb26-260"><a href="#cb26-260" aria-hidden="true" tabindex="-1"></a>A *smoothing spline* puts a knot at every observation and controls</span>
+<span id="cb26-261"><a href="#cb26-261" aria-hidden="true" tabindex="-1"></a>flexibility through a penalty on roughness:</span>
+<span id="cb26-262"><a href="#cb26-262" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-263"><a href="#cb26-263" aria-hidden="true" tabindex="-1"></a>$$\hat g = \arg\min_{g}\;\sum_{i=1}^n \bigl(y_i - g(x_i)\bigr)^2</span>
+<span id="cb26-264"><a href="#cb26-264" aria-hidden="true" tabindex="-1"></a>  \;+\; \lambda \int g''(t)^2\,\mathrm dt$$</span>
+<span id="cb26-265"><a href="#cb26-265" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-266"><a href="#cb26-266" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\lambda = 0$ — interpolating, infinitely wiggly.</span>
+<span id="cb26-267"><a href="#cb26-267" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>$\lambda \to \infty$ — a straight-line OLS fit.</span>
+<span id="cb26-268"><a href="#cb26-268" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Intermediate $\lambda$ — a smooth natural cubic spline.</span>
 <span id="cb26-269"><a href="#cb26-269" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-270"><a href="#cb26-270" aria-hidden="true" tabindex="-1"></a>A smoothing spline is often easier to think about by specifying</span>
-<span id="cb26-271"><a href="#cb26-271" aria-hidden="true" tabindex="-1"></a>$\text{df}$ (e.g., "give me an age fit with df $\approx 4$") and letting</span>
-<span id="cb26-272"><a href="#cb26-272" aria-hidden="true" tabindex="-1"></a>the software solve for $\lambda$.</span>
-<span id="cb26-273"><a href="#cb26-273" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-274"><a href="#cb26-274" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
+<span id="cb26-270"><a href="#cb26-270" aria-hidden="true" tabindex="-1"></a><span class="fu">## Effective degrees of freedom</span></span>
+<span id="cb26-271"><a href="#cb26-271" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-272"><a href="#cb26-272" aria-hidden="true" tabindex="-1"></a>The fit $\hat{\mathbf y} = \mathbf S_\lambda \mathbf y$ is linear in</span>
+<span id="cb26-273"><a href="#cb26-273" aria-hidden="true" tabindex="-1"></a>$\mathbf y$ via a smoother matrix $\mathbf S_\lambda$. Its trace gives</span>
+<span id="cb26-274"><a href="#cb26-274" aria-hidden="true" tabindex="-1"></a>the *effective* degrees of freedom:</span>
 <span id="cb26-275"><a href="#cb26-275" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-276"><a href="#cb26-276" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-276"><a href="#cb26-276" aria-hidden="true" tabindex="-1"></a>$$\text{df}_\lambda = \operatorname{tr}(\mathbf S_\lambda).$$</span>
 <span id="cb26-277"><a href="#cb26-277" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-278"><a href="#cb26-278" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
-<span id="cb26-279"><a href="#cb26-279" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-282"><a href="#cb26-282" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb26-283"><a href="#cb26-283" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> LinearGAM, s <span class="im">as</span> s_gam</span>
-<span id="cb26-284"><a href="#cb26-284" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb26-285"><a href="#cb26-285" aria-hidden="true" tabindex="-1"></a>X_age <span class="op">=</span> np.asarray(Wage[<span class="st">'age'</span>]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb26-286"><a href="#cb26-286" aria-hidden="true" tabindex="-1"></a>gam_age <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>, lam<span class="op">=</span><span class="fl">0.6</span>)).fit(X_age, Wage[<span class="st">'wage'</span>])</span>
-<span id="cb26-287"><a href="#cb26-287" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-288"><a href="#cb26-288" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-289"><a href="#cb26-289" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
-<span id="cb26-290"><a href="#cb26-290" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-291"><a href="#cb26-291" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb26-292"><a href="#cb26-292" aria-hidden="true" tabindex="-1"></a>fit_ss <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(Wage<span class="sc">$</span>age, Wage<span class="sc">$</span>wage, <span class="at">df =</span> <span class="dv">4</span>)</span>
-<span id="cb26-293"><a href="#cb26-293" aria-hidden="true" tabindex="-1"></a>fit_ss<span class="sc">$</span>lambda</span>
-<span id="cb26-294"><a href="#cb26-294" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-295"><a href="#cb26-295" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-296"><a href="#cb26-296" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb26-297"><a href="#cb26-297" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-298"><a href="#cb26-298" aria-hidden="true" tabindex="-1"></a><span class="in">`smooth.spline`</span> in R finds $\lambda$ for the requested df directly. In</span>
-<span id="cb26-299"><a href="#cb26-299" aria-hidden="true" tabindex="-1"></a><span class="in">`pygam`</span> you set $\lambda$ (<span class="in">`lam`</span>) explicitly or use</span>
-<span id="cb26-300"><a href="#cb26-300" aria-hidden="true" tabindex="-1"></a><span class="in">`ISLP.pygam.approx_lam`</span> to translate a desired df into a $\lambda$.</span>
-<span id="cb26-301"><a href="#cb26-301" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-302"><a href="#cb26-302" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercises 15–19 {.smaller}</span></span>
+<span id="cb26-278"><a href="#cb26-278" aria-hidden="true" tabindex="-1"></a>A smoothing spline is often easier to think about by specifying</span>
+<span id="cb26-279"><a href="#cb26-279" aria-hidden="true" tabindex="-1"></a>$\text{df}$ (e.g., "give me an age fit with df $\approx 4$") and letting</span>
+<span id="cb26-280"><a href="#cb26-280" aria-hidden="true" tabindex="-1"></a>the software solve for $\lambda$.</span>
+<span id="cb26-281"><a href="#cb26-281" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-282"><a href="#cb26-282" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
+<span id="cb26-283"><a href="#cb26-283" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-284"><a href="#cb26-284" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-285"><a href="#cb26-285" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-286"><a href="#cb26-286" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
+<span id="cb26-287"><a href="#cb26-287" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-290"><a href="#cb26-290" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb26-291"><a href="#cb26-291" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> LinearGAM, s <span class="im">as</span> s_gam</span>
+<span id="cb26-292"><a href="#cb26-292" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb26-293"><a href="#cb26-293" aria-hidden="true" tabindex="-1"></a>X_age <span class="op">=</span> np.asarray(Wage[<span class="st">'age'</span>]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb26-294"><a href="#cb26-294" aria-hidden="true" tabindex="-1"></a>gam_age <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>, lam<span class="op">=</span><span class="fl">0.6</span>)).fit(X_age, Wage[<span class="st">'wage'</span>])</span>
+<span id="cb26-295"><a href="#cb26-295" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-296"><a href="#cb26-296" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-297"><a href="#cb26-297" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
+<span id="cb26-298"><a href="#cb26-298" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-299"><a href="#cb26-299" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb26-300"><a href="#cb26-300" aria-hidden="true" tabindex="-1"></a>fit_ss <span class="ot">&lt;-</span> <span class="fu">smooth.spline</span>(Wage<span class="sc">$</span>age, Wage<span class="sc">$</span>wage, <span class="at">df =</span> <span class="dv">4</span>)</span>
+<span id="cb26-301"><a href="#cb26-301" aria-hidden="true" tabindex="-1"></a>fit_ss<span class="sc">$</span>lambda</span>
+<span id="cb26-302"><a href="#cb26-302" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb26-303"><a href="#cb26-303" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-304"><a href="#cb26-304" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
+<span id="cb26-304"><a href="#cb26-304" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb26-305"><a href="#cb26-305" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-306"><a href="#cb26-306" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 15.** Fit <span class="in">`LinearGAM(s_gam(0, lam=0.6))`</span> on <span class="in">`age`</span> → <span class="in">`wage`</span> (reshape <span class="in">`age`</span> to a 2-D feature matrix).</span>
-<span id="cb26-307"><a href="#cb26-307" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 16.** Loop <span class="in">`lam`</span> over <span class="in">`np.logspace(-2, 6, 5)`</span> and plot each resulting fit.</span>
-<span id="cb26-308"><a href="#cb26-308" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 17.** Reproduce the loop and add a grid-search-optimal fit via <span class="in">`.gridsearch(X_age, y)`</span> on top.</span>
-<span id="cb26-309"><a href="#cb26-309" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 18.** Use <span class="in">`approx_lam()`</span> to find a <span class="in">`lam`</span> giving ≈ 4 effective degrees of freedom; verify with <span class="in">`degrees_of_freedom()`</span>.</span>
-<span id="cb26-310"><a href="#cb26-310" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 19.** Loop <span class="in">`df ∈ {1, 3, 4, 8, 15}`</span> (passing <span class="in">`df + 1`</span> to <span class="in">`approx_lam`</span> for the intercept), refit, plot.</span>
+<span id="cb26-306"><a href="#cb26-306" aria-hidden="true" tabindex="-1"></a><span class="in">`smooth.spline`</span> in R finds $\lambda$ for the requested df directly. In</span>
+<span id="cb26-307"><a href="#cb26-307" aria-hidden="true" tabindex="-1"></a><span class="in">`pygam`</span> you set $\lambda$ (<span class="in">`lam`</span>) explicitly or use</span>
+<span id="cb26-308"><a href="#cb26-308" aria-hidden="true" tabindex="-1"></a><span class="in">`ISLP.pygam.approx_lam`</span> to translate a desired df into a $\lambda$.</span>
+<span id="cb26-309"><a href="#cb26-309" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-310"><a href="#cb26-310" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercises 15–19 {.smaller}</span></span>
 <span id="cb26-311"><a href="#cb26-311" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-312"><a href="#cb26-312" aria-hidden="true" tabindex="-1"></a><span class="fu"># Local Regression</span></span>
+<span id="cb26-312"><a href="#cb26-312" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
 <span id="cb26-313"><a href="#cb26-313" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-314"><a href="#cb26-314" aria-hidden="true" tabindex="-1"></a><span class="fu">## The idea</span></span>
-<span id="cb26-315"><a href="#cb26-315" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-316"><a href="#cb26-316" aria-hidden="true" tabindex="-1"></a>For each query point $x_0$:</span>
-<span id="cb26-317"><a href="#cb26-317" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-318"><a href="#cb26-318" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Pick a *span* (fraction of points to include in the neighbourhood).</span>
-<span id="cb26-319"><a href="#cb26-319" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Weight points in $\mathcal N(x_0)$ by distance from $x_0$ (e.g.,</span>
-<span id="cb26-320"><a href="#cb26-320" aria-hidden="true" tabindex="-1"></a>   tricubic weights).</span>
-<span id="cb26-321"><a href="#cb26-321" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Fit a weighted polynomial (typically degree 0, 1, or 2).</span>
-<span id="cb26-322"><a href="#cb26-322" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Predict $\hat f(x_0)$ from that local model.</span>
+<span id="cb26-314"><a href="#cb26-314" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 15.** Fit <span class="in">`LinearGAM(s_gam(0, lam=0.6))`</span> on <span class="in">`age`</span> → <span class="in">`wage`</span> (reshape <span class="in">`age`</span> to a 2-D feature matrix).</span>
+<span id="cb26-315"><a href="#cb26-315" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 16.** Loop <span class="in">`lam`</span> over <span class="in">`np.logspace(-2, 6, 5)`</span> and plot each resulting fit.</span>
+<span id="cb26-316"><a href="#cb26-316" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 17.** Reproduce the loop and add a grid-search-optimal fit via <span class="in">`.gridsearch(X_age, y)`</span> on top.</span>
+<span id="cb26-317"><a href="#cb26-317" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 18.** Use <span class="in">`approx_lam()`</span> to find a <span class="in">`lam`</span> giving ≈ 4 effective degrees of freedom; verify with <span class="in">`degrees_of_freedom()`</span>.</span>
+<span id="cb26-318"><a href="#cb26-318" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 19.** Loop <span class="in">`df ∈ {1, 3, 4, 8, 15}`</span> (passing <span class="in">`df + 1`</span> to <span class="in">`approx_lam`</span> for the intercept), refit, plot.</span>
+<span id="cb26-319"><a href="#cb26-319" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-320"><a href="#cb26-320" aria-hidden="true" tabindex="-1"></a><span class="fu"># Local Regression</span></span>
+<span id="cb26-321"><a href="#cb26-321" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-322"><a href="#cb26-322" aria-hidden="true" tabindex="-1"></a><span class="fu">## The idea</span></span>
 <span id="cb26-323"><a href="#cb26-323" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-324"><a href="#cb26-324" aria-hidden="true" tabindex="-1"></a>Repeat across $x_0$ to get a smooth curve.</span>
+<span id="cb26-324"><a href="#cb26-324" aria-hidden="true" tabindex="-1"></a>For each query point $x_0$:</span>
 <span id="cb26-325"><a href="#cb26-325" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-326"><a href="#cb26-326" aria-hidden="true" tabindex="-1"></a><span class="fu">## Span vs. smoothness</span></span>
-<span id="cb26-327"><a href="#cb26-327" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-328"><a href="#cb26-328" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Small span — fewer neighbours, lower bias, higher variance.</span>
-<span id="cb26-329"><a href="#cb26-329" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Large span — more neighbours, higher bias, lower variance.</span>
-<span id="cb26-330"><a href="#cb26-330" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-331"><a href="#cb26-331" aria-hidden="true" tabindex="-1"></a>Choose by visual inspection or cross-validation. The fitted span has a</span>
-<span id="cb26-332"><a href="#cb26-332" aria-hidden="true" tabindex="-1"></a>similar role to $\lambda$ in smoothing splines.</span>
+<span id="cb26-326"><a href="#cb26-326" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>Pick a *span* (fraction of points to include in the neighbourhood).</span>
+<span id="cb26-327"><a href="#cb26-327" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Weight points in $\mathcal N(x_0)$ by distance from $x_0$ (e.g.,</span>
+<span id="cb26-328"><a href="#cb26-328" aria-hidden="true" tabindex="-1"></a>   tricubic weights).</span>
+<span id="cb26-329"><a href="#cb26-329" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>Fit a weighted polynomial (typically degree 0, 1, or 2).</span>
+<span id="cb26-330"><a href="#cb26-330" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Predict $\hat f(x_0)$ from that local model.</span>
+<span id="cb26-331"><a href="#cb26-331" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-332"><a href="#cb26-332" aria-hidden="true" tabindex="-1"></a>Repeat across $x_0$ to get a smooth curve.</span>
 <span id="cb26-333"><a href="#cb26-333" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-334"><a href="#cb26-334" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
+<span id="cb26-334"><a href="#cb26-334" aria-hidden="true" tabindex="-1"></a><span class="fu">## Span vs. smoothness</span></span>
 <span id="cb26-335"><a href="#cb26-335" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-336"><a href="#cb26-336" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb26-337"><a href="#cb26-337" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-338"><a href="#cb26-338" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
-<span id="cb26-339"><a href="#cb26-339" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-342"><a href="#cb26-342" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb26-343"><a href="#cb26-343" aria-hidden="true" tabindex="-1"></a>lowess <span class="op">=</span> sm.nonparametric.lowess</span>
-<span id="cb26-344"><a href="#cb26-344" aria-hidden="true" tabindex="-1"></a>age_grid <span class="op">=</span> np.linspace(Wage[<span class="st">'age'</span>].<span class="bu">min</span>(), Wage[<span class="st">'age'</span>].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
-<span id="cb26-345"><a href="#cb26-345" aria-hidden="true" tabindex="-1"></a>fitted <span class="op">=</span> lowess(Wage[<span class="st">'wage'</span>], Wage[<span class="st">'age'</span>], frac<span class="op">=</span><span class="fl">0.3</span>, xvals<span class="op">=</span>age_grid)</span>
-<span id="cb26-346"><a href="#cb26-346" aria-hidden="true" tabindex="-1"></a>fitted[:<span class="dv">5</span>]</span>
-<span id="cb26-347"><a href="#cb26-347" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-348"><a href="#cb26-348" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-349"><a href="#cb26-349" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
-<span id="cb26-350"><a href="#cb26-350" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-351"><a href="#cb26-351" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb26-352"><a href="#cb26-352" aria-hidden="true" tabindex="-1"></a>fit_loess <span class="ot">&lt;-</span> <span class="fu">loess</span>(wage <span class="sc">~</span> age, <span class="at">data =</span> Wage, <span class="at">span =</span> <span class="fl">0.3</span>)</span>
-<span id="cb26-353"><a href="#cb26-353" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit_loess, <span class="fu">data.frame</span>(<span class="at">age =</span> <span class="fu">seq</span>(<span class="dv">20</span>, <span class="dv">80</span>, <span class="at">length.out =</span> <span class="dv">5</span>)))</span>
-<span id="cb26-354"><a href="#cb26-354" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-355"><a href="#cb26-355" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-356"><a href="#cb26-356" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb26-357"><a href="#cb26-357" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-358"><a href="#cb26-358" aria-hidden="true" tabindex="-1"></a><span class="in">`statsmodels.lowess`</span> and R's <span class="in">`loess`</span> use slightly different defaults</span>
-<span id="cb26-359"><a href="#cb26-359" aria-hidden="true" tabindex="-1"></a>(degree, weighting, robustness) but produce qualitatively similar</span>
-<span id="cb26-360"><a href="#cb26-360" aria-hidden="true" tabindex="-1"></a>fits.</span>
-<span id="cb26-361"><a href="#cb26-361" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-362"><a href="#cb26-362" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercise 32</span></span>
+<span id="cb26-336"><a href="#cb26-336" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Small span — fewer neighbours, lower bias, higher variance.</span>
+<span id="cb26-337"><a href="#cb26-337" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Large span — more neighbours, higher bias, lower variance.</span>
+<span id="cb26-338"><a href="#cb26-338" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-339"><a href="#cb26-339" aria-hidden="true" tabindex="-1"></a>Choose by visual inspection or cross-validation. The fitted span has a</span>
+<span id="cb26-340"><a href="#cb26-340" aria-hidden="true" tabindex="-1"></a>similar role to $\lambda$ in smoothing splines.</span>
+<span id="cb26-341"><a href="#cb26-341" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-342"><a href="#cb26-342" aria-hidden="true" tabindex="-1"></a><span class="fu">## Code</span></span>
+<span id="cb26-343"><a href="#cb26-343" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-344"><a href="#cb26-344" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-345"><a href="#cb26-345" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-346"><a href="#cb26-346" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
+<span id="cb26-347"><a href="#cb26-347" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-350"><a href="#cb26-350" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb26-351"><a href="#cb26-351" aria-hidden="true" tabindex="-1"></a>lowess <span class="op">=</span> sm.nonparametric.lowess</span>
+<span id="cb26-352"><a href="#cb26-352" aria-hidden="true" tabindex="-1"></a>age_grid <span class="op">=</span> np.linspace(Wage[<span class="st">'age'</span>].<span class="bu">min</span>(), Wage[<span class="st">'age'</span>].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
+<span id="cb26-353"><a href="#cb26-353" aria-hidden="true" tabindex="-1"></a>fitted <span class="op">=</span> lowess(Wage[<span class="st">'wage'</span>], Wage[<span class="st">'age'</span>], frac<span class="op">=</span><span class="fl">0.3</span>, xvals<span class="op">=</span>age_grid)</span>
+<span id="cb26-354"><a href="#cb26-354" aria-hidden="true" tabindex="-1"></a>fitted[:<span class="dv">5</span>]</span>
+<span id="cb26-355"><a href="#cb26-355" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-356"><a href="#cb26-356" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-357"><a href="#cb26-357" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
+<span id="cb26-358"><a href="#cb26-358" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-359"><a href="#cb26-359" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb26-360"><a href="#cb26-360" aria-hidden="true" tabindex="-1"></a>fit_loess <span class="ot">&lt;-</span> <span class="fu">loess</span>(wage <span class="sc">~</span> age, <span class="at">data =</span> Wage, <span class="at">span =</span> <span class="fl">0.3</span>)</span>
+<span id="cb26-361"><a href="#cb26-361" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit_loess, <span class="fu">data.frame</span>(<span class="at">age =</span> <span class="fu">seq</span>(<span class="dv">20</span>, <span class="dv">80</span>, <span class="at">length.out =</span> <span class="dv">5</span>)))</span>
+<span id="cb26-362"><a href="#cb26-362" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb26-363"><a href="#cb26-363" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-364"><a href="#cb26-364" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
+<span id="cb26-364"><a href="#cb26-364" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb26-365"><a href="#cb26-365" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-366"><a href="#cb26-366" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 32.** Use <span class="in">`sm.nonparametric.lowess`</span> to fit local linear regression models with spans of 0.2 and 0.5; plot them together. Note <span class="in">`pygam`</span> does not support local-regression terms inside a GAM.</span>
-<span id="cb26-367"><a href="#cb26-367" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-368"><a href="#cb26-368" aria-hidden="true" tabindex="-1"></a><span class="fu"># Generalized Additive Models (GAMs)</span></span>
+<span id="cb26-366"><a href="#cb26-366" aria-hidden="true" tabindex="-1"></a><span class="in">`statsmodels.lowess`</span> and R's <span class="in">`loess`</span> use slightly different defaults</span>
+<span id="cb26-367"><a href="#cb26-367" aria-hidden="true" tabindex="-1"></a>(degree, weighting, robustness) but produce qualitatively similar</span>
+<span id="cb26-368"><a href="#cb26-368" aria-hidden="true" tabindex="-1"></a>fits.</span>
 <span id="cb26-369"><a href="#cb26-369" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-370"><a href="#cb26-370" aria-hidden="true" tabindex="-1"></a><span class="fu">## The model</span></span>
+<span id="cb26-370"><a href="#cb26-370" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercise 32</span></span>
 <span id="cb26-371"><a href="#cb26-371" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-372"><a href="#cb26-372" aria-hidden="true" tabindex="-1"></a>Replace the linear sum with a sum of *smooth* functions, one per</span>
-<span id="cb26-373"><a href="#cb26-373" aria-hidden="true" tabindex="-1"></a>predictor:</span>
-<span id="cb26-374"><a href="#cb26-374" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-375"><a href="#cb26-375" aria-hidden="true" tabindex="-1"></a>$$Y = \alpha + f_1(X_1) + f_2(X_2) + \cdots + f_p(X_p) + \varepsilon$$</span>
-<span id="cb26-376"><a href="#cb26-376" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-377"><a href="#cb26-377" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each $f_j$ can be a polynomial, a regression spline, a smoothing</span>
-<span id="cb26-378"><a href="#cb26-378" aria-hidden="true" tabindex="-1"></a>  spline, or a step function — different methods can be mixed in the</span>
-<span id="cb26-379"><a href="#cb26-379" aria-hidden="true" tabindex="-1"></a>  same model.</span>
-<span id="cb26-380"><a href="#cb26-380" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Coefficient interpretation becomes "effect of $X_j$ on $Y$, holding</span>
-<span id="cb26-381"><a href="#cb26-381" aria-hidden="true" tabindex="-1"></a>  the other $X$'s at their mean", visualised via *partial dependence*</span>
-<span id="cb26-382"><a href="#cb26-382" aria-hidden="true" tabindex="-1"></a>  curves.</span>
-<span id="cb26-383"><a href="#cb26-383" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-384"><a href="#cb26-384" aria-hidden="true" tabindex="-1"></a><span class="fu">## Strengths and limits</span></span>
-<span id="cb26-385"><a href="#cb26-385" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-386"><a href="#cb26-386" aria-hidden="true" tabindex="-1"></a>**Strengths**</span>
-<span id="cb26-387"><a href="#cb26-387" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-388"><a href="#cb26-388" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Captures non-linear effects without giving up the additive interpretability.</span>
-<span id="cb26-389"><a href="#cb26-389" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each $f_j$ can be tested or constrained separately.</span>
-<span id="cb26-390"><a href="#cb26-390" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Inference and ANOVA against nested models works as it does for OLS.</span>
+<span id="cb26-372"><a href="#cb26-372" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
+<span id="cb26-373"><a href="#cb26-373" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-374"><a href="#cb26-374" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 32.** Use <span class="in">`sm.nonparametric.lowess`</span> to fit local linear regression models with spans of 0.2 and 0.5; plot them together. Note <span class="in">`pygam`</span> does not support local-regression terms inside a GAM.</span>
+<span id="cb26-375"><a href="#cb26-375" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-376"><a href="#cb26-376" aria-hidden="true" tabindex="-1"></a><span class="fu"># Generalized Additive Models (GAMs)</span></span>
+<span id="cb26-377"><a href="#cb26-377" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-378"><a href="#cb26-378" aria-hidden="true" tabindex="-1"></a><span class="fu">## The model</span></span>
+<span id="cb26-379"><a href="#cb26-379" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-380"><a href="#cb26-380" aria-hidden="true" tabindex="-1"></a>Replace the linear sum with a sum of *smooth* functions, one per</span>
+<span id="cb26-381"><a href="#cb26-381" aria-hidden="true" tabindex="-1"></a>predictor:</span>
+<span id="cb26-382"><a href="#cb26-382" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-383"><a href="#cb26-383" aria-hidden="true" tabindex="-1"></a>$$Y = \alpha + f_1(X_1) + f_2(X_2) + \cdots + f_p(X_p) + \varepsilon$$</span>
+<span id="cb26-384"><a href="#cb26-384" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-385"><a href="#cb26-385" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each $f_j$ can be a polynomial, a regression spline, a smoothing</span>
+<span id="cb26-386"><a href="#cb26-386" aria-hidden="true" tabindex="-1"></a>  spline, or a step function — different methods can be mixed in the</span>
+<span id="cb26-387"><a href="#cb26-387" aria-hidden="true" tabindex="-1"></a>  same model.</span>
+<span id="cb26-388"><a href="#cb26-388" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Coefficient interpretation becomes "effect of $X_j$ on $Y$, holding</span>
+<span id="cb26-389"><a href="#cb26-389" aria-hidden="true" tabindex="-1"></a>  the other $X$'s at their mean", visualised via *partial dependence*</span>
+<span id="cb26-390"><a href="#cb26-390" aria-hidden="true" tabindex="-1"></a>  curves.</span>
 <span id="cb26-391"><a href="#cb26-391" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-392"><a href="#cb26-392" aria-hidden="true" tabindex="-1"></a>**Limits**</span>
+<span id="cb26-392"><a href="#cb26-392" aria-hidden="true" tabindex="-1"></a><span class="fu">## Strengths and limits</span></span>
 <span id="cb26-393"><a href="#cb26-393" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-394"><a href="#cb26-394" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pure additive — no interactions unless you add them explicitly via $f_{jk}(X_j, X_k)$ terms.</span>
-<span id="cb26-395"><a href="#cb26-395" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Effective df grows with the number of smooth terms.</span>
-<span id="cb26-396"><a href="#cb26-396" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-397"><a href="#cb26-397" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fitting a GAM with three predictors</span></span>
-<span id="cb26-398"><a href="#cb26-398" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-399"><a href="#cb26-399" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb26-400"><a href="#cb26-400" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-401"><a href="#cb26-401" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
-<span id="cb26-402"><a href="#cb26-402" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-405"><a href="#cb26-405" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb26-406"><a href="#cb26-406" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam, LinearGAM</span>
-<span id="cb26-407"><a href="#cb26-407" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.column_stack([</span>
-<span id="cb26-408"><a href="#cb26-408" aria-hidden="true" tabindex="-1"></a>    Wage[<span class="st">'age'</span>],</span>
-<span id="cb26-409"><a href="#cb26-409" aria-hidden="true" tabindex="-1"></a>    Wage[<span class="st">'year'</span>],</span>
-<span id="cb26-410"><a href="#cb26-410" aria-hidden="true" tabindex="-1"></a>    Wage[<span class="st">'education'</span>].cat.codes,</span>
-<span id="cb26-411"><a href="#cb26-411" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb26-412"><a href="#cb26-412" aria-hidden="true" tabindex="-1"></a>gam <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb26-413"><a href="#cb26-413" aria-hidden="true" tabindex="-1"></a>gam.fit(X, Wage[<span class="st">'wage'</span>])</span>
-<span id="cb26-414"><a href="#cb26-414" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-415"><a href="#cb26-415" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-416"><a href="#cb26-416" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
-<span id="cb26-417"><a href="#cb26-417" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-418"><a href="#cb26-418" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb26-419"><a href="#cb26-419" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gam)</span>
-<span id="cb26-420"><a href="#cb26-420" aria-hidden="true" tabindex="-1"></a>gam_fit <span class="ot">&lt;-</span> <span class="fu">gam</span>(</span>
-<span id="cb26-421"><a href="#cb26-421" aria-hidden="true" tabindex="-1"></a>  wage <span class="sc">~</span> <span class="fu">s</span>(age, <span class="at">df =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">s</span>(year, <span class="at">df =</span> <span class="dv">5</span>) <span class="sc">+</span> education,</span>
-<span id="cb26-422"><a href="#cb26-422" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Wage</span>
-<span id="cb26-423"><a href="#cb26-423" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-424"><a href="#cb26-424" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-394"><a href="#cb26-394" aria-hidden="true" tabindex="-1"></a>**Strengths**</span>
+<span id="cb26-395"><a href="#cb26-395" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-396"><a href="#cb26-396" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Captures non-linear effects without giving up the additive interpretability.</span>
+<span id="cb26-397"><a href="#cb26-397" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Each $f_j$ can be tested or constrained separately.</span>
+<span id="cb26-398"><a href="#cb26-398" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Inference and ANOVA against nested models works as it does for OLS.</span>
+<span id="cb26-399"><a href="#cb26-399" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-400"><a href="#cb26-400" aria-hidden="true" tabindex="-1"></a>**Limits**</span>
+<span id="cb26-401"><a href="#cb26-401" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-402"><a href="#cb26-402" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Pure additive — no interactions unless you add them explicitly via $f_{jk}(X_j, X_k)$ terms.</span>
+<span id="cb26-403"><a href="#cb26-403" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>Effective df grows with the number of smooth terms.</span>
+<span id="cb26-404"><a href="#cb26-404" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-405"><a href="#cb26-405" aria-hidden="true" tabindex="-1"></a><span class="fu">## Fitting a GAM with three predictors</span></span>
+<span id="cb26-406"><a href="#cb26-406" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-407"><a href="#cb26-407" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-408"><a href="#cb26-408" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-409"><a href="#cb26-409" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
+<span id="cb26-410"><a href="#cb26-410" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-413"><a href="#cb26-413" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb26-414"><a href="#cb26-414" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam, LinearGAM</span>
+<span id="cb26-415"><a href="#cb26-415" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> np.column_stack([</span>
+<span id="cb26-416"><a href="#cb26-416" aria-hidden="true" tabindex="-1"></a>    Wage[<span class="st">'age'</span>],</span>
+<span id="cb26-417"><a href="#cb26-417" aria-hidden="true" tabindex="-1"></a>    Wage[<span class="st">'year'</span>],</span>
+<span id="cb26-418"><a href="#cb26-418" aria-hidden="true" tabindex="-1"></a>    Wage[<span class="st">'education'</span>].cat.codes,</span>
+<span id="cb26-419"><a href="#cb26-419" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb26-420"><a href="#cb26-420" aria-hidden="true" tabindex="-1"></a>gam <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb26-421"><a href="#cb26-421" aria-hidden="true" tabindex="-1"></a>gam.fit(X, Wage[<span class="st">'wage'</span>])</span>
+<span id="cb26-422"><a href="#cb26-422" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-423"><a href="#cb26-423" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-424"><a href="#cb26-424" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
 <span id="cb26-425"><a href="#cb26-425" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-426"><a href="#cb26-426" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb26-427"><a href="#cb26-427" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-428"><a href="#cb26-428" aria-hidden="true" tabindex="-1"></a><span class="in">`s(...)`</span> in both languages is a smoothing-spline term; <span class="in">`f_gam`</span> in</span>
-<span id="cb26-429"><a href="#cb26-429" aria-hidden="true" tabindex="-1"></a><span class="in">`pygam`</span> (or a plain factor in R) handles categorical predictors. The</span>
-<span id="cb26-430"><a href="#cb26-430" aria-hidden="true" tabindex="-1"></a><span class="in">`mgcv::gam`</span> package fits a different smoothness selection algorithm</span>
-<span id="cb26-431"><a href="#cb26-431" aria-hidden="true" tabindex="-1"></a>than <span class="in">`gam::gam`</span> — both are common choices in R.</span>
-<span id="cb26-432"><a href="#cb26-432" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-433"><a href="#cb26-433" aria-hidden="true" tabindex="-1"></a><span class="fu">## Partial dependence plots</span></span>
-<span id="cb26-434"><a href="#cb26-434" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-435"><a href="#cb26-435" aria-hidden="true" tabindex="-1"></a>Visualise the contribution of one predictor while the others are held</span>
-<span id="cb26-436"><a href="#cb26-436" aria-hidden="true" tabindex="-1"></a>at their mean (numeric) or summed out (categorical):</span>
-<span id="cb26-437"><a href="#cb26-437" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-438"><a href="#cb26-438" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb26-439"><a href="#cb26-439" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-440"><a href="#cb26-440" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
-<span id="cb26-441"><a href="#cb26-441" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-444"><a href="#cb26-444" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb26-445"><a href="#cb26-445" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> plot <span class="im">as</span> plot_gam</span>
-<span id="cb26-446"><a href="#cb26-446" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb26-447"><a href="#cb26-447" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
-<span id="cb26-448"><a href="#cb26-448" aria-hidden="true" tabindex="-1"></a>plot_gam(gam, <span class="dv">0</span>, ax<span class="op">=</span>ax)        <span class="co"># 0 = age</span></span>
-<span id="cb26-449"><a href="#cb26-449" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Age"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"Effect on wage"</span>)<span class="op">;</span></span>
-<span id="cb26-450"><a href="#cb26-450" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-451"><a href="#cb26-451" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-452"><a href="#cb26-452" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
-<span id="cb26-453"><a href="#cb26-453" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-454"><a href="#cb26-454" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb26-455"><a href="#cb26-455" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
-<span id="cb26-456"><a href="#cb26-456" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gam_fit, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"steelblue"</span>)</span>
-<span id="cb26-457"><a href="#cb26-457" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-458"><a href="#cb26-458" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-459"><a href="#cb26-459" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb26-460"><a href="#cb26-460" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-461"><a href="#cb26-461" aria-hidden="true" tabindex="-1"></a>The shape of the partial dependence — flat / linear / hump-shaped /</span>
-<span id="cb26-462"><a href="#cb26-462" aria-hidden="true" tabindex="-1"></a>threshold — is what makes GAMs interpretable.</span>
-<span id="cb26-463"><a href="#cb26-463" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-464"><a href="#cb26-464" aria-hidden="true" tabindex="-1"></a><span class="fu">## ANOVA-style model comparison</span></span>
-<span id="cb26-465"><a href="#cb26-465" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-466"><a href="#cb26-466" aria-hidden="true" tabindex="-1"></a>GAMs can be compared by nested ANOVA, just like OLS:</span>
-<span id="cb26-467"><a href="#cb26-467" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-468"><a href="#cb26-468" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
-<span id="cb26-469"><a href="#cb26-469" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-470"><a href="#cb26-470" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
+<span id="cb26-426"><a href="#cb26-426" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb26-427"><a href="#cb26-427" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(gam)</span>
+<span id="cb26-428"><a href="#cb26-428" aria-hidden="true" tabindex="-1"></a>gam_fit <span class="ot">&lt;-</span> <span class="fu">gam</span>(</span>
+<span id="cb26-429"><a href="#cb26-429" aria-hidden="true" tabindex="-1"></a>  wage <span class="sc">~</span> <span class="fu">s</span>(age, <span class="at">df =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">s</span>(year, <span class="at">df =</span> <span class="dv">5</span>) <span class="sc">+</span> education,</span>
+<span id="cb26-430"><a href="#cb26-430" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Wage</span>
+<span id="cb26-431"><a href="#cb26-431" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-432"><a href="#cb26-432" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-433"><a href="#cb26-433" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-434"><a href="#cb26-434" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb26-435"><a href="#cb26-435" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-436"><a href="#cb26-436" aria-hidden="true" tabindex="-1"></a><span class="in">`s(...)`</span> in both languages is a smoothing-spline term; <span class="in">`f_gam`</span> in</span>
+<span id="cb26-437"><a href="#cb26-437" aria-hidden="true" tabindex="-1"></a><span class="in">`pygam`</span> (or a plain factor in R) handles categorical predictors. The</span>
+<span id="cb26-438"><a href="#cb26-438" aria-hidden="true" tabindex="-1"></a><span class="in">`mgcv::gam`</span> package fits a different smoothness selection algorithm</span>
+<span id="cb26-439"><a href="#cb26-439" aria-hidden="true" tabindex="-1"></a>than <span class="in">`gam::gam`</span> — both are common choices in R.</span>
+<span id="cb26-440"><a href="#cb26-440" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-441"><a href="#cb26-441" aria-hidden="true" tabindex="-1"></a><span class="fu">## Partial dependence plots</span></span>
+<span id="cb26-442"><a href="#cb26-442" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-443"><a href="#cb26-443" aria-hidden="true" tabindex="-1"></a>Visualise the contribution of one predictor while the others are held</span>
+<span id="cb26-444"><a href="#cb26-444" aria-hidden="true" tabindex="-1"></a>at their mean (numeric) or summed out (categorical):</span>
+<span id="cb26-445"><a href="#cb26-445" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-446"><a href="#cb26-446" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-447"><a href="#cb26-447" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-448"><a href="#cb26-448" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
+<span id="cb26-449"><a href="#cb26-449" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-452"><a href="#cb26-452" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb26-453"><a href="#cb26-453" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> plot <span class="im">as</span> plot_gam</span>
+<span id="cb26-454"><a href="#cb26-454" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb26-455"><a href="#cb26-455" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
+<span id="cb26-456"><a href="#cb26-456" aria-hidden="true" tabindex="-1"></a>plot_gam(gam, <span class="dv">0</span>, ax<span class="op">=</span>ax)        <span class="co"># 0 = age</span></span>
+<span id="cb26-457"><a href="#cb26-457" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">"Age"</span>)<span class="op">;</span> ax.set_ylabel(<span class="st">"Effect on wage"</span>)<span class="op">;</span></span>
+<span id="cb26-458"><a href="#cb26-458" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-459"><a href="#cb26-459" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-460"><a href="#cb26-460" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
+<span id="cb26-461"><a href="#cb26-461" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-462"><a href="#cb26-462" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb26-463"><a href="#cb26-463" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb26-464"><a href="#cb26-464" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(gam_fit, <span class="at">se =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"steelblue"</span>)</span>
+<span id="cb26-465"><a href="#cb26-465" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-466"><a href="#cb26-466" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-467"><a href="#cb26-467" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb26-468"><a href="#cb26-468" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-469"><a href="#cb26-469" aria-hidden="true" tabindex="-1"></a>The shape of the partial dependence — flat / linear / hump-shaped /</span>
+<span id="cb26-470"><a href="#cb26-470" aria-hidden="true" tabindex="-1"></a>threshold — is what makes GAMs interpretable.</span>
 <span id="cb26-471"><a href="#cb26-471" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-474"><a href="#cb26-474" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb26-475"><a href="#cb26-475" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> anova <span class="im">as</span> anova_gam</span>
-<span id="cb26-476"><a href="#cb26-476" aria-hidden="true" tabindex="-1"></a>gam_no_year <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
-<span id="cb26-477"><a href="#cb26-477" aria-hidden="true" tabindex="-1"></a>gam_lin_yr <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
-<span id="cb26-478"><a href="#cb26-478" aria-hidden="true" tabindex="-1"></a>anova_gam(gam_no_year, gam_lin_yr, gam)</span>
-<span id="cb26-479"><a href="#cb26-479" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-480"><a href="#cb26-480" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-481"><a href="#cb26-481" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
-<span id="cb26-482"><a href="#cb26-482" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-483"><a href="#cb26-483" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb26-484"><a href="#cb26-484" aria-hidden="true" tabindex="-1"></a>gam_no_year <span class="ot">&lt;-</span> <span class="fu">gam</span>(wage <span class="sc">~</span> <span class="fu">s</span>(age, <span class="at">df =</span> <span class="dv">4</span>) <span class="sc">+</span> education, <span class="at">data =</span> Wage)</span>
-<span id="cb26-485"><a href="#cb26-485" aria-hidden="true" tabindex="-1"></a>gam_lin_yr  <span class="ot">&lt;-</span> <span class="fu">gam</span>(wage <span class="sc">~</span> <span class="fu">s</span>(age, <span class="at">df =</span> <span class="dv">4</span>) <span class="sc">+</span> year <span class="sc">+</span> education, <span class="at">data =</span> Wage)</span>
-<span id="cb26-486"><a href="#cb26-486" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(gam_no_year, gam_lin_yr, gam_fit, <span class="at">test =</span> <span class="st">"F"</span>)</span>
-<span id="cb26-487"><a href="#cb26-487" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-488"><a href="#cb26-488" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-489"><a href="#cb26-489" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb26-490"><a href="#cb26-490" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-491"><a href="#cb26-491" aria-hidden="true" tabindex="-1"></a><span class="fu">## GAMs for classification</span></span>
-<span id="cb26-492"><a href="#cb26-492" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-493"><a href="#cb26-493" aria-hidden="true" tabindex="-1"></a>For a binary outcome ($Y \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$) extend the additive model to a</span>
-<span id="cb26-494"><a href="#cb26-494" aria-hidden="true" tabindex="-1"></a>logistic link:</span>
-<span id="cb26-495"><a href="#cb26-495" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-496"><a href="#cb26-496" aria-hidden="true" tabindex="-1"></a>$$\log\frac{\Pr(Y = 1 \mid X)}{\Pr(Y = 0 \mid X)} = \alpha + \sum_{j=1}^p f_j(X_j)$$</span>
+<span id="cb26-472"><a href="#cb26-472" aria-hidden="true" tabindex="-1"></a><span class="fu">## ANOVA-style model comparison</span></span>
+<span id="cb26-473"><a href="#cb26-473" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-474"><a href="#cb26-474" aria-hidden="true" tabindex="-1"></a>GAMs can be compared by nested ANOVA, just like OLS:</span>
+<span id="cb26-475"><a href="#cb26-475" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-476"><a href="#cb26-476" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-477"><a href="#cb26-477" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-478"><a href="#cb26-478" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
+<span id="cb26-479"><a href="#cb26-479" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-482"><a href="#cb26-482" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb26-483"><a href="#cb26-483" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> l <span class="im">as</span> l_gam</span>
+<span id="cb26-484"><a href="#cb26-484" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> anova <span class="im">as</span> anova_gam</span>
+<span id="cb26-485"><a href="#cb26-485" aria-hidden="true" tabindex="-1"></a>gam_no_year <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
+<span id="cb26-486"><a href="#cb26-486" aria-hidden="true" tabindex="-1"></a>gam_lin_yr  <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> l_gam(<span class="dv">1</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
+<span id="cb26-487"><a href="#cb26-487" aria-hidden="true" tabindex="-1"></a>anova_gam(gam_no_year, gam_lin_yr, gam)</span>
+<span id="cb26-488"><a href="#cb26-488" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-489"><a href="#cb26-489" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-490"><a href="#cb26-490" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
+<span id="cb26-491"><a href="#cb26-491" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-492"><a href="#cb26-492" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb26-493"><a href="#cb26-493" aria-hidden="true" tabindex="-1"></a>gam_no_year <span class="ot">&lt;-</span> <span class="fu">gam</span>(wage <span class="sc">~</span> <span class="fu">s</span>(age, <span class="at">df =</span> <span class="dv">4</span>) <span class="sc">+</span> education, <span class="at">data =</span> Wage)</span>
+<span id="cb26-494"><a href="#cb26-494" aria-hidden="true" tabindex="-1"></a>gam_lin_yr  <span class="ot">&lt;-</span> <span class="fu">gam</span>(wage <span class="sc">~</span> <span class="fu">s</span>(age, <span class="at">df =</span> <span class="dv">4</span>) <span class="sc">+</span> year <span class="sc">+</span> education, <span class="at">data =</span> Wage)</span>
+<span id="cb26-495"><a href="#cb26-495" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(gam_no_year, gam_lin_yr, gam_fit, <span class="at">test =</span> <span class="st">"F"</span>)</span>
+<span id="cb26-496"><a href="#cb26-496" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
 <span id="cb26-497"><a href="#cb26-497" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-498"><a href="#cb26-498" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-498"><a href="#cb26-498" aria-hidden="true" tabindex="-1"></a>:::</span>
 <span id="cb26-499"><a href="#cb26-499" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-500"><a href="#cb26-500" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
+<span id="cb26-500"><a href="#cb26-500" aria-hidden="true" tabindex="-1"></a><span class="fu">## GAMs for classification</span></span>
 <span id="cb26-501"><a href="#cb26-501" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-504"><a href="#cb26-504" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
-<span id="cb26-505"><a href="#cb26-505" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> LogisticGAM, s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam</span>
-<span id="cb26-506"><a href="#cb26-506" aria-hidden="true" tabindex="-1"></a>high_earn <span class="op">=</span> (Wage[<span class="st">'wage'</span>] <span class="op">&gt;</span> <span class="dv">250</span>).astype(<span class="bu">int</span>)</span>
-<span id="cb26-507"><a href="#cb26-507" aria-hidden="true" tabindex="-1"></a>gam_logit <span class="op">=</span> LogisticGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
-<span id="cb26-508"><a href="#cb26-508" aria-hidden="true" tabindex="-1"></a>gam_logit.fit(X, high_earn)</span>
-<span id="cb26-509"><a href="#cb26-509" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-502"><a href="#cb26-502" aria-hidden="true" tabindex="-1"></a>For a binary outcome ($Y \in <span class="sc">\{</span>0, 1<span class="sc">\}</span>$) extend the additive model to a</span>
+<span id="cb26-503"><a href="#cb26-503" aria-hidden="true" tabindex="-1"></a>logistic link:</span>
+<span id="cb26-504"><a href="#cb26-504" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-505"><a href="#cb26-505" aria-hidden="true" tabindex="-1"></a>$$\log\frac{\Pr(Y = 1 \mid X)}{\Pr(Y = 0 \mid X)} = \alpha + \sum_{j=1}^p f_j(X_j)$$</span>
+<span id="cb26-506"><a href="#cb26-506" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-507"><a href="#cb26-507" aria-hidden="true" tabindex="-1"></a>::: {.panel-tabset}</span>
+<span id="cb26-508"><a href="#cb26-508" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-509"><a href="#cb26-509" aria-hidden="true" tabindex="-1"></a><span class="fu">### Python</span></span>
 <span id="cb26-510"><a href="#cb26-510" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-511"><a href="#cb26-511" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
-<span id="cb26-512"><a href="#cb26-512" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-513"><a href="#cb26-513" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
-<span id="cb26-514"><a href="#cb26-514" aria-hidden="true" tabindex="-1"></a>gam_logit <span class="ot">&lt;-</span> <span class="fu">gam</span>(</span>
-<span id="cb26-515"><a href="#cb26-515" aria-hidden="true" tabindex="-1"></a>  <span class="fu">I</span>(wage <span class="sc">&gt;</span> <span class="dv">250</span>) <span class="sc">~</span> <span class="fu">s</span>(age, <span class="at">df =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">s</span>(year, <span class="at">df =</span> <span class="dv">5</span>) <span class="sc">+</span> education,</span>
-<span id="cb26-516"><a href="#cb26-516" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> binomial,</span>
-<span id="cb26-517"><a href="#cb26-517" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Wage</span>
-<span id="cb26-518"><a href="#cb26-518" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb26-519"><a href="#cb26-519" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
-<span id="cb26-520"><a href="#cb26-520" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-521"><a href="#cb26-521" aria-hidden="true" tabindex="-1"></a>:::</span>
-<span id="cb26-522"><a href="#cb26-522" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-523"><a href="#cb26-523" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercises 20–31 {.smaller .scrollable}</span></span>
-<span id="cb26-524"><a href="#cb26-524" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-525"><a href="#cb26-525" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
-<span id="cb26-526"><a href="#cb26-526" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-527"><a href="#cb26-527" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 20.** Build a GAM "by hand": <span class="in">`NaturalSpline(df=4)`</span> for <span class="in">`age`</span>, <span class="in">`df=5`</span> for <span class="in">`year`</span>, dummies for <span class="in">`education`</span>; stack and fit OLS.</span>
-<span id="cb26-528"><a href="#cb26-528" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 21.** Construct a partial-dependence plot for <span class="in">`age`</span> from the by-hand GAM.</span>
-<span id="cb26-529"><a href="#cb26-529" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 22.** Do the same for <span class="in">`year`</span>.</span>
-<span id="cb26-530"><a href="#cb26-530" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 23.** Fit the same model with smoothing splines via <span class="in">`pygam`</span>: <span class="in">`LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0))`</span>; plot the age partial dependence.</span>
-<span id="cb26-531"><a href="#cb26-531" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 24.** Re-tune <span class="in">`gam_full`</span> so <span class="in">`age`</span> and <span class="in">`year`</span> each have ≈ 4 df via <span class="in">`approx_lam(..., df=4+1)`</span>; re-plot.</span>
-<span id="cb26-532"><a href="#cb26-532" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 25.** Plot the partial dependence for <span class="in">`education`</span> (categorical term).</span>
-<span id="cb26-533"><a href="#cb26-533" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 26.** ANOVA across three GAMs in <span class="in">`year`</span>: excluded vs. linear vs. smooth. What do you conclude?</span>
-<span id="cb26-534"><a href="#cb26-534" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 27.** Repeat the ANOVA for <span class="in">`age`</span>.</span>
-<span id="cb26-535"><a href="#cb26-535" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 28.** Print <span class="in">`gam_full.summary()`</span> and call <span class="in">`gam_full.predict()`</span> on the training set.</span>
-<span id="cb26-536"><a href="#cb26-536" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 29.** Fit a logistic GAM for <span class="in">`high_earn`</span> (i.e. <span class="in">`wage &gt; 250`</span>); plot the <span class="in">`education`</span> partial dependence.</span>
-<span id="cb26-537"><a href="#cb26-537" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 30.** Crosstab <span class="in">`high_earn`</span> against <span class="in">`education`</span> — what do you see?</span>
-<span id="cb26-538"><a href="#cb26-538" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 31.** Refit the logistic GAM excluding the "&lt; HS Grad" category; plot partial dependence for <span class="in">`education`</span>, <span class="in">`year`</span>, <span class="in">`age`</span>.</span>
-<span id="cb26-539"><a href="#cb26-539" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-540"><a href="#cb26-540" aria-hidden="true" tabindex="-1"></a><span class="fu"># Summary</span></span>
-<span id="cb26-541"><a href="#cb26-541" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-542"><a href="#cb26-542" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparing the tools</span></span>
-<span id="cb26-543"><a href="#cb26-543" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-544"><a href="#cb26-544" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Method <span class="pp">|</span> Smoothness <span class="pp">|</span> Knot choice <span class="pp">|</span> Parametric? <span class="pp">|</span> Interactions <span class="pp">|</span></span>
-<span id="cb26-545"><a href="#cb26-545" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|---|</span></span>
-<span id="cb26-546"><a href="#cb26-546" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Polynomial <span class="pp">|</span> High order ⇒ wiggly tails <span class="pp">|</span> None <span class="pp">|</span> Yes <span class="pp">|</span> Add product terms <span class="pp">|</span></span>
-<span id="cb26-547"><a href="#cb26-547" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Step <span class="pp">|</span> None at cutpoints <span class="pp">|</span> Manual <span class="pp">|</span> Yes <span class="pp">|</span> Cross-tabulate factors <span class="pp">|</span></span>
-<span id="cb26-548"><a href="#cb26-548" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Regression spline <span class="pp">|</span> $C^2$ at knots <span class="pp">|</span> Manual or quantiles <span class="pp">|</span> Yes <span class="pp">|</span> Tensor product / <span class="in">`bs`</span> interaction <span class="pp">|</span></span>
-<span id="cb26-549"><a href="#cb26-549" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Smoothing spline <span class="pp">|</span> Penalty-controlled <span class="pp">|</span> All points <span class="pp">|</span> Effectively no <span class="pp">|</span> Add tensor smooths <span class="pp">|</span></span>
-<span id="cb26-550"><a href="#cb26-550" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Local regression <span class="pp">|</span> Kernel-controlled <span class="pp">|</span> None <span class="pp">|</span> No <span class="pp">|</span> Multivariate kernel <span class="pp">|</span></span>
-<span id="cb26-551"><a href="#cb26-551" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> GAM <span class="pp">|</span> Per-feature smooth <span class="pp">|</span> Per-feature <span class="pp">|</span> Hybrid <span class="pp">|</span> Add <span class="in">`f(X_j, X_k)`</span> smooth <span class="pp">|</span></span>
+<span id="cb26-513"><a href="#cb26-513" aria-hidden="true" tabindex="-1"></a><span class="in">```{python}</span></span>
+<span id="cb26-514"><a href="#cb26-514" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> LogisticGAM, s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam</span>
+<span id="cb26-515"><a href="#cb26-515" aria-hidden="true" tabindex="-1"></a>high_earn <span class="op">=</span> (Wage[<span class="st">'wage'</span>] <span class="op">&gt;</span> <span class="dv">250</span>).astype(<span class="bu">int</span>)</span>
+<span id="cb26-516"><a href="#cb26-516" aria-hidden="true" tabindex="-1"></a>gam_logit <span class="op">=</span> LogisticGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb26-517"><a href="#cb26-517" aria-hidden="true" tabindex="-1"></a>gam_logit.fit(X, high_earn)</span>
+<span id="cb26-518"><a href="#cb26-518" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-519"><a href="#cb26-519" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-520"><a href="#cb26-520" aria-hidden="true" tabindex="-1"></a><span class="fu">### R</span></span>
+<span id="cb26-521"><a href="#cb26-521" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-522"><a href="#cb26-522" aria-hidden="true" tabindex="-1"></a><span class="in">```r</span></span>
+<span id="cb26-523"><a href="#cb26-523" aria-hidden="true" tabindex="-1"></a>gam_logit <span class="ot">&lt;-</span> <span class="fu">gam</span>(</span>
+<span id="cb26-524"><a href="#cb26-524" aria-hidden="true" tabindex="-1"></a>  <span class="fu">I</span>(wage <span class="sc">&gt;</span> <span class="dv">250</span>) <span class="sc">~</span> <span class="fu">s</span>(age, <span class="at">df =</span> <span class="dv">4</span>) <span class="sc">+</span> <span class="fu">s</span>(year, <span class="at">df =</span> <span class="dv">5</span>) <span class="sc">+</span> education,</span>
+<span id="cb26-525"><a href="#cb26-525" aria-hidden="true" tabindex="-1"></a>  <span class="at">family =</span> binomial,</span>
+<span id="cb26-526"><a href="#cb26-526" aria-hidden="true" tabindex="-1"></a>  <span class="at">data =</span> Wage</span>
+<span id="cb26-527"><a href="#cb26-527" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb26-528"><a href="#cb26-528" aria-hidden="true" tabindex="-1"></a><span class="in">```</span></span>
+<span id="cb26-529"><a href="#cb26-529" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-530"><a href="#cb26-530" aria-hidden="true" tabindex="-1"></a>:::</span>
+<span id="cb26-531"><a href="#cb26-531" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-532"><a href="#cb26-532" aria-hidden="true" tabindex="-1"></a><span class="fu">## Try it yourself — Exercises 20–31 {.smaller .scrollable}</span></span>
+<span id="cb26-533"><a href="#cb26-533" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-534"><a href="#cb26-534" aria-hidden="true" tabindex="-1"></a>From the <span class="co">[</span><span class="ot">Ch07 handout</span><span class="co">](../Ch07-nonlin-lab.html)</span>:</span>
+<span id="cb26-535"><a href="#cb26-535" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-536"><a href="#cb26-536" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 20.** Build a GAM "by hand": <span class="in">`NaturalSpline(df=4)`</span> for <span class="in">`age`</span>, <span class="in">`df=5`</span> for <span class="in">`year`</span>, dummies for <span class="in">`education`</span>; stack and fit OLS.</span>
+<span id="cb26-537"><a href="#cb26-537" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 21.** Construct a partial-dependence plot for <span class="in">`age`</span> from the by-hand GAM.</span>
+<span id="cb26-538"><a href="#cb26-538" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 22.** Do the same for <span class="in">`year`</span>.</span>
+<span id="cb26-539"><a href="#cb26-539" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 23.** Fit the same model with smoothing splines via <span class="in">`pygam`</span>: <span class="in">`LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0))`</span>; plot the age partial dependence.</span>
+<span id="cb26-540"><a href="#cb26-540" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 24.** Re-tune <span class="in">`gam_full`</span> so <span class="in">`age`</span> and <span class="in">`year`</span> each have ≈ 4 df via <span class="in">`approx_lam(..., df=4+1)`</span>; re-plot.</span>
+<span id="cb26-541"><a href="#cb26-541" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 25.** Plot the partial dependence for <span class="in">`education`</span> (categorical term).</span>
+<span id="cb26-542"><a href="#cb26-542" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 26.** ANOVA across three GAMs in <span class="in">`year`</span>: excluded vs. linear vs. smooth. What do you conclude?</span>
+<span id="cb26-543"><a href="#cb26-543" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 27.** Repeat the ANOVA for <span class="in">`age`</span>.</span>
+<span id="cb26-544"><a href="#cb26-544" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 28.** Print <span class="in">`gam_full.summary()`</span> and call <span class="in">`gam_full.predict()`</span> on the training set.</span>
+<span id="cb26-545"><a href="#cb26-545" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 29.** Fit a logistic GAM for <span class="in">`high_earn`</span> (i.e. <span class="in">`wage &gt; 250`</span>); plot the <span class="in">`education`</span> partial dependence.</span>
+<span id="cb26-546"><a href="#cb26-546" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 30.** Crosstab <span class="in">`high_earn`</span> against <span class="in">`education`</span> — what do you see?</span>
+<span id="cb26-547"><a href="#cb26-547" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Exercise 31.** Refit the logistic GAM excluding the "&lt; HS Grad" category; plot partial dependence for <span class="in">`education`</span>, <span class="in">`year`</span>, <span class="in">`age`</span>.</span>
+<span id="cb26-548"><a href="#cb26-548" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-549"><a href="#cb26-549" aria-hidden="true" tabindex="-1"></a><span class="fu"># Summary</span></span>
+<span id="cb26-550"><a href="#cb26-550" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-551"><a href="#cb26-551" aria-hidden="true" tabindex="-1"></a><span class="fu">## Comparing the tools</span></span>
 <span id="cb26-552"><a href="#cb26-552" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-553"><a href="#cb26-553" aria-hidden="true" tabindex="-1"></a><span class="fu">## Take-aways</span></span>
-<span id="cb26-554"><a href="#cb26-554" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-555"><a href="#cb26-555" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The methods sit on a spectrum from "rigid, interpretable" to</span>
-<span id="cb26-556"><a href="#cb26-556" aria-hidden="true" tabindex="-1"></a>   "flexible, hard to read". Choose by how much you care about each.</span>
-<span id="cb26-557"><a href="#cb26-557" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Splines (regression or smoothing) are the workhorse: smooth, local,</span>
-<span id="cb26-558"><a href="#cb26-558" aria-hidden="true" tabindex="-1"></a>   and computable as standard OLS once a basis is fixed.</span>
-<span id="cb26-559"><a href="#cb26-559" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>GAMs scale the same ideas to multiple predictors with additive,</span>
-<span id="cb26-560"><a href="#cb26-560" aria-hidden="true" tabindex="-1"></a>   visualisable effects — the next step before tree-based or neural</span>
-<span id="cb26-561"><a href="#cb26-561" aria-hidden="true" tabindex="-1"></a>   models.</span>
-<span id="cb26-562"><a href="#cb26-562" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Cross-validation (Chapter 5) is the impartial way to compare any of</span>
-<span id="cb26-563"><a href="#cb26-563" aria-hidden="true" tabindex="-1"></a>   these against linear regression on a given problem.</span>
-<span id="cb26-564"><a href="#cb26-564" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-565"><a href="#cb26-565" aria-hidden="true" tabindex="-1"></a><span class="fu">## What's next</span></span>
-<span id="cb26-566"><a href="#cb26-566" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb26-567"><a href="#cb26-567" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chapter 8** — Tree-based methods: decision trees, bagging, random</span>
-<span id="cb26-568"><a href="#cb26-568" aria-hidden="true" tabindex="-1"></a>  forests, boosting. Different flexibility–interpretability trade-off.</span>
-<span id="cb26-569"><a href="#cb26-569" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chapter 10** — Deep learning: neural networks as another flexible</span>
-<span id="cb26-570"><a href="#cb26-570" aria-hidden="true" tabindex="-1"></a>  function-fitter, with much higher capacity at the cost of opacity.</span>
+<span id="cb26-553"><a href="#cb26-553" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Method <span class="pp">|</span> Smoothness <span class="pp">|</span> Knot choice <span class="pp">|</span> Parametric? <span class="pp">|</span> Interactions <span class="pp">|</span></span>
+<span id="cb26-554"><a href="#cb26-554" aria-hidden="true" tabindex="-1"></a><span class="pp">|---|---|---|---|---|</span></span>
+<span id="cb26-555"><a href="#cb26-555" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Polynomial <span class="pp">|</span> High order ⇒ wiggly tails <span class="pp">|</span> None <span class="pp">|</span> Yes <span class="pp">|</span> Add product terms <span class="pp">|</span></span>
+<span id="cb26-556"><a href="#cb26-556" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Step <span class="pp">|</span> None at cutpoints <span class="pp">|</span> Manual <span class="pp">|</span> Yes <span class="pp">|</span> Cross-tabulate factors <span class="pp">|</span></span>
+<span id="cb26-557"><a href="#cb26-557" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Regression spline <span class="pp">|</span> $C^2$ at knots <span class="pp">|</span> Manual or quantiles <span class="pp">|</span> Yes <span class="pp">|</span> Tensor product / <span class="in">`bs`</span> interaction <span class="pp">|</span></span>
+<span id="cb26-558"><a href="#cb26-558" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Smoothing spline <span class="pp">|</span> Penalty-controlled <span class="pp">|</span> All points <span class="pp">|</span> Effectively no <span class="pp">|</span> Add tensor smooths <span class="pp">|</span></span>
+<span id="cb26-559"><a href="#cb26-559" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Local regression <span class="pp">|</span> Kernel-controlled <span class="pp">|</span> None <span class="pp">|</span> No <span class="pp">|</span> Multivariate kernel <span class="pp">|</span></span>
+<span id="cb26-560"><a href="#cb26-560" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> GAM <span class="pp">|</span> Per-feature smooth <span class="pp">|</span> Per-feature <span class="pp">|</span> Hybrid <span class="pp">|</span> Add <span class="in">`f(X_j, X_k)`</span> smooth <span class="pp">|</span></span>
+<span id="cb26-561"><a href="#cb26-561" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-562"><a href="#cb26-562" aria-hidden="true" tabindex="-1"></a><span class="fu">## Take-aways</span></span>
+<span id="cb26-563"><a href="#cb26-563" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-564"><a href="#cb26-564" aria-hidden="true" tabindex="-1"></a><span class="ss">1. </span>The methods sit on a spectrum from "rigid, interpretable" to</span>
+<span id="cb26-565"><a href="#cb26-565" aria-hidden="true" tabindex="-1"></a>   "flexible, hard to read". Choose by how much you care about each.</span>
+<span id="cb26-566"><a href="#cb26-566" aria-hidden="true" tabindex="-1"></a><span class="ss">2. </span>Splines (regression or smoothing) are the workhorse: smooth, local,</span>
+<span id="cb26-567"><a href="#cb26-567" aria-hidden="true" tabindex="-1"></a>   and computable as standard OLS once a basis is fixed.</span>
+<span id="cb26-568"><a href="#cb26-568" aria-hidden="true" tabindex="-1"></a><span class="ss">3. </span>GAMs scale the same ideas to multiple predictors with additive,</span>
+<span id="cb26-569"><a href="#cb26-569" aria-hidden="true" tabindex="-1"></a>   visualisable effects — the next step before tree-based or neural</span>
+<span id="cb26-570"><a href="#cb26-570" aria-hidden="true" tabindex="-1"></a>   models.</span>
+<span id="cb26-571"><a href="#cb26-571" aria-hidden="true" tabindex="-1"></a><span class="ss">4. </span>Cross-validation (Chapter 5) is the impartial way to compare any of</span>
+<span id="cb26-572"><a href="#cb26-572" aria-hidden="true" tabindex="-1"></a>   these against linear regression on a given problem.</span>
+<span id="cb26-573"><a href="#cb26-573" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-574"><a href="#cb26-574" aria-hidden="true" tabindex="-1"></a><span class="fu">## What's next</span></span>
+<span id="cb26-575"><a href="#cb26-575" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-576"><a href="#cb26-576" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chapter 8** — Tree-based methods: decision trees, bagging, random</span>
+<span id="cb26-577"><a href="#cb26-577" aria-hidden="true" tabindex="-1"></a>  forests, boosting. Different flexibility–interpretability trade-off.</span>
+<span id="cb26-578"><a href="#cb26-578" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>**Chapter 10** — Deep learning: neural networks as another flexible</span>
+<span id="cb26-579"><a href="#cb26-579" aria-hidden="true" tabindex="-1"></a>  function-fitter, with much higher capacity at the cost of opacity.</span>
 </code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
