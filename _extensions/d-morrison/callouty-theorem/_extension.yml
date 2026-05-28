@@ -1,3 +1,6 @@
+# Vendored from ucdavis/epi204 (vignettes/_extensions/d-morrison/callouty-theorem/);
+# upstream is github.com/sun123zxy/callouty-theorem. Path keeps the
+# d-morrison fork namespace; `author:` preserves upstream credit.
 title: callouty-theorem
 author: sun123zxy
 version: 1.0.0
