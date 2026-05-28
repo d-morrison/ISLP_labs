@@ -8,6 +8,11 @@ project:
 profile:
   default: solution
 
+# `execute.enabled: false` is intentional. The handout displays code
+# verbatim from the upstream lab; we do not run Python on every CI
+# render. Students execute the code locally with the `requirements.txt`
+# environment. Flip `enabled: true` (and add a Python setup step in
+# publish.yml + preview.yml) if the rendered site should show outputs.
 execute:
   warning: false
   message: false
@@ -64,6 +69,33 @@ format:
     fig-cap-location: top
     html-math-method: mathjax
     df-print: paged
+  revealjs:
+    # Per-document `output-file:` overrides in each .qmd disambiguate the
+    # revealjs `.html` from the primary html format (both target `.html`
+    # by default and would otherwise collide on rename).
+    theme: simple
+    slide-number: true
+    preview-links: auto
+    incremental: false
+    fig-cap-location: top
+    html-math-method: mathjax
+    code-fold: false
+    code-link: true
+    scrollable: true
+    smaller: true
+    progress: true
+    transition: slide
+  pdf:
+    pdf-engine: lualatex
+    geometry:
+      - top=20mm
+      - bottom=20mm
+      - left=20mm
+      - right=20mm
+    fig-cap-location: top
+    code-link: true
+    number-sections: true
+    number-depth: 3
 
 date: last-modified
 date-format: "[Last modified:] YYYY-MM-DD"
