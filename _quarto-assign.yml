@@ -1,0 +1,12 @@
+project:
+  output-dir: _site/assign
+
+website:
+  title: "ISLP Labs — Student Worksheet"
+
+# Expresses intent: assign profile should be HTML-only.
+# Note: per-document format: blocks (e.g. Ch07-nonlin-lab.qmd) take
+# precedence over this profile-level setting in Quarto's deep-merge,
+# so documents with an explicit format: block still render all formats.
+format:
+  html: default
