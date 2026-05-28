@@ -1,0 +1,72 @@
+name: PR preview
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, closed]
+  workflow_dispatch:
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    env:
+      TZ: America/Los_Angeles
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Render (solution)
+        if: github.event.action != 'closed'
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          args: --profile solution
+
+      - name: Render (assign)
+        if: github.event.action != 'closed'
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          args: --profile assign
+
+      - name: Create landing page
+        if: github.event.action != 'closed'
+        run: bash .github/scripts/create-landing-page.sh
+
+      - name: Deploy PR preview
+        id: preview
+        uses: rossjrw/pr-preview-action@v1
+        with:
+          source-dir: ./_site/
+          action: ${{ github.event.action == 'closed' && 'remove' || 'deploy' }}
+          comment: false
+
+      - name: Comment with preview link
+        if: steps.preview.outputs.deployment-action == 'deploy'
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: pr-preview
+          recreate: true
+          message: |
+            [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview.outputs.action-version }}
+            :---:
+            :rocket: **Preview available at:** ${{ steps.preview.outputs.preview-url }}
+
+            <sub>Built to branch [`gh-pages`](${{ github.server_url }}/${{ github.repository }}/tree/gh-pages) at ${{ steps.preview.outputs.action-start-time }}.</sub>
+
+      - name: Remove preview comment
+        if: steps.preview.outputs.deployment-action == 'remove'
+        uses: marocchino/sticky-pull-request-comment@v3
+        with:
+          header: pr-preview
+          message: |
+            [PR Preview Action](https://github.com/rossjrw/pr-preview-action) ${{ steps.preview.outputs.action-version }}
+            :---:
+            Preview removed because the pull request was closed.
+
+            <sub>${{ steps.preview.outputs.action-start-time }}</sub>
