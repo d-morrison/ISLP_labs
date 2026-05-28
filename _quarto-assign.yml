@@ -1,12 +1,5 @@
 project:
-  type: default
-  output-dir: _assign
+  output-dir: _site/assign
 
-format:
-  html:
-    theme: cosmo
-    toc: true
-    toc-location: right
-    code-tools: true
-    highlight-style: pygments
-    html-math-method: mathjax
+website:
+  title: "ISLP Labs — Student Worksheet"

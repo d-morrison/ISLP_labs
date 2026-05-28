@@ -7,8 +7,6 @@
 # Quarto
 /.quarto/
 /_site/
-/_assign/
-/_solution/
 /_freeze/
 *_files/
 .DS_Store

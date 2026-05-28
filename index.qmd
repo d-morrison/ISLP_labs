@@ -32,25 +32,24 @@ repository.
 
 ## Building the handouts
 
-Render the website (default, shows both exercise prompts and solutions):
+Two parallel renders of the website are produced — a **student
+worksheet** (prompts only) and a **solution key** (solutions only) —
+each written to its own subdirectory of `_site/`. The exercise/solution
+toggling is provided by the
+[coatless-quarto/assign](https://github.com/coatless-quarto/assign)
+Quarto extension.
+
+Render the solution key (the default profile):
 
 ```bash
 quarto render
 ```
 
-Render a single handout as a *student worksheet* (prompts only, no
-solutions):
+Render the student worksheet:
 
 ```bash
-quarto render Ch07-nonlin-lab.qmd --profile assign
+quarto render --profile assign
 ```
 
-Render a single handout as a *solution key* (solutions only):
-
-```bash
-quarto render Ch07-nonlin-lab.qmd --profile solution
-```
-
-The exercise/solution toggling is provided by the
-[coatless-quarto/assign](https://github.com/coatless-quarto/assign)
-Quarto extension.
+The published GitHub Pages site combines both — its top-level
+`index.html` links to `assign/` and `solution/`.

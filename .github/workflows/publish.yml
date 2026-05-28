@@ -22,11 +22,20 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Render website
+      - name: Render (solution)
         uses: quarto-dev/quarto-actions/render@v2
+        env:
+          QUARTO_PROFILE: solution
+
+      - name: Render (assign)
+        uses: quarto-dev/quarto-actions/render@v2
+        env:
+          QUARTO_PROFILE: assign
+
+      - name: Create landing page
+        run: bash .github/scripts/create-landing-page.sh
 
       - name: Deploy to GitHub Pages
-        if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
         uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: _site
