@@ -140,14 +140,22 @@ sm.OLS(Wage['wage'], pd.get_dummies(cut_age, dtype=float)).fit().params
 ### R
 
 ```r
-fit_step <- lm(wage ~ cut(age, 4), data = Wage)
+quartile_breaks <- quantile(Wage$age, probs = seq(0, 1, by = 0.25))
+fit_step <- lm(
+  wage ~ cut(age, breaks = quartile_breaks, include.lowest = TRUE),
+  data = Wage
+)
 coef(fit_step)
 ```
 
 :::
 
-`qcut(x, 4)` (and `cut(x, 4)` in R) splits at the 25 / 50 / 75 %
-quantiles, giving four bins. Each coefficient is the per-bin mean.
+`pd.qcut(x, 4)` splits at the 25 / 50 / 75 % quantiles, giving four
+roughly equal-sized bins. R's `cut(x, 4)` instead divides the *range*
+of `x` into four equal-width intervals (which usually leaves the
+extreme bins much sparser); so the R panel above passes
+quantile-based breaks explicitly to match Python's behaviour. Each
+coefficient is then the average wage in its bin.
 
 ## Try it yourself — Exercise 9
 
@@ -454,9 +462,10 @@ GAMs can be compared by nested ANOVA, just like OLS:
 ### Python
 
 ```{python}
+from pygam import l as l_gam
 from ISLP.pygam import anova as anova_gam
 gam_no_year = LinearGAM(s_gam(0) + f_gam(2, lam=0)).fit(X, Wage['wage'])
-gam_lin_yr = LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)).fit(X, Wage['wage'])
+gam_lin_yr  = LinearGAM(s_gam(0) + l_gam(1, lam=0) + f_gam(2, lam=0)).fit(X, Wage['wage'])
 anova_gam(gam_no_year, gam_lin_yr, gam)
 ```
 

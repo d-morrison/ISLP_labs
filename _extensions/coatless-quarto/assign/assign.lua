@@ -60,8 +60,11 @@ function Div(div)
     if in_callout_output() then
       div = solution_callout(div)
     else
-      local new_emph = pandoc.Emph{pandoc.Str("Solution.")}
-      table.insert(div.content, 1, new_emph)
+      -- Wrap the "Solution." Emph in a Para so we insert a Block, not
+      -- an Inline, into div.content (which holds Blocks). Some Pandoc
+      -- versions error on the bare-Inline form.
+      local sol_label = pandoc.Para{pandoc.Emph{pandoc.Str("Solution.")}}
+      table.insert(div.content, 1, sol_label)
     end
   end
 

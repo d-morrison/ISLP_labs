@@ -22,6 +22,7 @@ in either language.
 |---------|-------|---------|
 | 2 | Statistical Learning | [HTML](ch02-statistical-learning.qmd) · [Slides](ch02-statistical-learning-slides.html) |
 | 3 | Linear Regression | [HTML](ch03-linear-regression.qmd) · [Slides](ch03-linear-regression-slides.html) |
+| 7 | Moving Beyond Linearity | [HTML](ch07-moving-beyond-linearity.qmd) · [Slides](ch07-moving-beyond-linearity-slides.html) |
 
 *More chapters to follow.*
 
