@@ -224,7 +224,7 @@
 <section id="setup" class="slide level2">
 <h2>Setup</h2>
 <p>As usual, we start with some of our standard imports.</p>
-<div id="20931867" class="cell" data-execution_count="1">
+<div id="e8915df2" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> subplots</span>
 <span id="cb1-3"><a></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
@@ -235,7 +235,7 @@
 <span id="cb1-8"><a></a><span class="im">from</span> statsmodels.stats.anova <span class="im">import</span> anova_lm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We again collect the new imports needed for this lab. Many of these are developed specifically for the <code>ISLP</code> package.</p>
-<div id="6861f6a4" class="cell" data-execution_count="2">
+<div id="31cd405a" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> (s <span class="im">as</span> s_gam,</span>
 <span id="cb2-2"><a></a>                   l <span class="im">as</span> l_gam,</span>
 <span id="cb2-3"><a></a>                   f <span class="im">as</span> f_gam,</span>
@@ -260,7 +260,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="b72b42f8" class="cell" data-execution_count="3">
+<div id="1772a270" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>Wage <span class="op">=</span> load_data(<span class="st">'Wage'</span>)</span>
 <span id="cb3-2"><a></a>y <span class="op">=</span> Wage[<span class="st">'wage'</span>]</span>
 <span id="cb3-3"><a></a>age <span class="op">=</span> Wage[<span class="st">'age'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -276,7 +276,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="0419cd50" class="cell" data-execution_count="4">
+<div id="0c52bd2a" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>poly_age <span class="op">=</span> MS([poly(<span class="st">'age'</span>, degree<span class="op">=</span><span class="dv">4</span>)]).fit(Wage)</span>
 <span id="cb4-2"><a></a>M <span class="op">=</span> sm.OLS(y, poly_age.transform(Wage)).fit()</span>
 <span id="cb4-3"><a></a>summarize(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -359,7 +359,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="bde6f1f5" class="cell" data-execution_count="5">
+<div id="324d6454" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>age_grid <span class="op">=</span> np.linspace(age.<span class="bu">min</span>(),</span>
 <span id="cb5-2"><a></a>                       age.<span class="bu">max</span>(),</span>
 <span id="cb5-3"><a></a>                       <span class="dv">100</span>)</span>
@@ -375,7 +375,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="a4ea49d0" class="cell" data-execution_count="6">
+<div id="6d3c90c7" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> plot_wage_fit(age_df,</span>
 <span id="cb6-2"><a></a>                  basis,</span>
 <span id="cb6-3"><a></a>                  title):</span>
@@ -411,7 +411,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="9216146a" class="cell" data-execution_count="7">
+<div id="6ee0525f" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>plot_wage_fit(age_df,</span>
 <span id="cb7-2"><a></a>              poly_age,</span>
 <span id="cb7-3"><a></a>              <span class="st">'Degree-4 Polynomial'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -433,7 +433,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="53463d45" class="cell" data-execution_count="8">
+<div id="ee4b901b" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>models <span class="op">=</span> [MS([poly(<span class="st">'age'</span>, degree<span class="op">=</span>d)])</span>
 <span id="cb8-2"><a></a>          <span class="cf">for</span> d <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>)]</span>
 <span id="cb8-3"><a></a>Xs <span class="op">=</span> [model.fit_transform(Wage) <span class="cf">for</span> model <span class="kw">in</span> models]</span>
@@ -530,7 +530,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="9651a14f" class="cell" data-execution_count="9">
+<div id="7636c39e" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>models <span class="op">=</span> [MS([<span class="st">'education'</span>, poly(<span class="st">'age'</span>, degree<span class="op">=</span>d)])</span>
 <span id="cb9-2"><a></a>          <span class="cf">for</span> d <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span>)]</span>
 <span id="cb9-3"><a></a>XEs <span class="op">=</span> [model.fit_transform(Wage)</span>
@@ -609,7 +609,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="d009e9ec" class="cell" data-execution_count="10">
+<div id="5af19ebe" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>X <span class="op">=</span> poly_age.transform(Wage)</span>
 <span id="cb10-2"><a></a>high_earn <span class="op">=</span> Wage[<span class="st">'high_earn'</span>] <span class="op">=</span> y <span class="op">&gt;</span> <span class="dv">250</span>  <span class="co"># shorthand</span></span>
 <span id="cb10-3"><a></a>glm <span class="op">=</span> sm.GLM(y <span class="op">&gt;</span> <span class="dv">250</span>,</span>
@@ -686,7 +686,7 @@
 </div>
 </div>
 <p>(The double assignment <code>high_earn = Wage['high_earn'] = y &gt; 250</code> both binds the local variable <code>high_earn</code> and stores the indicator as a new column on the <code>Wage</code> DataFrame. We’ll re-use that column in Exercises 29 and 30.)</p>
-<div id="172bceb9" class="cell" data-execution_count="11">
+<div id="1b3eb944" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>newX <span class="op">=</span> poly_age.transform(age_df)</span>
 <span id="cb11-2"><a></a>preds <span class="op">=</span> B.get_prediction(newX)</span>
 <span id="cb11-3"><a></a>bands <span class="op">=</span> preds.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
@@ -726,7 +726,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="3f91da7f" class="cell" data-execution_count="12">
+<div id="e7e9be03" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>cut_age <span class="op">=</span> pd.qcut(age, <span class="dv">4</span>)</span>
 <span id="cb12-2"><a></a>summarize(sm.OLS(y, pd.get_dummies(cut_age)).fit())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="12">
@@ -804,7 +804,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="dcd0f8f8" class="cell" data-execution_count="13">
+<div id="d8d2f574" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>bs_ <span class="op">=</span> BSpline(internal_knots<span class="op">=</span>[<span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">60</span>], intercept<span class="op">=</span><span class="va">True</span>).fit(age)</span>
 <span id="cb13-2"><a></a>bs_age <span class="op">=</span> bs_.transform(age)</span>
 <span id="cb13-3"><a></a>bs_age.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -823,7 +823,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="93adfca3" class="cell" data-execution_count="14">
+<div id="60deab3f" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>bs_age <span class="op">=</span> MS([bs(<span class="st">'age'</span>,</span>
 <span id="cb15-2"><a></a>                internal_knots<span class="op">=</span>[<span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">60</span>],</span>
 <span id="cb15-3"><a></a>                name<span class="op">=</span><span class="st">'bs(age)'</span>)])</span>
@@ -923,7 +923,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="ef85fc85" class="cell" data-execution_count="15">
+<div id="ad1b1e4d" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>BSpline(df<span class="op">=</span><span class="dv">6</span>).fit(age).internal_knots_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="15">
 <pre><code>array([33.75, 42.  , 51.  ])</code></pre>
@@ -940,7 +940,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="43ae6d88" class="cell" data-execution_count="16">
+<div id="8bab23de" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>bs_age0 <span class="op">=</span> MS([bs(<span class="st">'age'</span>,</span>
 <span id="cb18-2"><a></a>                 df<span class="op">=</span><span class="dv">3</span>,</span>
 <span id="cb18-3"><a></a>                 degree<span class="op">=</span><span class="dv">0</span>)]).fit(Wage)</span>
@@ -1018,7 +1018,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="72e3f5a3" class="cell" data-execution_count="17">
+<div id="c67966e4" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>ns_age <span class="op">=</span> MS([ns(<span class="st">'age'</span>, df<span class="op">=</span><span class="dv">5</span>)]).fit(Wage)</span>
 <span id="cb19-2"><a></a>M_ns <span class="op">=</span> sm.OLS(y, ns_age.transform(Wage)).fit()</span>
 <span id="cb19-3"><a></a>summarize(M_ns)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1097,7 +1097,7 @@
 </div>
 </div>
 </div>
-<div id="514a1165" class="cell" data-execution_count="18">
+<div id="22cda2c0" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>plot_wage_fit(age_df,</span>
 <span id="cb20-2"><a></a>              ns_age,</span>
 <span id="cb20-3"><a></a>              <span class="st">'Natural spline, df=5'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1122,7 +1122,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="3b3c5ba0" class="cell" data-execution_count="19">
+<div id="4b9be564" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>X_age <span class="op">=</span> np.asarray(age).reshape((<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb21-2"><a></a>gam <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>, lam<span class="op">=</span><span class="fl">0.6</span>))</span>
 <span id="cb21-3"><a></a>gam.fit(X_age, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -1143,7 +1143,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="5bc2ed81" class="cell" data-execution_count="20">
+<div id="25ba78b5" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb23-2"><a></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
 <span id="cb23-3"><a></a><span class="cf">for</span> lam <span class="kw">in</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>):</span>
@@ -1173,7 +1173,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="c61e2bb2" class="cell" data-execution_count="21">
+<div id="ee2af3cc" class="cell" data-execution_count="21">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb24-2"><a></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
 <span id="cb24-3"><a></a><span class="cf">for</span> lam <span class="kw">in</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>):</span>
@@ -1216,7 +1216,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="0b31bd2a" class="cell" data-execution_count="22">
+<div id="894fa69c" class="cell" data-execution_count="22">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a>age_term <span class="op">=</span> gam.terms[<span class="dv">0</span>]</span>
 <span id="cb25-2"><a></a>lam_4 <span class="op">=</span> approx_lam(X_age, age_term, <span class="dv">4</span>)</span>
 <span id="cb25-3"><a></a>age_term.lam <span class="op">=</span> lam_4</span>
@@ -1236,7 +1236,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="d660cb9a" class="cell" data-execution_count="23">
+<div id="7ef24836" class="cell" data-execution_count="23">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb27-2"><a></a>ax.scatter(X_age,</span>
 <span id="cb27-3"><a></a>           y,</span>
@@ -1273,7 +1273,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="721160c6" class="cell" data-execution_count="24">
+<div id="581b774a" class="cell" data-execution_count="24">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a>ns_age <span class="op">=</span> NaturalSpline(df<span class="op">=</span><span class="dv">4</span>).fit(age)</span>
 <span id="cb28-2"><a></a>ns_year <span class="op">=</span> NaturalSpline(df<span class="op">=</span><span class="dv">5</span>).fit(Wage[<span class="st">'year'</span>])</span>
 <span id="cb28-3"><a></a>Xs <span class="op">=</span> [ns_age.transform(age),</span>
@@ -1293,7 +1293,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="5f4c908b" class="cell" data-execution_count="25">
+<div id="bd8730b2" class="cell" data-execution_count="25">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a>age_grid <span class="op">=</span> np.linspace(age.<span class="bu">min</span>(),</span>
 <span id="cb29-2"><a></a>                       age.<span class="bu">max</span>(),</span>
 <span id="cb29-3"><a></a>                       <span class="dv">100</span>)</span>
@@ -1332,7 +1332,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="16207d8a" class="cell" data-execution_count="26">
+<div id="21f8a57e" class="cell" data-execution_count="26">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>year_grid <span class="op">=</span> np.linspace(Wage[<span class="st">'year'</span>].<span class="bu">min</span>(),</span>
 <span id="cb30-2"><a></a>                        Wage[<span class="st">'year'</span>].<span class="bu">max</span>(),</span>
 <span id="cb30-3"><a></a>                        <span class="dv">100</span>)</span>
@@ -1370,7 +1370,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="44edc793" class="cell" data-execution_count="27">
+<div id="6881e631" class="cell" data-execution_count="27">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a>gam_full <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span></span>
 <span id="cb31-2"><a></a>                     s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span></span>
 <span id="cb31-3"><a></a>                     f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
@@ -1379,7 +1379,7 @@
 <span id="cb31-6"><a></a>                        Wage[<span class="st">'education'</span>].cat.codes])</span>
 <span id="cb31-7"><a></a>gam_full <span class="op">=</span> gam_full.fit(Xgam, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="b22ccf54" class="cell" data-execution_count="28">
+<div id="a5120954" class="cell" data-execution_count="28">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb32-2"><a></a>plot_gam(gam_full, <span class="dv">0</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb32-3"><a></a>ax.set_xlabel(<span class="st">'Age'</span>)</span>
@@ -1404,7 +1404,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="3e5d6e81" class="cell" data-execution_count="29">
+<div id="b20d349c" class="cell" data-execution_count="29">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a></a>age_term <span class="op">=</span> gam_full.terms[<span class="dv">0</span>]</span>
 <span id="cb33-2"><a></a>age_term.lam <span class="op">=</span> approx_lam(Xgam, age_term, df<span class="op">=</span><span class="dv">4</span> <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb33-3"><a></a>year_term <span class="op">=</span> gam_full.terms[<span class="dv">1</span>]</span>
@@ -1412,7 +1412,7 @@
 <span id="cb33-5"><a></a>gam_full <span class="op">=</span> gam_full.fit(Xgam, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that updating <code>age_term.lam</code> updates <code>gam_full.terms[0]</code> in place.</p>
-<div id="5f180959" class="cell" data-execution_count="30">
+<div id="ea83d484" class="cell" data-execution_count="30">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb34-2"><a></a>plot_gam(gam_full,</span>
 <span id="cb34-3"><a></a>         <span class="dv">1</span>,</span>
@@ -1441,7 +1441,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="127f1350" class="cell" data-execution_count="31">
+<div id="a293703e" class="cell" data-execution_count="31">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb36-2"><a></a>ax <span class="op">=</span> plot_gam(gam_full, <span class="dv">2</span>)</span>
 <span id="cb36-3"><a></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
@@ -1468,7 +1468,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="b4e767c5" class="cell" data-execution_count="32">
+<div id="3286e7ff" class="cell" data-execution_count="32">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a></a>gam_0 <span class="op">=</span> LinearGAM(age_term <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
 <span id="cb37-2"><a></a>gam_0.fit(Xgam, y)</span>
 <span id="cb37-3"><a></a>gam_linear <span class="op">=</span> LinearGAM(age_term <span class="op">+</span></span>
@@ -1551,7 +1551,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="974c926c" class="cell" data-execution_count="33">
+<div id="e1d5f5d0" class="cell" data-execution_count="33">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a>gam_0 <span class="op">=</span> LinearGAM(year_term <span class="op">+</span></span>
 <span id="cb38-2"><a></a>                  f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
 <span id="cb38-3"><a></a>gam_linear <span class="op">=</span> LinearGAM(l_gam(<span class="dv">0</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
@@ -1633,7 +1633,7 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="e1009329" class="cell" data-execution_count="34">
+<div id="9b395f77" class="cell" data-execution_count="34">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a></a>gam_full.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>LinearGAM                                                                                                 
@@ -1663,7 +1663,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
          are typically lower than they should be, meaning that the tests reject the null too readily.</code></pre>
 </div>
 </div>
-<div id="7c4eeff0" class="cell" data-execution_count="35">
+<div id="cf55e487" class="cell" data-execution_count="35">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a></a>Yhat <span class="op">=</span> gam_full.predict(Xgam)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
@@ -1676,7 +1676,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="ac08faa4" class="cell" data-execution_count="36">
+<div id="a75d7e3d" class="cell" data-execution_count="36">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a></a>gam_logit <span class="op">=</span> LogisticGAM(age_term <span class="op">+</span></span>
 <span id="cb42-2"><a></a>                        l_gam(<span class="dv">1</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
 <span id="cb42-3"><a></a>                        f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
@@ -1687,7 +1687,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
    terms=s(0) + l(1) + f(2) + intercept, tol=0.0001, verbose=False)</code></pre>
 </div>
 </div>
-<div id="6b635708" class="cell" data-execution_count="37">
+<div id="fc9f8424" class="cell" data-execution_count="37">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb44-2"><a></a>ax <span class="op">=</span> plot_gam(gam_logit, <span class="dv">2</span>)</span>
 <span id="cb44-3"><a></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
@@ -1714,7 +1714,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="caf06d79" class="cell" data-execution_count="38">
+<div id="f729afeb" class="cell" data-execution_count="38">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a></a>pd.crosstab(Wage[<span class="st">'high_earn'</span>], Wage[<span class="st">'education'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <div class="cell-output cell-output-display" data-execution_count="38">
 <div>
@@ -1785,7 +1785,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="0e4c3d0e" class="cell" data-execution_count="39">
+<div id="90064db1" class="cell" data-execution_count="39">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a></a>only_hs <span class="op">=</span> Wage[<span class="st">'education'</span>] <span class="op">==</span> <span class="st">'1. &lt; HS Grad'</span></span>
 <span id="cb46-2"><a></a>Wage_ <span class="op">=</span> Wage.loc[<span class="op">~</span>only_hs]</span>
 <span id="cb46-3"><a></a>Xgam_ <span class="op">=</span> np.column_stack([Wage_[<span class="st">'age'</span>],</span>
@@ -1794,7 +1794,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
 <span id="cb46-6"><a></a>high_earn_ <span class="op">=</span> Wage_[<span class="st">'high_earn'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We subtract 1 from <code>cat.codes</code> to work around a <code>pygam</code> bug — the relabeling has no effect on the fit.</p>
-<div id="fe5b45e3" class="cell" data-execution_count="40">
+<div id="c883954d" class="cell" data-execution_count="40">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a></a>gam_logit_ <span class="op">=</span> LogisticGAM(age_term <span class="op">+</span></span>
 <span id="cb47-2"><a></a>                         year_term <span class="op">+</span></span>
 <span id="cb47-3"><a></a>                         f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
@@ -1805,7 +1805,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
    terms=s(0) + s(1) + f(2) + intercept, tol=0.0001, verbose=False)</code></pre>
 </div>
 </div>
-<div id="d30b4daf" class="cell" data-execution_count="41">
+<div id="f2affbb8" class="cell" data-execution_count="41">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb49-2"><a></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">2</span>)</span>
 <span id="cb49-3"><a></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
@@ -1821,7 +1821,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
 </div>
 </div>
 </div>
-<div id="d9c050bb" class="cell" data-execution_count="42">
+<div id="d7f8ba3b" class="cell" data-execution_count="42">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb50-2"><a></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">1</span>)</span>
 <span id="cb50-3"><a></a>ax.set_xlabel(<span class="st">'Year'</span>)</span>
@@ -1836,7 +1836,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
 </div>
 </div>
 </div>
-<div id="397e29a6" class="cell" data-execution_count="43">
+<div id="1c1c966c" class="cell" data-execution_count="43">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb51-2"><a></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">0</span>)</span>
 <span id="cb51-3"><a></a>ax.set_xlabel(<span class="st">'Age'</span>)</span>
@@ -1863,7 +1863,7 @@ WARNING: p-values calculated in this manner behave correctly for un-penalized mo
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-<div id="1d09fde6" class="cell" data-execution_count="44">
+<div id="9ad2024a" class="cell" data-execution_count="44">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a></a>lowess <span class="op">=</span> sm.nonparametric.lowess</span>
 <span id="cb52-2"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb52-3"><a></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
