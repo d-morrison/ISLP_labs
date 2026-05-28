@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Chapter 2 — Statistical Learning – ISLP Labs — Student Worksheet</title>
+<title>Chapter 3 — Linear Regression – ISLP Labs — Student Worksheet</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -224,13 +224,13 @@ window.Quarto = {
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="ch02-statistical-learning-slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="ch03-linear-regression-slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Chapter 2 — Statistical Learning</h1>
+<h1 class="title">Chapter 3 — Linear Regression</h1>
 <p class="subtitle lead">Introduction to Statistical Learning, 2nd ed.</p>
 </div>
 
@@ -259,306 +259,309 @@ window.Quarto = {
 <section id="what-we-will-cover" class="level2">
 <h2 class="anchored" data-anchor-id="what-we-will-cover">What we will cover</h2>
 <ul>
-<li>What is statistical learning?</li>
-<li>Why and how do we estimate <span class="math inline">\(f\)</span>?</li>
-<li>Trade-offs: prediction vs.&nbsp;inference, flexibility vs.&nbsp;interpretability</li>
-<li>Measuring model accuracy: MSE, bias-variance decomposition</li>
-<li>The classification setting: Bayes classifier, KNN</li>
+<li>Simple linear regression: one predictor, point and interval estimates</li>
+<li>Multiple linear regression: many predictors at once, the F-statistic</li>
+<li>Qualitative predictors via dummy encoding</li>
+<li>Two useful extensions: interactions and polynomial terms</li>
+<li>Diagnosing problems: non-linearity, non-constant variance, collinearity, outliers, leverage</li>
+<li>Linear regression vs.&nbsp;KNN regression</li>
 </ul>
 </section>
-<section id="data-sets-used-in-this-chapter" class="level2">
-<h2 class="anchored" data-anchor-id="data-sets-used-in-this-chapter">Data sets used in this chapter</h2>
+<section id="a-motivating-data-set" class="level2">
+<h2 class="anchored" data-anchor-id="a-motivating-data-set">A motivating data set</h2>
+<p>The <code>Advertising</code> data set records sales of a single product (units in thousands) alongside three media-spend predictors (in thousands of dollars). We’ll use it to make every concept concrete.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP <span class="im">import</span> load_data</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Wage <span class="op">=</span> load_data(<span class="st">'Wage'</span>)</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Smarket <span class="op">=</span> load_data(<span class="st">'Smarket'</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>NCI60 <span class="op">=</span> load_data(<span class="st">'NCI60'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>ad <span class="op">=</span> pd.read_csv(</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"https://www.statlearning.com/s/Advertising.csv"</span>,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    index_col<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>ad.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR2)</span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Wage, Smarket, NCI60 are loaded automatically</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Wage)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>ad <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://www.statlearning.com/s/Advertising.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(ad)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </section>
 </section>
-<section id="what-is-statistical-learning" class="level1">
-<h1>What Is Statistical Learning?</h1>
-<section id="three-motivating-examples" class="level2">
-<h2 class="anchored" data-anchor-id="three-motivating-examples">Three motivating examples</h2>
-<table class="caption-top table">
-<colgroup>
-<col style="width: 25%">
-<col style="width: 28%">
-<col style="width: 30%">
-<col style="width: 15%">
-</colgroup>
-<thead>
-<tr class="header">
-<th>Data set</th>
-<th>Input <span class="math inline">\(X\)</span></th>
-<th>Output <span class="math inline">\(Y\)</span></th>
-<th>Goal</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Wage</td>
-<td>age, year, education</td>
-<td>wage</td>
-<td>predict / understand wage drivers</td>
-</tr>
-<tr class="even">
-<td>Stock market</td>
-<td>yesterday’s returns, volume</td>
-<td>up / down</td>
-<td>classify tomorrow’s direction</td>
-</tr>
-<tr class="odd">
-<td>NCI60 gene expression</td>
-<td>6,830 gene measurements</td>
-<td>cancer type</td>
-<td>group cancer types (unsupervised)</td>
-</tr>
-</tbody>
-</table>
+<section id="simple-linear-regression" class="level1">
+<h1>Simple Linear Regression</h1>
+<section id="the-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-model">The model</h2>
+<p>One quantitative predictor <span class="math inline">\(X\)</span>, one quantitative response <span class="math inline">\(Y\)</span>:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X + \varepsilon\]</span></p>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> — intercept (mean of <span class="math inline">\(Y\)</span> when <span class="math inline">\(X = 0\)</span>)</li>
+<li><span class="math inline">\(\beta_1\)</span> — slope (expected change in <span class="math inline">\(Y\)</span> per unit change in <span class="math inline">\(X\)</span>)</li>
+<li><span class="math inline">\(\varepsilon\)</span> — mean-zero error, independent of <span class="math inline">\(X\)</span>, often assumed <span class="math inline">\(N(0, \sigma^2)\)</span></li>
+</ul>
+<p>Goal: estimate <span class="math inline">\(\beta_0, \beta_1\)</span> from a sample and reason about their uncertainty.</p>
 </section>
-<section id="wages-vs.-age-year-education" class="level2">
-<h2 class="anchored" data-anchor-id="wages-vs.-age-year-education">Wages vs.&nbsp;age, year, education</h2>
+<section id="least-squares-estimation" class="level2">
+<h2 class="anchored" data-anchor-id="least-squares-estimation">Least squares estimation</h2>
+<p>Pick <span class="math inline">\((\hat\beta_0, \hat\beta_1)\)</span> to minimise the residual sum of squares:</p>
+<p><span class="math display">\[\text{RSS} = \sum_{i=1}^n \bigl(y_i - \hat\beta_0 - \hat\beta_1 x_i\bigr)^2\]</span></p>
+<p>Closed-form solutions:</p>
+<p><span class="math display">\[\hat\beta_1 = \frac{\sum (x_i - \bar x)(y_i - \bar y)}{\sum (x_i - \bar x)^2}, \qquad
+  \hat\beta_0 = \bar y - \hat\beta_1 \bar x\]</span></p>
+</section>
+<section id="fitting-sales-tv" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-sales-tv">Fitting <code>sales ~ TV</code></h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
-<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Wage.plot.scatter(<span class="st">'age'</span>,  <span class="st">'wage'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
-<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Wage.plot.scatter(<span class="st">'year'</span>, <span class="st">'wage'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
-<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>edu_levels <span class="op">=</span> Wage[<span class="st">'education'</span>].cat.categories</span>
-<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].boxplot(</span>
-<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>    [Wage.loc[Wage[<span class="st">'education'</span>] <span class="op">==</span> e, <span class="st">'wage'</span>] <span class="cf">for</span> e <span class="kw">in</span> edu_levels],</span>
-<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>    tick_labels<span class="op">=</span>edu_levels,  <span class="co"># matplotlib ≥3.9; was `labels=` before</span></span>
-<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].set_xlabel(<span class="st">'Education'</span>)<span class="op">;</span> axes[<span class="dv">2</span>].set_ylabel(<span class="st">'Wage'</span>)</span>
-<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].tick_params(axis<span class="op">=</span><span class="st">'x'</span>, rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fit_tv <span class="op">=</span> smf.ols(<span class="st">"sales ~ TV"</span>, data<span class="op">=</span>ad).fit()</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>fit_tv.params         <span class="co"># coefficient estimates</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>fit_tv.bse            <span class="co"># standard errors</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Wage<span class="sc">$</span>age,       Wage<span class="sc">$</span>wage, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">xlab =</span> <span class="st">"Age"</span>,       <span class="at">ylab =</span> <span class="st">"Wage"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Wage<span class="sc">$</span>year,      Wage<span class="sc">$</span>wage, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">xlab =</span> <span class="st">"Year"</span>,      <span class="at">ylab =</span> <span class="st">"Wage"</span>)</span>
-<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Wage<span class="sc">$</span>education, Wage<span class="sc">$</span>wage, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">xlab =</span> <span class="st">"Education"</span>, <span class="at">ylab =</span> <span class="st">"Wage"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fit_tv <span class="ot">&lt;-</span> <span class="fu">lm</span>(sales <span class="sc">~</span> TV, <span class="at">data =</span> ad)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_tv)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_tv)<span class="sc">$</span>coefficients[, <span class="st">"Std. Error"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </section>
-<section id="the-general-setup" class="level2">
-<h2 class="anchored" data-anchor-id="the-general-setup">The general setup</h2>
-<p>We observe a response <span class="math inline">\(Y\)</span> and <span class="math inline">\(p\)</span> predictors <span class="math inline">\(X = (X_1, \ldots, X_p)\)</span>.</p>
-<p>We assume:</p>
-<p><span class="math display">\[Y = f(X) + \varepsilon\]</span></p>
-<ul>
-<li><span class="math inline">\(f\)</span> is a fixed but unknown function of <span class="math inline">\(X_1, \ldots, X_p\)</span></li>
-<li><span class="math inline">\(\varepsilon\)</span> is a random error term, independent of <span class="math inline">\(X\)</span>, with <span class="math inline">\(E[\varepsilon] = 0\)</span></li>
-</ul>
-<p>Statistical learning is a collection of approaches for estimating <span class="math inline">\(f\)</span>.</p>
+<section id="uncertainty-in-the-coefficients" class="level2">
+<h2 class="anchored" data-anchor-id="uncertainty-in-the-coefficients">Uncertainty in the coefficients</h2>
+<p>Each <span class="math inline">\(\hat\beta_j\)</span> is a random variable. Its standard error decreases with sample size and with predictor spread; it increases with residual variance:</p>
+<p><span class="math display">\[\widehat{\text{SE}}(\hat\beta_1) = \sqrt{\dfrac{\hat\sigma^2}{\sum (x_i - \bar x)^2}},\qquad
+  \hat\sigma^2 = \frac{\text{RSS}}{n - 2}\]</span></p>
+<p>The <span class="math inline">\((1 - \alpha)\)</span> confidence interval is</p>
+<p><span class="math display">\[\hat\beta_1 \pm t_{n-2, \, 1 - \alpha/2} \cdot \widehat{\text{SE}}(\hat\beta_1).\]</span></p>
 </section>
-<section id="prediction-vs.-inference" class="level2">
-<h2 class="anchored" data-anchor-id="prediction-vs.-inference">Prediction vs.&nbsp;inference</h2>
-<p><strong>Prediction</strong> — we treat <span class="math inline">\(f\)</span> as a black box.</p>
-<p><span class="math display">\[\hat{Y} = \hat{f}(X)\]</span></p>
-<p>We care about accuracy, not the form of <span class="math inline">\(\hat{f}\)</span>.</p>
-<p><strong>Inference</strong> — we want to understand how <span class="math inline">\(Y\)</span> changes with <span class="math inline">\(X\)</span>.</p>
-<ul>
-<li>Which predictors are associated with the response?</li>
-<li>What is the direction and magnitude of each association?</li>
-<li>Can the relationship be summarised as linear, or is it more complex?</li>
-</ul>
-</section>
-</section>
-<section id="estimating-f" class="level1">
-<h1>Estimating <span class="math inline">\(f\)</span></h1>
-<section id="parametric-methods" class="level2">
-<h2 class="anchored" data-anchor-id="parametric-methods">Parametric methods</h2>
-<ol type="1">
-<li>Assume a functional form for <span class="math inline">\(f\)</span>, e.g., the linear model: <span class="math display">\[f(X) = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p\]</span></li>
-<li>Use training data to fit (estimate) the parameters <span class="math inline">\(\beta_0, \ldots, \beta_p\)</span>.</li>
-</ol>
+<section id="testing-for-no-association" class="level2">
+<h2 class="anchored" data-anchor-id="testing-for-no-association">Testing for no association</h2>
+<p>Under <span class="math inline">\(H_0:\beta_1 = 0\)</span>, the studentised slope follows a <span class="math inline">\(t_{n-2}\)</span> distribution:</p>
+<p><span class="math display">\[t = \frac{\hat\beta_1}{\widehat{\text{SE}}(\hat\beta_1)} \;\sim\; t_{n-2}\]</span></p>
+<p>A small <span class="math inline">\(p\)</span>-value is evidence that <code>TV</code> spend and <code>sales</code> are associated.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
-<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.get_dummies(Wage[[<span class="st">'age'</span>, <span class="st">'year'</span>, <span class="st">'education'</span>]], drop_first<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> Wage[<span class="st">'wage'</span>]</span>
-<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> LinearRegression().fit(X, y)</span>
-<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lm.coef_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fit_tv.summary().tables[<span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> age <span class="sc">+</span> year <span class="sc">+</span> education, <span class="at">data =</span> Wage)</span>
-<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_tv)<span class="sc">$</span>coefficients</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </section>
-<section id="non-parametric-methods" class="level2">
-<h2 class="anchored" data-anchor-id="non-parametric-methods">Non-parametric methods</h2>
-<p>No explicit assumption about the form of <span class="math inline">\(f\)</span>; seek an estimate that fits the data points as closely as possible without being too rough or wiggly.</p>
-<p><strong>Advantage</strong> — can fit a wider range of shapes for <span class="math inline">\(f\)</span>.</p>
-<p><strong>Disadvantage</strong> — require many observations; harder to interpret.</p>
-</section>
-<section id="the-flexibilityinterpretability-trade-off" class="level2">
-<h2 class="anchored" data-anchor-id="the-flexibilityinterpretability-trade-off">The flexibility–interpretability trade-off</h2>
-<p>More flexible models can fit more complex <span class="math inline">\(f\)</span>, but are:</p>
-<ul>
-<li>harder to interpret (less useful for inference)</li>
-<li>more prone to <em>overfitting</em> (poor test performance)</li>
-</ul>
-<p>Less flexible models are more interpretable and often more accurate when the true <span class="math inline">\(f\)</span> is nearly linear.</p>
+<section id="goodness-of-fit" class="level2">
+<h2 class="anchored" data-anchor-id="goodness-of-fit">Goodness of fit</h2>
+<p><strong>Residual standard error</strong> measures typical deviation between <span class="math inline">\(Y\)</span> and <span class="math inline">\(\hat Y\)</span>:</p>
+<p><span class="math display">\[\text{RSE} = \sqrt{\text{RSS} / (n - 2)}\]</span></p>
+<p><strong><span class="math inline">\(R^2\)</span></strong> is the fraction of variability in <span class="math inline">\(Y\)</span> explained by the model:</p>
+<p><span class="math display">\[R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}, \qquad
+  \text{TSS} = \sum (y_i - \bar y)^2\]</span></p>
+<p>In simple linear regression <span class="math inline">\(R^2\)</span> equals the squared correlation <span class="math inline">\(\text{Cor}(X, Y)^2\)</span>.</p>
 </section>
 </section>
-<section id="assessing-model-accuracy" class="level1">
-<h1>Assessing Model Accuracy</h1>
-<section id="training-vs.-test-mse" class="level2">
-<h2 class="anchored" data-anchor-id="training-vs.-test-mse">Training vs.&nbsp;test MSE</h2>
-<p><strong>Training MSE</strong> — computed on data used to fit the model:</p>
-<p><span class="math display">\[\text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{f}(x_i))^2\]</span></p>
-<p>We really care about <strong>test MSE</strong> — how well does <span class="math inline">\(\hat{f}\)</span> predict <em>new</em> observations?</p>
+<section id="multiple-linear-regression" class="level1">
+<h1>Multiple Linear Regression</h1>
+<section id="the-general-model" class="level2">
+<h2 class="anchored" data-anchor-id="the-general-model">The general model</h2>
+<p>With <span class="math inline">\(p\)</span> predictors:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p + \varepsilon\]</span></p>
+<p>Coefficient <span class="math inline">\(\beta_j\)</span> is the expected change in <span class="math inline">\(Y\)</span> per unit change in <span class="math inline">\(X_j\)</span>, <strong>holding all other predictors fixed</strong>. That conditional-on-the-others interpretation is the whole reason to use a multiple regression rather than fitting each predictor alone.</p>
 </section>
-<section id="computing-test-mse-with-a-hold-out-set" class="level2">
-<h2 class="anchored" data-anchor-id="computing-test-mse-with-a-hold-out-set">Computing test MSE with a hold-out set</h2>
+<section id="fitting-sales-tv-radio-newspaper" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-sales-tv-radio-newspaper">Fitting <code>sales ~ TV + radio + newspaper</code></h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>lm.fit(X_train, y_train)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>mse_test <span class="op">=</span> mean_squared_error(y_test, lm.predict(X_test))</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test MSE: </span><span class="sc">{</span>mse_test<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fit_full <span class="op">=</span> smf.ols(<span class="st">"sales ~ TV + radio + newspaper"</span>, data<span class="op">=</span>ad).fit()</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>fit_full.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>train_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(Wage), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(Wage))</span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fit_train  <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> age <span class="sc">+</span> year <span class="sc">+</span> education, <span class="at">data =</span> Wage[train_idx, ])</span>
-<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pred_test  <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_train, Wage[<span class="sc">-</span>train_idx, ])</span>
-<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mse_test   <span class="ot">&lt;-</span> <span class="fu">mean</span>((Wage<span class="sc">$</span>wage[<span class="sc">-</span>train_idx] <span class="sc">-</span> pred_test)<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Test MSE:"</span>, mse_test, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fit_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(sales <span class="sc">~</span> TV <span class="sc">+</span> radio <span class="sc">+</span> newspaper, <span class="at">data =</span> ad)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </section>
-<section id="the-bias-variance-trade-off" class="level2">
-<h2 class="anchored" data-anchor-id="the-bias-variance-trade-off">The bias-variance trade-off</h2>
-<p>For any <span class="math inline">\(x_0\)</span> and any <span class="math inline">\(\hat{f}\)</span>:</p>
-<p><span class="math display">\[E\!\left[(y_0 - \hat{f}(x_0))^2\right]
-  = \underbrace{\operatorname{Var}(\hat{f}(x_0))}_{\text{variance}}
-  + \underbrace{\left[\operatorname{Bias}(\hat{f}(x_0))\right]^2}_{\text{bias}^2}
-  + \underbrace{\operatorname{Var}(\varepsilon)}_{\text{irreducible}}\]</span></p>
-<ul>
-<li><strong>Variance</strong> — how much <span class="math inline">\(\hat{f}\)</span> changes across different training sets</li>
-<li><strong>Bias</strong> — error from assuming a wrong functional form for <span class="math inline">\(f\)</span></li>
-<li><strong>Irreducible error</strong> — noise in <span class="math inline">\(Y\)</span>; cannot be reduced by any model</li>
-</ul>
+<section id="matrix-form" class="level2">
+<h2 class="anchored" data-anchor-id="matrix-form">Matrix form</h2>
+<p>Stack the <span class="math inline">\(p + 1\)</span> coefficients into <span class="math inline">\(\bm\beta\)</span>, the design matrix into <span class="math inline">\(\mathbf X\)</span> (with a column of ones for the intercept), and the responses into <span class="math inline">\(\mathbf y\)</span>:</p>
+<p><span class="math display">\[\mathbf y = \mathbf X \bm\beta + \bm\varepsilon\]</span></p>
+<p>The OLS estimator solves the normal equations <span class="math inline">\(\mathbf X^\top \mathbf X \, \hat{\bm\beta} = \mathbf X^\top \mathbf y\)</span>:</p>
+<p><span class="math display">\[\hat{\bm\beta} = (\mathbf X^\top \mathbf X)^{-1}\mathbf X^\top \mathbf y\]</span></p>
+<p>assuming <span class="math inline">\(\mathbf X^\top \mathbf X\)</span> is invertible (no perfect collinearity).</p>
 </section>
-<section id="bias-variance-in-practice" class="level2">
-<h2 class="anchored" data-anchor-id="bias-variance-in-practice">Bias-variance in practice</h2>
-<p>As model flexibility increases:</p>
-<table class="caption-top table">
-<thead>
-<tr class="header">
-<th></th>
-<th>Variance</th>
-<th>Bias</th>
-</tr>
-</thead>
-<tbody>
-<tr class="odd">
-<td>Very flexible</td>
-<td>High ↑</td>
-<td>Low ↓</td>
-</tr>
-<tr class="even">
-<td>Very inflexible</td>
-<td>Low ↓</td>
-<td>High ↑</td>
-</tr>
-</tbody>
-</table>
-<p>The test MSE is minimised at the <em>sweet spot</em> where variance and bias² together are smallest — the bias-variance trade-off.</p>
-</section>
-</section>
-<section id="the-classification-setting" class="level1">
-<h1>The Classification Setting</h1>
-<section id="error-rates" class="level2">
-<h2 class="anchored" data-anchor-id="error-rates">Error rates</h2>
-<p>The response <span class="math inline">\(Y\)</span> is now qualitative (a <em>class label</em>).</p>
-<p><strong>Training error rate</strong>:</p>
-<p><span class="math display">\[\frac{1}{n}\sum_{i=1}^{n} \mathbf{1}(y_i \neq \hat{y}_i)\]</span></p>
-<p>We care about the <strong>test error rate</strong>: how often does the classifier misclassify a new observation?</p>
-</section>
-<section id="the-bayes-classifier" class="level2">
-<h2 class="anchored" data-anchor-id="the-bayes-classifier">The Bayes classifier</h2>
-<p>Assigns each observation to the most probable class given the predictor values:</p>
-<p><span class="math display">\[\hat{Y} = \arg\max_j \Pr(Y = j \mid X = x_0)\]</span></p>
-<p>The resulting <strong>Bayes error rate</strong> (analogous to irreducible error) is:</p>
-<p><span class="math display">\[1 - E\!\left[\max_j \Pr(Y = j \mid X)\right]\]</span></p>
-<p>In practice the true conditional probabilities <span class="math inline">\(\Pr(Y = j \mid X)\)</span> are unknown. KNN estimates them from data.</p>
-</section>
-<section id="k-nearest-neighbours" class="level2">
-<h2 class="anchored" data-anchor-id="k-nearest-neighbours">K-Nearest Neighbours</h2>
-<p>For a test point <span class="math inline">\(x_0\)</span>, identify the <span class="math inline">\(K\)</span> closest training observations <span class="math inline">\(\mathcal{N}_0\)</span> and estimate:</p>
-<p><span class="math display">\[\Pr(Y = j \mid X = x_0) = \frac{1}{K}\sum_{i \in \mathcal{N}_0}\mathbf{1}(y_i = j)\]</span></p>
+<section id="is-any-predictor-useful" class="level2">
+<h2 class="anchored" data-anchor-id="is-any-predictor-useful">Is <em>any</em> predictor useful?</h2>
+<p>Test <span class="math inline">\(H_0:\beta_1 = \cdots = \beta_p = 0\)</span> with the <strong>F-statistic</strong>:</p>
+<p><span class="math display">\[F = \frac{(\text{TSS} - \text{RSS})/p}{\text{RSS}/(n - p - 1)} \;\sim\; F_{p, \, n - p - 1}\]</span></p>
+<p>A large <span class="math inline">\(F\)</span> (and small <span class="math inline">\(p\)</span>-value) says at least one predictor is associated with <span class="math inline">\(Y\)</span>. The individual <span class="math inline">\(t\)</span>-tests on each <span class="math inline">\(\hat\beta_j\)</span> then ask which ones.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
-<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: predict stock market direction with KNN (K = 3)</span></span>
-<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>X_smarket <span class="op">=</span> Smarket[[<span class="st">'Lag1'</span>, <span class="st">'Lag2'</span>]]</span>
-<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>y_smarket <span class="op">=</span> Smarket[<span class="st">'Direction'</span>]</span>
-<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(</span>
-<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    X_smarket, y_smarket, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">3</span>).fit(X_tr, y_tr)</span>
-<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test accuracy:"</span>, knn.score(X_te, y_te).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(fit_full.summary().tables[<span class="dv">0</span>])    <span class="co"># F-statistic + p-value</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(class)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>train_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(Smarket), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(Smarket))</span>
-<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>knn_pred <span class="ot">&lt;-</span> <span class="fu">knn</span>(</span>
-<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">train =</span> Smarket[train_idx,  <span class="fu">c</span>(<span class="st">"Lag1"</span>, <span class="st">"Lag2"</span>)],</span>
-<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">test  =</span> Smarket[<span class="sc">-</span>train_idx, <span class="fu">c</span>(<span class="st">"Lag1"</span>, <span class="st">"Lag2"</span>)],</span>
-<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">cl    =</span> Smarket<span class="sc">$</span>Direction[train_idx],</span>
-<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">k     =</span> <span class="dv">3</span></span>
-<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>)</span>
-<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(knn_pred <span class="sc">==</span> Smarket<span class="sc">$</span>Direction[<span class="sc">-</span>train_idx])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_full)<span class="sc">$</span>fstatistic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
 </section>
-<section id="knn-the-role-of-k" class="level2">
-<h2 class="anchored" data-anchor-id="knn-the-role-of-k">KNN: the role of <span class="math inline">\(K\)</span></h2>
+<section id="selecting-which-predictors-to-include" class="level2">
+<h2 class="anchored" data-anchor-id="selecting-which-predictors-to-include">Selecting which predictors to include</h2>
+<p>With <span class="math inline">\(p\)</span> candidates there are <span class="math inline">\(2^p\)</span> subsets — too many to try when <span class="math inline">\(p\)</span> grows. Practical strategies for small to moderate <span class="math inline">\(p\)</span>:</p>
 <ul>
-<li><strong>Small <span class="math inline">\(K\)</span></strong> (e.g., <span class="math inline">\(K = 1\)</span>) — very flexible; low bias, high variance (overfit)</li>
-<li><strong>Large <span class="math inline">\(K\)</span></strong> (e.g., <span class="math inline">\(K = n\)</span>) — inflexible; high bias, low variance (underfit)</li>
-<li><strong>Optimal <span class="math inline">\(K\)</span></strong> — minimises test error; found by cross-validation (Chapter 5)</li>
+<li><strong>Forward selection</strong> — start empty, add the predictor that most reduces RSS, repeat.</li>
+<li><strong>Backward selection</strong> — start with all, drop the predictor with the largest <span class="math inline">\(p\)</span>-value, repeat.</li>
+<li><strong>Mixed / stepwise</strong> — alternate forward and backward steps.</li>
 </ul>
-<p>KNN illustrates the bias-variance trade-off in the classification setting just as smoothing splines do in regression.</p>
+<p>For large <span class="math inline">\(p\)</span>, use the shrinkage and dimension-reduction methods of Chapter 6 (ridge, lasso, PCR, PLS) instead.</p>
+</section>
+</section>
+<section id="qualitative-predictors" class="level1">
+<h1>Qualitative Predictors</h1>
+<section id="two-level-factor" class="level2">
+<h2 class="anchored" data-anchor-id="two-level-factor">Two-level factor</h2>
+<p>For a binary predictor (e.g., own/rent) use one dummy:</p>
+<p><span class="math display">\[x_i = \begin{cases} 1 &amp; \text{own} \\ 0 &amp; \text{rent} \end{cases}\]</span></p>
+<p>so <span class="math inline">\(\beta_0\)</span> is the rent-group mean and <span class="math inline">\(\beta_0 + \beta_1\)</span> is the own-group mean. The choice of reference level affects the <em>sign</em> of <span class="math inline">\(\hat\beta_1\)</span> but not its <span class="math inline">\(p\)</span>-value or the fitted values.</p>
+</section>
+<section id="three-or-more-level-factor" class="level2">
+<h2 class="anchored" data-anchor-id="three-or-more-level-factor">Three-or-more-level factor</h2>
+<p>For a factor with <span class="math inline">\(k\)</span> levels create <span class="math inline">\(k - 1\)</span> dummies, leaving one as the reference. Each coefficient is the contrast against that baseline.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>credit <span class="op">=</span> pd.read_csv(<span class="st">"https://www.statlearning.com/s/Credit.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fit_eth <span class="op">=</span> smf.ols(<span class="st">"Balance ~ C(Ethnicity)"</span>, data<span class="op">=</span>credit).fit()</span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>fit_eth.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>credit <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://www.statlearning.com/s/Credit.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>fit_eth <span class="ot">&lt;-</span> <span class="fu">lm</span>(Balance <span class="sc">~</span> Ethnicity, <span class="at">data =</span> credit)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_eth)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="extensions-of-the-linear-model" class="level1">
+<h1>Extensions of the Linear Model</h1>
+<section id="interactions" class="level2">
+<h2 class="anchored" data-anchor-id="interactions">Interactions</h2>
+<p>If the effect of <span class="math inline">\(X_1\)</span> on <span class="math inline">\(Y\)</span> depends on the value of <span class="math inline">\(X_2\)</span>, add a product term:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2 + \varepsilon\]</span></p>
+<p>The conditional slope of <span class="math inline">\(Y\)</span> in <span class="math inline">\(X_1\)</span> becomes <span class="math inline">\(\beta_1 + \beta_3 X_2\)</span> — it shifts with <span class="math inline">\(X_2\)</span>. <em>Hierarchy principle</em>: keep the main effects whenever an interaction is in the model, even if their individual <span class="math inline">\(p\)</span>-values are large.</p>
+</section>
+<section id="fitting-an-interaction" class="level2">
+<h2 class="anchored" data-anchor-id="fitting-an-interaction">Fitting an interaction</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-7-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-1" role="tab" aria-controls="tabset-7-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-7-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-7-2" role="tab" aria-controls="tabset-7-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-7-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fit_int <span class="op">=</span> smf.ols(<span class="st">"sales ~ TV * radio"</span>, data<span class="op">=</span>ad).fit()</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fit_int.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-7-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-7-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>fit_int <span class="ot">&lt;-</span> <span class="fu">lm</span>(sales <span class="sc">~</span> TV <span class="sc">*</span> radio, <span class="at">data =</span> ad)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_int)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>In both languages <code>TV * radio</code> expands to <code>TV + radio + TV:radio</code>.</p>
+</section>
+<section id="polynomial-regression" class="level2">
+<h2 class="anchored" data-anchor-id="polynomial-regression">Polynomial regression</h2>
+<p>A simple way to fit a non-linear function of one predictor is to add powers of it:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \cdots + \beta_d X^d + \varepsilon\]</span></p>
+<p>This is still <em>linear in the parameters</em>, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)</p>
+</section>
+</section>
+<section id="diagnosing-problems" class="level1">
+<h1>Diagnosing Problems</h1>
+<section id="non-linearity-of-the-responsepredictor-relationship" class="level2">
+<h2 class="anchored" data-anchor-id="non-linearity-of-the-responsepredictor-relationship">1. Non-linearity of the response–predictor relationship</h2>
+<p>The straight-line assumption is wrong when a residuals-vs-fitted plot shows a systematic curve. Fixes: transform a predictor (log, square root), add a polynomial term, or move to a non-linear method.</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(fit_full.fittedvalues, fit_full.resid, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, ls<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Fitted value"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Residual"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit_full, <span class="at">which =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="non-constant-variance-heteroscedasticity" class="level2">
+<h2 class="anchored" data-anchor-id="non-constant-variance-heteroscedasticity">2. Non-constant variance (heteroscedasticity)</h2>
+<p>If the residual spread grows or shrinks with the fitted value, OLS standard errors are wrong (typically too small). Common remedies: log-transform <span class="math inline">\(Y\)</span>, use weighted least squares, or use a sandwich (HC) standard-error estimator.</p>
+</section>
+<section id="correlation-of-error-terms" class="level2">
+<h2 class="anchored" data-anchor-id="correlation-of-error-terms">3. Correlation of error terms</h2>
+<p>Time-ordered or clustered data often have correlated residuals (today’s error predicts tomorrow’s). Confidence intervals shrink artificially. Address with specific models for autocorrelation (e.g.&nbsp;ARIMA, GLS with an AR(1) structure) or with cluster-robust standard errors.</p>
+</section>
+<section id="outliers" class="level2">
+<h2 class="anchored" data-anchor-id="outliers">4. Outliers</h2>
+<p>An <em>outlier</em> has a large standardised residual — <span class="math inline">\(|r_i| &gt; 3\)</span> is a common flag. Outliers inflate the RSE (and hence shrink <span class="math inline">\(R^2\)</span>). Investigate before deleting: a data-entry error is genuine cleanup, a real observation is data.</p>
+</section>
+<section id="high-leverage-observations" class="level2">
+<h2 class="anchored" data-anchor-id="high-leverage-observations">5. High-leverage observations</h2>
+<p>A <em>high-leverage</em> point has an extreme combination of predictor values (<span class="math inline">\(X\)</span>-space outlier). Influence on the fit grows with the <em>leverage</em></p>
+<p><span class="math display">\[h_i = \mathbf x_i^\top (\mathbf X^\top \mathbf X)^{-1} \mathbf x_i,
+  \qquad 0 \le h_i \le 1, \quad \bar h = (p + 1)/n.\]</span></p>
+<p>Values much larger than <span class="math inline">\(\bar h\)</span> deserve a closer look.</p>
+</section>
+<section id="collinearity" class="level2">
+<h2 class="anchored" data-anchor-id="collinearity">6. Collinearity</h2>
+<p>When two (or more) predictors carry nearly the same information, <span class="math inline">\(\mathbf X^\top \mathbf X\)</span> becomes ill-conditioned: coefficients flip sign, standard errors explode, and individual <span class="math inline">\(t\)</span>-tests become uninformative.</p>
+<p>The <strong>variance inflation factor</strong></p>
+<p><span class="math display">\[\text{VIF}(\hat\beta_j) = \frac{1}{1 - R^2_{X_j \mid X_{-j}}}\]</span></p>
+<p>flags it; rule of thumb is to be wary of <span class="math inline">\(\text{VIF} &gt; 5\)</span> (or <span class="math inline">\(&gt; 10\)</span>).</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(credit[[<span class="st">"Limit"</span>, <span class="st">"Rating"</span>, <span class="st">"Age"</span>]])</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>[variance_inflation_factor(X.values, i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, X.shape[<span class="dv">1</span>])]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fit_credit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Balance <span class="sc">~</span> Limit <span class="sc">+</span> Rating <span class="sc">+</span> Age, <span class="at">data =</span> credit)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(fit_credit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="linear-regression-vs.-knn-regression" class="level1">
+<h1>Linear Regression vs.&nbsp;KNN Regression</h1>
+<section id="knn-regression-in-a-nutshell" class="level2">
+<h2 class="anchored" data-anchor-id="knn-regression-in-a-nutshell">KNN regression in a nutshell</h2>
+<p>For a test point <span class="math inline">\(x_0\)</span>, find the <span class="math inline">\(K\)</span> closest training points and average their <span class="math inline">\(Y\)</span> values:</p>
+<p><span class="math display">\[\hat f(x_0) = \frac{1}{K} \sum_{i \in \mathcal N_0(x_0)} y_i\]</span></p>
+<p>Parametric (linear) vs.&nbsp;non-parametric (KNN) trade-off:</p>
+<ul>
+<li>If the true <span class="math inline">\(f\)</span> is nearly linear, linear regression wins — lower variance, no curse of dimensionality.</li>
+<li>If <span class="math inline">\(f\)</span> is strongly non-linear and <span class="math inline">\(n\)</span> is large, KNN can win — at the cost of much-reduced interpretability.</li>
+</ul>
+</section>
+<section id="the-curse-of-dimensionality" class="level2">
+<h2 class="anchored" data-anchor-id="the-curse-of-dimensionality">The curse of dimensionality</h2>
+<p>KNN’s nearest “neighbours” become far away once <span class="math inline">\(p\)</span> is large: in <span class="math inline">\(\mathbb R^p\)</span> the volume of a ball of radius <span class="math inline">\(r\)</span> shrinks relative to the volume of the predictor space, so to get <span class="math inline">\(K\)</span> truly local observations you need a sample size that grows exponentially in <span class="math inline">\(p\)</span>. Linear regression sidesteps the issue by imposing structure.</p>
 </section>
 </section>
 <section id="summary" class="level1">
@@ -566,19 +569,20 @@ window.Quarto = {
 <section id="key-takeaways" class="level2">
 <h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
 <ol type="1">
-<li>Statistical learning: estimating <span class="math inline">\(f\)</span> in <span class="math inline">\(Y = f(X) + \varepsilon\)</span>.</li>
-<li>Choice of method depends on the goal (prediction vs.&nbsp;inference) and the form of <span class="math inline">\(f\)</span>.</li>
-<li>More flexible models reduce bias but increase variance — there is no free lunch.</li>
-<li>We assess a model on <strong>test</strong> data, not training data.</li>
-<li>The Bayes classifier sets the lower bound on test error; KNN approximates it when the true conditional probabilities are unknown.</li>
+<li>Linear regression estimates <span class="math inline">\(\beta_0, \ldots, \beta_p\)</span> by minimising RSS, with closed-form solutions and an exact <span class="math inline">\(F\)</span>-distribution for the omnibus test under normal errors.</li>
+<li>Coefficient interpretation in multiple regression is <em>conditional on the other predictors</em> — not the same as the simple-regression slope.</li>
+<li>Qualitative predictors enter via <span class="math inline">\(k - 1\)</span> dummies against a reference level.</li>
+<li>Interactions and polynomial terms expand the model class while keeping OLS theory intact (linear in the parameters).</li>
+<li>Always inspect residual, leverage, and collinearity diagnostics before trusting the fit.</li>
+<li>Linear regression and KNN sit at opposite ends of the flexibility-interpretability trade-off; the right choice depends on <span class="math inline">\(n\)</span>, <span class="math inline">\(p\)</span>, and how non-linear <span class="math inline">\(f\)</span> is.</li>
 </ol>
 </section>
 <section id="whats-next" class="level2">
 <h2 class="anchored" data-anchor-id="whats-next">What’s next</h2>
 <ul>
-<li><strong>Chapter 3</strong>: Linear regression — the simplest parametric approach.</li>
-<li><strong>Chapter 4</strong>: Classification — logistic regression, LDA, QDA.</li>
-<li><strong>Chapter 5</strong>: Cross-validation and the bootstrap — how to properly estimate test error.</li>
+<li><strong>Chapter 4</strong> — Classification: logistic regression, LDA, QDA, naïve Bayes.</li>
+<li><strong>Chapter 5</strong> — Resampling: cross-validation and the bootstrap, used to honestly estimate test error and standard errors when the parametric formulas are not available.</li>
+<li><strong>Chapter 6</strong> — Selecting predictors when <span class="math inline">\(p\)</span> is large: subset selection, ridge, lasso, PCR, and PLS.</li>
 </ul>
 
 
@@ -1170,7 +1174,7 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
     </div>   
     <div class="nav-footer-center">
 <p>Lab content adapted from <a href="https://www.statlearning.com">statlearning.com</a> · Built with <a href="https://quarto.org">Quarto</a></p>
-<div class="toc-actions"><ul><li><a href="https://github.com/d-morrison/ISLP_labs/edit/stable/slides/ch02-statistical-learning.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/blob/stable/slides/ch02-statistical-learning.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
+<div class="toc-actions"><ul><li><a href="https://github.com/d-morrison/ISLP_labs/edit/stable/slides/ch03-linear-regression.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/blob/stable/slides/ch03-linear-regression.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>

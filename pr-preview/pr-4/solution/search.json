@@ -63,6 +63,650 @@
     "text": "How to add a new chapter deck\n\nCopy template.qmd to slides/ChNN-&lt;topic&gt;.qmd.\nUpdate the YAML title, subtitle, and revealjs.output-file: ChNN-&lt;topic&gt;-slides.html.\nReplace the template slides with chapter content (subject to the IP discussion in slides/index.qmd).\nAdd the deck to the navbar in the project root _quarto.yml."
   },
   {
+    "objectID": "slides/ch03-linear-regression.html",
+    "href": "slides/ch03-linear-regression.html",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "",
+    "text": "Simple linear regression: one predictor, point and interval estimates\nMultiple linear regression: many predictors at once, the F-statistic\nQualitative predictors via dummy encoding\nTwo useful extensions: interactions and polynomial terms\nDiagnosing problems: non-linearity, non-constant variance, collinearity, outliers, leverage\nLinear regression vs. KNN regression\n\n\n\n\nThe Advertising data set records sales of a single product (units in thousands) alongside three media-spend predictors (in thousands of dollars). We’ll use it to make every concept concrete.\n\nPythonR\n\n\nimport pandas as pd\nad = pd.read_csv(\n    \"https://www.statlearning.com/s/Advertising.csv\",\n    index_col=0,\n)\nad.head()\n\n\nad &lt;- read.csv(\"https://www.statlearning.com/s/Advertising.csv\")[, -1]\nhead(ad)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#what-we-will-cover",
+    "href": "slides/ch03-linear-regression.html#what-we-will-cover",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "",
+    "text": "Simple linear regression: one predictor, point and interval estimates\nMultiple linear regression: many predictors at once, the F-statistic\nQualitative predictors via dummy encoding\nTwo useful extensions: interactions and polynomial terms\nDiagnosing problems: non-linearity, non-constant variance, collinearity, outliers, leverage\nLinear regression vs. KNN regression"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#a-motivating-data-set",
+    "href": "slides/ch03-linear-regression.html#a-motivating-data-set",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "",
+    "text": "The Advertising data set records sales of a single product (units in thousands) alongside three media-spend predictors (in thousands of dollars). We’ll use it to make every concept concrete.\n\nPythonR\n\n\nimport pandas as pd\nad = pd.read_csv(\n    \"https://www.statlearning.com/s/Advertising.csv\",\n    index_col=0,\n)\nad.head()\n\n\nad &lt;- read.csv(\"https://www.statlearning.com/s/Advertising.csv\")[, -1]\nhead(ad)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#the-model",
+    "href": "slides/ch03-linear-regression.html#the-model",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "The model",
+    "text": "The model\nOne quantitative predictor \\(X\\), one quantitative response \\(Y\\):\n\\[Y = \\beta_0 + \\beta_1 X + \\varepsilon\\]\n\n\\(\\beta_0\\) — intercept (mean of \\(Y\\) when \\(X = 0\\))\n\\(\\beta_1\\) — slope (expected change in \\(Y\\) per unit change in \\(X\\))\n\\(\\varepsilon\\) — mean-zero error, independent of \\(X\\), often assumed \\(N(0, \\sigma^2)\\)\n\nGoal: estimate \\(\\beta_0, \\beta_1\\) from a sample and reason about their uncertainty."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#least-squares-estimation",
+    "href": "slides/ch03-linear-regression.html#least-squares-estimation",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Least squares estimation",
+    "text": "Least squares estimation\nPick \\((\\hat\\beta_0, \\hat\\beta_1)\\) to minimise the residual sum of squares:\n\\[\\text{RSS} = \\sum_{i=1}^n \\bigl(y_i - \\hat\\beta_0 - \\hat\\beta_1 x_i\\bigr)^2\\]\nClosed-form solutions:\n\\[\\hat\\beta_1 = \\frac{\\sum (x_i - \\bar x)(y_i - \\bar y)}{\\sum (x_i - \\bar x)^2}, \\qquad\n  \\hat\\beta_0 = \\bar y - \\hat\\beta_1 \\bar x\\]"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#fitting-sales-tv",
+    "href": "slides/ch03-linear-regression.html#fitting-sales-tv",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Fitting sales ~ TV",
+    "text": "Fitting sales ~ TV\n\nPythonR\n\n\nimport statsmodels.formula.api as smf\nfit_tv = smf.ols(\"sales ~ TV\", data=ad).fit()\nfit_tv.params         # coefficient estimates\nfit_tv.bse            # standard errors\n\n\nfit_tv &lt;- lm(sales ~ TV, data = ad)\ncoef(fit_tv)\nsummary(fit_tv)$coefficients[, \"Std. Error\"]"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#uncertainty-in-the-coefficients",
+    "href": "slides/ch03-linear-regression.html#uncertainty-in-the-coefficients",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Uncertainty in the coefficients",
+    "text": "Uncertainty in the coefficients\nEach \\(\\hat\\beta_j\\) is a random variable. Its standard error decreases with sample size and with predictor spread; it increases with residual variance:\n\\[\\widehat{\\text{SE}}(\\hat\\beta_1) = \\sqrt{\\dfrac{\\hat\\sigma^2}{\\sum (x_i - \\bar x)^2}},\\qquad\n  \\hat\\sigma^2 = \\frac{\\text{RSS}}{n - 2}\\]\nThe \\((1 - \\alpha)\\) confidence interval is\n\\[\\hat\\beta_1 \\pm t_{n-2, \\, 1 - \\alpha/2} \\cdot \\widehat{\\text{SE}}(\\hat\\beta_1).\\]"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#testing-for-no-association",
+    "href": "slides/ch03-linear-regression.html#testing-for-no-association",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Testing for no association",
+    "text": "Testing for no association\nUnder \\(H_0:\\beta_1 = 0\\), the studentised slope follows a \\(t_{n-2}\\) distribution:\n\\[t = \\frac{\\hat\\beta_1}{\\widehat{\\text{SE}}(\\hat\\beta_1)} \\;\\sim\\; t_{n-2}\\]\nA small \\(p\\)-value is evidence that TV spend and sales are associated.\n\nPythonR\n\n\nprint(fit_tv.summary().tables[1])\n\n\nsummary(fit_tv)$coefficients"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#goodness-of-fit",
+    "href": "slides/ch03-linear-regression.html#goodness-of-fit",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Goodness of fit",
+    "text": "Goodness of fit\nResidual standard error measures typical deviation between \\(Y\\) and \\(\\hat Y\\):\n\\[\\text{RSE} = \\sqrt{\\text{RSS} / (n - 2)}\\]\n\\(R^2\\) is the fraction of variability in \\(Y\\) explained by the model:\n\\[R^2 = 1 - \\frac{\\text{RSS}}{\\text{TSS}}, \\qquad\n  \\text{TSS} = \\sum (y_i - \\bar y)^2\\]\nIn simple linear regression \\(R^2\\) equals the squared correlation \\(\\text{Cor}(X, Y)^2\\)."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#the-general-model",
+    "href": "slides/ch03-linear-regression.html#the-general-model",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "The general model",
+    "text": "The general model\nWith \\(p\\) predictors:\n\\[Y = \\beta_0 + \\beta_1 X_1 + \\beta_2 X_2 + \\cdots + \\beta_p X_p + \\varepsilon\\]\nCoefficient \\(\\beta_j\\) is the expected change in \\(Y\\) per unit change in \\(X_j\\), holding all other predictors fixed. That conditional-on-the-others interpretation is the whole reason to use a multiple regression rather than fitting each predictor alone."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#fitting-sales-tv-radio-newspaper",
+    "href": "slides/ch03-linear-regression.html#fitting-sales-tv-radio-newspaper",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Fitting sales ~ TV + radio + newspaper",
+    "text": "Fitting sales ~ TV + radio + newspaper\n\nPythonR\n\n\nfit_full = smf.ols(\"sales ~ TV + radio + newspaper\", data=ad).fit()\nfit_full.params\n\n\nfit_full &lt;- lm(sales ~ TV + radio + newspaper, data = ad)\ncoef(fit_full)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#matrix-form",
+    "href": "slides/ch03-linear-regression.html#matrix-form",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Matrix form",
+    "text": "Matrix form\nStack the \\(p + 1\\) coefficients into \\(\\bm\\beta\\), the design matrix into \\(\\mathbf X\\) (with a column of ones for the intercept), and the responses into \\(\\mathbf y\\):\n\\[\\mathbf y = \\mathbf X \\bm\\beta + \\bm\\varepsilon\\]\nThe OLS estimator solves the normal equations \\(\\mathbf X^\\top \\mathbf X \\, \\hat{\\bm\\beta} = \\mathbf X^\\top \\mathbf y\\):\n\\[\\hat{\\bm\\beta} = (\\mathbf X^\\top \\mathbf X)^{-1}\\mathbf X^\\top \\mathbf y\\]\nassuming \\(\\mathbf X^\\top \\mathbf X\\) is invertible (no perfect collinearity)."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#is-any-predictor-useful",
+    "href": "slides/ch03-linear-regression.html#is-any-predictor-useful",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Is any predictor useful?",
+    "text": "Is any predictor useful?\nTest \\(H_0:\\beta_1 = \\cdots = \\beta_p = 0\\) with the F-statistic:\n\\[F = \\frac{(\\text{TSS} - \\text{RSS})/p}{\\text{RSS}/(n - p - 1)} \\;\\sim\\; F_{p, \\, n - p - 1}\\]\nA large \\(F\\) (and small \\(p\\)-value) says at least one predictor is associated with \\(Y\\). The individual \\(t\\)-tests on each \\(\\hat\\beta_j\\) then ask which ones.\n\nPythonR\n\n\nprint(fit_full.summary().tables[0])    # F-statistic + p-value\n\n\nsummary(fit_full)$fstatistic"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#selecting-which-predictors-to-include",
+    "href": "slides/ch03-linear-regression.html#selecting-which-predictors-to-include",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Selecting which predictors to include",
+    "text": "Selecting which predictors to include\nWith \\(p\\) candidates there are \\(2^p\\) subsets — too many to try when \\(p\\) grows. Practical strategies for small to moderate \\(p\\):\n\nForward selection — start empty, add the predictor that most reduces RSS, repeat.\nBackward selection — start with all, drop the predictor with the largest \\(p\\)-value, repeat.\nMixed / stepwise — alternate forward and backward steps.\n\nFor large \\(p\\), use the shrinkage and dimension-reduction methods of Chapter 6 (ridge, lasso, PCR, PLS) instead."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#two-level-factor",
+    "href": "slides/ch03-linear-regression.html#two-level-factor",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Two-level factor",
+    "text": "Two-level factor\nFor a binary predictor (e.g., own/rent) use one dummy:\n\\[x_i = \\begin{cases} 1 & \\text{own} \\\\ 0 & \\text{rent} \\end{cases}\\]\nso \\(\\beta_0\\) is the rent-group mean and \\(\\beta_0 + \\beta_1\\) is the own-group mean. The choice of reference level affects the sign of \\(\\hat\\beta_1\\) but not its \\(p\\)-value or the fitted values."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#three-or-more-level-factor",
+    "href": "slides/ch03-linear-regression.html#three-or-more-level-factor",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Three-or-more-level factor",
+    "text": "Three-or-more-level factor\nFor a factor with \\(k\\) levels create \\(k - 1\\) dummies, leaving one as the reference. Each coefficient is the contrast against that baseline.\n\nPythonR\n\n\nimport statsmodels.api as sm\ncredit = pd.read_csv(\"https://www.statlearning.com/s/Credit.csv\", index_col=0)\nfit_eth = smf.ols(\"Balance ~ C(Ethnicity)\", data=credit).fit()\nfit_eth.params\n\n\ncredit &lt;- read.csv(\"https://www.statlearning.com/s/Credit.csv\")[, -1]\nfit_eth &lt;- lm(Balance ~ Ethnicity, data = credit)\ncoef(fit_eth)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#interactions",
+    "href": "slides/ch03-linear-regression.html#interactions",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Interactions",
+    "text": "Interactions\nIf the effect of \\(X_1\\) on \\(Y\\) depends on the value of \\(X_2\\), add a product term:\n\\[Y = \\beta_0 + \\beta_1 X_1 + \\beta_2 X_2 + \\beta_3 X_1 X_2 + \\varepsilon\\]\nThe conditional slope of \\(Y\\) in \\(X_1\\) becomes \\(\\beta_1 + \\beta_3 X_2\\) — it shifts with \\(X_2\\). Hierarchy principle: keep the main effects whenever an interaction is in the model, even if their individual \\(p\\)-values are large."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#fitting-an-interaction",
+    "href": "slides/ch03-linear-regression.html#fitting-an-interaction",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Fitting an interaction",
+    "text": "Fitting an interaction\n\nPythonR\n\n\nfit_int = smf.ols(\"sales ~ TV * radio\", data=ad).fit()\nfit_int.params\n\n\nfit_int &lt;- lm(sales ~ TV * radio, data = ad)\ncoef(fit_int)\n\n\n\nIn both languages TV * radio expands to TV + radio + TV:radio."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#polynomial-regression",
+    "href": "slides/ch03-linear-regression.html#polynomial-regression",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Polynomial regression",
+    "text": "Polynomial regression\nA simple way to fit a non-linear function of one predictor is to add powers of it:\n\\[Y = \\beta_0 + \\beta_1 X + \\beta_2 X^2 + \\cdots + \\beta_d X^d + \\varepsilon\\]\nThis is still linear in the parameters, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#non-linearity-of-the-responsepredictor-relationship",
+    "href": "slides/ch03-linear-regression.html#non-linearity-of-the-responsepredictor-relationship",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "1. Non-linearity of the response–predictor relationship",
+    "text": "1. Non-linearity of the response–predictor relationship\nThe straight-line assumption is wrong when a residuals-vs-fitted plot shows a systematic curve. Fixes: transform a predictor (log, square root), add a polynomial term, or move to a non-linear method.\n\nPythonR\n\n\nimport matplotlib.pyplot as plt\nplt.scatter(fit_full.fittedvalues, fit_full.resid, alpha=0.5)\nplt.axhline(0, ls=\"--\", lw=1)\nplt.xlabel(\"Fitted value\"); plt.ylabel(\"Residual\")\n\n\nplot(fit_full, which = 1)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#non-constant-variance-heteroscedasticity",
+    "href": "slides/ch03-linear-regression.html#non-constant-variance-heteroscedasticity",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "2. Non-constant variance (heteroscedasticity)",
+    "text": "2. Non-constant variance (heteroscedasticity)\nIf the residual spread grows or shrinks with the fitted value, OLS standard errors are wrong (typically too small). Common remedies: log-transform \\(Y\\), use weighted least squares, or use a sandwich (HC) standard-error estimator."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#correlation-of-error-terms",
+    "href": "slides/ch03-linear-regression.html#correlation-of-error-terms",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "3. Correlation of error terms",
+    "text": "3. Correlation of error terms\nTime-ordered or clustered data often have correlated residuals (today’s error predicts tomorrow’s). Confidence intervals shrink artificially. Address with specific models for autocorrelation (e.g. ARIMA, GLS with an AR(1) structure) or with cluster-robust standard errors."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#outliers",
+    "href": "slides/ch03-linear-regression.html#outliers",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "4. Outliers",
+    "text": "4. Outliers\nAn outlier has a large standardised residual — \\(|r_i| &gt; 3\\) is a common flag. Outliers inflate the RSE (and hence shrink \\(R^2\\)). Investigate before deleting: a data-entry error is genuine cleanup, a real observation is data."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#high-leverage-observations",
+    "href": "slides/ch03-linear-regression.html#high-leverage-observations",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "5. High-leverage observations",
+    "text": "5. High-leverage observations\nA high-leverage point has an extreme combination of predictor values (\\(X\\)-space outlier). Influence on the fit grows with the leverage\n\\[h_i = \\mathbf x_i^\\top (\\mathbf X^\\top \\mathbf X)^{-1} \\mathbf x_i,\n  \\qquad 0 \\le h_i \\le 1, \\quad \\bar h = (p + 1)/n.\\]\nValues much larger than \\(\\bar h\\) deserve a closer look."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#collinearity",
+    "href": "slides/ch03-linear-regression.html#collinearity",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "6. Collinearity",
+    "text": "6. Collinearity\nWhen two (or more) predictors carry nearly the same information, \\(\\mathbf X^\\top \\mathbf X\\) becomes ill-conditioned: coefficients flip sign, standard errors explode, and individual \\(t\\)-tests become uninformative.\nThe variance inflation factor\n\\[\\text{VIF}(\\hat\\beta_j) = \\frac{1}{1 - R^2_{X_j \\mid X_{-j}}}\\]\nflags it; rule of thumb is to be wary of \\(\\text{VIF} &gt; 5\\) (or \\(&gt; 10\\)).\n\nPythonR\n\n\nfrom statsmodels.stats.outliers_influence import variance_inflation_factor\nX = sm.add_constant(credit[[\"Limit\", \"Rating\", \"Age\"]])\n[variance_inflation_factor(X.values, i) for i in range(1, X.shape[1])]\n\n\nlibrary(car)\nfit_credit &lt;- lm(Balance ~ Limit + Rating + Age, data = credit)\nvif(fit_credit)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#knn-regression-in-a-nutshell",
+    "href": "slides/ch03-linear-regression.html#knn-regression-in-a-nutshell",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "KNN regression in a nutshell",
+    "text": "KNN regression in a nutshell\nFor a test point \\(x_0\\), find the \\(K\\) closest training points and average their \\(Y\\) values:\n\\[\\hat f(x_0) = \\frac{1}{K} \\sum_{i \\in \\mathcal N_0(x_0)} y_i\\]\nParametric (linear) vs. non-parametric (KNN) trade-off:\n\nIf the true \\(f\\) is nearly linear, linear regression wins — lower variance, no curse of dimensionality.\nIf \\(f\\) is strongly non-linear and \\(n\\) is large, KNN can win — at the cost of much-reduced interpretability."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#the-curse-of-dimensionality",
+    "href": "slides/ch03-linear-regression.html#the-curse-of-dimensionality",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "The curse of dimensionality",
+    "text": "The curse of dimensionality\nKNN’s nearest “neighbours” become far away once \\(p\\) is large: in \\(\\mathbb R^p\\) the volume of a ball of radius \\(r\\) shrinks relative to the volume of the predictor space, so to get \\(K\\) truly local observations you need a sample size that grows exponentially in \\(p\\). Linear regression sidesteps the issue by imposing structure."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#key-takeaways",
+    "href": "slides/ch03-linear-regression.html#key-takeaways",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Key takeaways",
+    "text": "Key takeaways\n\nLinear regression estimates \\(\\beta_0, \\ldots, \\beta_p\\) by minimising RSS, with closed-form solutions and an exact \\(F\\)-distribution for the omnibus test under normal errors.\nCoefficient interpretation in multiple regression is conditional on the other predictors — not the same as the simple-regression slope.\nQualitative predictors enter via \\(k - 1\\) dummies against a reference level.\nInteractions and polynomial terms expand the model class while keeping OLS theory intact (linear in the parameters).\nAlways inspect residual, leverage, and collinearity diagnostics before trusting the fit.\nLinear regression and KNN sit at opposite ends of the flexibility-interpretability trade-off; the right choice depends on \\(n\\), \\(p\\), and how non-linear \\(f\\) is."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression.html#whats-next",
+    "href": "slides/ch03-linear-regression.html#whats-next",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "What’s next",
+    "text": "What’s next\n\nChapter 4 — Classification: logistic regression, LDA, QDA, naïve Bayes.\nChapter 5 — Resampling: cross-validation and the bootstrap, used to honestly estimate test error and standard errors when the parametric formulas are not available.\nChapter 6 — Selecting predictors when \\(p\\) is large: subset selection, ridge, lasso, PCR, and PLS."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#what-we-will-cover",
+    "href": "slides/ch03-linear-regression-slides.html#what-we-will-cover",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "What we will cover",
+    "text": "What we will cover\n\nSimple linear regression: one predictor, point and interval estimates\nMultiple linear regression: many predictors at once, the F-statistic\nQualitative predictors via dummy encoding\nTwo useful extensions: interactions and polynomial terms\nDiagnosing problems: non-linearity, non-constant variance, collinearity, outliers, leverage\nLinear regression vs. KNN regression"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#a-motivating-data-set",
+    "href": "slides/ch03-linear-regression-slides.html#a-motivating-data-set",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "A motivating data set",
+    "text": "A motivating data set\nThe Advertising data set records sales of a single product (units in thousands) alongside three media-spend predictors (in thousands of dollars). We’ll use it to make every concept concrete.\n\nPythonR\n\n\nimport pandas as pd\nad = pd.read_csv(\n    \"https://www.statlearning.com/s/Advertising.csv\",\n    index_col=0,\n)\nad.head()\n\n\nad &lt;- read.csv(\"https://www.statlearning.com/s/Advertising.csv\")[, -1]\nhead(ad)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#the-model",
+    "href": "slides/ch03-linear-regression-slides.html#the-model",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "The model",
+    "text": "The model\nOne quantitative predictor \\(X\\), one quantitative response \\(Y\\):\n\\[Y = \\beta_0 + \\beta_1 X + \\varepsilon\\]\n\n\\(\\beta_0\\) — intercept (mean of \\(Y\\) when \\(X = 0\\))\n\\(\\beta_1\\) — slope (expected change in \\(Y\\) per unit change in \\(X\\))\n\\(\\varepsilon\\) — mean-zero error, independent of \\(X\\), often assumed \\(N(0, \\sigma^2)\\)\n\nGoal: estimate \\(\\beta_0, \\beta_1\\) from a sample and reason about their uncertainty."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#least-squares-estimation",
+    "href": "slides/ch03-linear-regression-slides.html#least-squares-estimation",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Least squares estimation",
+    "text": "Least squares estimation\nPick \\((\\hat\\beta_0, \\hat\\beta_1)\\) to minimise the residual sum of squares:\n\\[\\text{RSS} = \\sum_{i=1}^n \\bigl(y_i - \\hat\\beta_0 - \\hat\\beta_1 x_i\\bigr)^2\\]\nClosed-form solutions:\n\\[\\hat\\beta_1 = \\frac{\\sum (x_i - \\bar x)(y_i - \\bar y)}{\\sum (x_i - \\bar x)^2}, \\qquad\n  \\hat\\beta_0 = \\bar y - \\hat\\beta_1 \\bar x\\]"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#fitting-sales-tv",
+    "href": "slides/ch03-linear-regression-slides.html#fitting-sales-tv",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Fitting sales ~ TV",
+    "text": "Fitting sales ~ TV\n\nPythonR\n\n\nimport statsmodels.formula.api as smf\nfit_tv = smf.ols(\"sales ~ TV\", data=ad).fit()\nfit_tv.params         # coefficient estimates\nfit_tv.bse            # standard errors\n\n\nfit_tv &lt;- lm(sales ~ TV, data = ad)\ncoef(fit_tv)\nsummary(fit_tv)$coefficients[, \"Std. Error\"]"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#uncertainty-in-the-coefficients",
+    "href": "slides/ch03-linear-regression-slides.html#uncertainty-in-the-coefficients",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Uncertainty in the coefficients",
+    "text": "Uncertainty in the coefficients\nEach \\(\\hat\\beta_j\\) is a random variable. Its standard error decreases with sample size and with predictor spread; it increases with residual variance:\n\\[\\widehat{\\text{SE}}(\\hat\\beta_1) = \\sqrt{\\dfrac{\\hat\\sigma^2}{\\sum (x_i - \\bar x)^2}},\\qquad\n  \\hat\\sigma^2 = \\frac{\\text{RSS}}{n - 2}\\]\nThe \\((1 - \\alpha)\\) confidence interval is\n\\[\\hat\\beta_1 \\pm t_{n-2, \\, 1 - \\alpha/2} \\cdot \\widehat{\\text{SE}}(\\hat\\beta_1).\\]"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#testing-for-no-association",
+    "href": "slides/ch03-linear-regression-slides.html#testing-for-no-association",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Testing for no association",
+    "text": "Testing for no association\nUnder \\(H_0:\\beta_1 = 0\\), the studentised slope follows a \\(t_{n-2}\\) distribution:\n\\[t = \\frac{\\hat\\beta_1}{\\widehat{\\text{SE}}(\\hat\\beta_1)} \\;\\sim\\; t_{n-2}\\]\nA small \\(p\\)-value is evidence that TV spend and sales are associated.\n\nPythonR\n\n\nprint(fit_tv.summary().tables[1])\n\n\nsummary(fit_tv)$coefficients"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#goodness-of-fit",
+    "href": "slides/ch03-linear-regression-slides.html#goodness-of-fit",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Goodness of fit",
+    "text": "Goodness of fit\nResidual standard error measures typical deviation between \\(Y\\) and \\(\\hat Y\\):\n\\[\\text{RSE} = \\sqrt{\\text{RSS} / (n - 2)}\\]\n\\(R^2\\) is the fraction of variability in \\(Y\\) explained by the model:\n\\[R^2 = 1 - \\frac{\\text{RSS}}{\\text{TSS}}, \\qquad\n  \\text{TSS} = \\sum (y_i - \\bar y)^2\\]\nIn simple linear regression \\(R^2\\) equals the squared correlation \\(\\text{Cor}(X, Y)^2\\)."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#the-general-model",
+    "href": "slides/ch03-linear-regression-slides.html#the-general-model",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "The general model",
+    "text": "The general model\nWith \\(p\\) predictors:\n\\[Y = \\beta_0 + \\beta_1 X_1 + \\beta_2 X_2 + \\cdots + \\beta_p X_p + \\varepsilon\\]\nCoefficient \\(\\beta_j\\) is the expected change in \\(Y\\) per unit change in \\(X_j\\), holding all other predictors fixed. That conditional-on-the-others interpretation is the whole reason to use a multiple regression rather than fitting each predictor alone."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#fitting-sales-tv-radio-newspaper",
+    "href": "slides/ch03-linear-regression-slides.html#fitting-sales-tv-radio-newspaper",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Fitting sales ~ TV + radio + newspaper",
+    "text": "Fitting sales ~ TV + radio + newspaper\n\nPythonR\n\n\nfit_full = smf.ols(\"sales ~ TV + radio + newspaper\", data=ad).fit()\nfit_full.params\n\n\nfit_full &lt;- lm(sales ~ TV + radio + newspaper, data = ad)\ncoef(fit_full)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#matrix-form",
+    "href": "slides/ch03-linear-regression-slides.html#matrix-form",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Matrix form",
+    "text": "Matrix form\nStack the \\(p + 1\\) coefficients into \\(\\bm\\beta\\), the design matrix into \\(\\mathbf X\\) (with a column of ones for the intercept), and the responses into \\(\\mathbf y\\):\n\\[\\mathbf y = \\mathbf X \\bm\\beta + \\bm\\varepsilon\\]\nThe OLS estimator solves the normal equations \\(\\mathbf X^\\top \\mathbf X \\, \\hat{\\bm\\beta} = \\mathbf X^\\top \\mathbf y\\):\n\\[\\hat{\\bm\\beta} = (\\mathbf X^\\top \\mathbf X)^{-1}\\mathbf X^\\top \\mathbf y\\]\nassuming \\(\\mathbf X^\\top \\mathbf X\\) is invertible (no perfect collinearity)."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#is-any-predictor-useful",
+    "href": "slides/ch03-linear-regression-slides.html#is-any-predictor-useful",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Is any predictor useful?",
+    "text": "Is any predictor useful?\nTest \\(H_0:\\beta_1 = \\cdots = \\beta_p = 0\\) with the F-statistic:\n\\[F = \\frac{(\\text{TSS} - \\text{RSS})/p}{\\text{RSS}/(n - p - 1)} \\;\\sim\\; F_{p, \\, n - p - 1}\\]\nA large \\(F\\) (and small \\(p\\)-value) says at least one predictor is associated with \\(Y\\). The individual \\(t\\)-tests on each \\(\\hat\\beta_j\\) then ask which ones.\n\nPythonR\n\n\nprint(fit_full.summary().tables[0])    # F-statistic + p-value\n\n\nsummary(fit_full)$fstatistic"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#selecting-which-predictors-to-include",
+    "href": "slides/ch03-linear-regression-slides.html#selecting-which-predictors-to-include",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Selecting which predictors to include",
+    "text": "Selecting which predictors to include\nWith \\(p\\) candidates there are \\(2^p\\) subsets — too many to try when \\(p\\) grows. Practical strategies for small to moderate \\(p\\):\n\nForward selection — start empty, add the predictor that most reduces RSS, repeat.\nBackward selection — start with all, drop the predictor with the largest \\(p\\)-value, repeat.\nMixed / stepwise — alternate forward and backward steps.\n\nFor large \\(p\\), use the shrinkage and dimension-reduction methods of Chapter 6 (ridge, lasso, PCR, PLS) instead."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#two-level-factor",
+    "href": "slides/ch03-linear-regression-slides.html#two-level-factor",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Two-level factor",
+    "text": "Two-level factor\nFor a binary predictor (e.g., own/rent) use one dummy:\n\\[x_i = \\begin{cases} 1 & \\text{own} \\\\ 0 & \\text{rent} \\end{cases}\\]\nso \\(\\beta_0\\) is the rent-group mean and \\(\\beta_0 + \\beta_1\\) is the own-group mean. The choice of reference level affects the sign of \\(\\hat\\beta_1\\) but not its \\(p\\)-value or the fitted values."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#three-or-more-level-factor",
+    "href": "slides/ch03-linear-regression-slides.html#three-or-more-level-factor",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Three-or-more-level factor",
+    "text": "Three-or-more-level factor\nFor a factor with \\(k\\) levels create \\(k - 1\\) dummies, leaving one as the reference. Each coefficient is the contrast against that baseline.\n\nPythonR\n\n\nimport statsmodels.api as sm\ncredit = pd.read_csv(\"https://www.statlearning.com/s/Credit.csv\", index_col=0)\nfit_eth = smf.ols(\"Balance ~ C(Ethnicity)\", data=credit).fit()\nfit_eth.params\n\n\ncredit &lt;- read.csv(\"https://www.statlearning.com/s/Credit.csv\")[, -1]\nfit_eth &lt;- lm(Balance ~ Ethnicity, data = credit)\ncoef(fit_eth)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#interactions",
+    "href": "slides/ch03-linear-regression-slides.html#interactions",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Interactions",
+    "text": "Interactions\nIf the effect of \\(X_1\\) on \\(Y\\) depends on the value of \\(X_2\\), add a product term:\n\\[Y = \\beta_0 + \\beta_1 X_1 + \\beta_2 X_2 + \\beta_3 X_1 X_2 + \\varepsilon\\]\nThe conditional slope of \\(Y\\) in \\(X_1\\) becomes \\(\\beta_1 + \\beta_3 X_2\\) — it shifts with \\(X_2\\). Hierarchy principle: keep the main effects whenever an interaction is in the model, even if their individual \\(p\\)-values are large."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#fitting-an-interaction",
+    "href": "slides/ch03-linear-regression-slides.html#fitting-an-interaction",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Fitting an interaction",
+    "text": "Fitting an interaction\n\nPythonR\n\n\nfit_int = smf.ols(\"sales ~ TV * radio\", data=ad).fit()\nfit_int.params\n\n\nfit_int &lt;- lm(sales ~ TV * radio, data = ad)\ncoef(fit_int)\n\n\n\nIn both languages TV * radio expands to TV + radio + TV:radio."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#polynomial-regression",
+    "href": "slides/ch03-linear-regression-slides.html#polynomial-regression",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Polynomial regression",
+    "text": "Polynomial regression\nA simple way to fit a non-linear function of one predictor is to add powers of it:\n\\[Y = \\beta_0 + \\beta_1 X + \\beta_2 X^2 + \\cdots + \\beta_d X^d + \\varepsilon\\]\nThis is still linear in the parameters, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#non-linearity-of-the-responsepredictor-relationship",
+    "href": "slides/ch03-linear-regression-slides.html#non-linearity-of-the-responsepredictor-relationship",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "1. Non-linearity of the response–predictor relationship",
+    "text": "1. Non-linearity of the response–predictor relationship\nThe straight-line assumption is wrong when a residuals-vs-fitted plot shows a systematic curve. Fixes: transform a predictor (log, square root), add a polynomial term, or move to a non-linear method.\n\nPythonR\n\n\nimport matplotlib.pyplot as plt\nplt.scatter(fit_full.fittedvalues, fit_full.resid, alpha=0.5)\nplt.axhline(0, ls=\"--\", lw=1)\nplt.xlabel(\"Fitted value\"); plt.ylabel(\"Residual\")\n\n\nplot(fit_full, which = 1)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#non-constant-variance-heteroscedasticity",
+    "href": "slides/ch03-linear-regression-slides.html#non-constant-variance-heteroscedasticity",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "2. Non-constant variance (heteroscedasticity)",
+    "text": "2. Non-constant variance (heteroscedasticity)\nIf the residual spread grows or shrinks with the fitted value, OLS standard errors are wrong (typically too small). Common remedies: log-transform \\(Y\\), use weighted least squares, or use a sandwich (HC) standard-error estimator."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#correlation-of-error-terms",
+    "href": "slides/ch03-linear-regression-slides.html#correlation-of-error-terms",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "3. Correlation of error terms",
+    "text": "3. Correlation of error terms\nTime-ordered or clustered data often have correlated residuals (today’s error predicts tomorrow’s). Confidence intervals shrink artificially. Address with specific models for autocorrelation (e.g. ARIMA, GLS with an AR(1) structure) or with cluster-robust standard errors."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#outliers",
+    "href": "slides/ch03-linear-regression-slides.html#outliers",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "4. Outliers",
+    "text": "4. Outliers\nAn outlier has a large standardised residual — \\(|r_i| &gt; 3\\) is a common flag. Outliers inflate the RSE (and hence shrink \\(R^2\\)). Investigate before deleting: a data-entry error is genuine cleanup, a real observation is data."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#high-leverage-observations",
+    "href": "slides/ch03-linear-regression-slides.html#high-leverage-observations",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "5. High-leverage observations",
+    "text": "5. High-leverage observations\nA high-leverage point has an extreme combination of predictor values (\\(X\\)-space outlier). Influence on the fit grows with the leverage\n\\[h_i = \\mathbf x_i^\\top (\\mathbf X^\\top \\mathbf X)^{-1} \\mathbf x_i,\n  \\qquad 0 \\le h_i \\le 1, \\quad \\bar h = (p + 1)/n.\\]\nValues much larger than \\(\\bar h\\) deserve a closer look."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#collinearity",
+    "href": "slides/ch03-linear-regression-slides.html#collinearity",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "6. Collinearity",
+    "text": "6. Collinearity\nWhen two (or more) predictors carry nearly the same information, \\(\\mathbf X^\\top \\mathbf X\\) becomes ill-conditioned: coefficients flip sign, standard errors explode, and individual \\(t\\)-tests become uninformative.\nThe variance inflation factor\n\\[\\text{VIF}(\\hat\\beta_j) = \\frac{1}{1 - R^2_{X_j \\mid X_{-j}}}\\]\nflags it; rule of thumb is to be wary of \\(\\text{VIF} &gt; 5\\) (or \\(&gt; 10\\)).\n\nPythonR\n\n\nfrom statsmodels.stats.outliers_influence import variance_inflation_factor\nX = sm.add_constant(credit[[\"Limit\", \"Rating\", \"Age\"]])\n[variance_inflation_factor(X.values, i) for i in range(1, X.shape[1])]\n\n\nlibrary(car)\nfit_credit &lt;- lm(Balance ~ Limit + Rating + Age, data = credit)\nvif(fit_credit)"
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#knn-regression-in-a-nutshell",
+    "href": "slides/ch03-linear-regression-slides.html#knn-regression-in-a-nutshell",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "KNN regression in a nutshell",
+    "text": "KNN regression in a nutshell\nFor a test point \\(x_0\\), find the \\(K\\) closest training points and average their \\(Y\\) values:\n\\[\\hat f(x_0) = \\frac{1}{K} \\sum_{i \\in \\mathcal N_0(x_0)} y_i\\]\nParametric (linear) vs. non-parametric (KNN) trade-off:\n\nIf the true \\(f\\) is nearly linear, linear regression wins — lower variance, no curse of dimensionality.\nIf \\(f\\) is strongly non-linear and \\(n\\) is large, KNN can win — at the cost of much-reduced interpretability."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#the-curse-of-dimensionality",
+    "href": "slides/ch03-linear-regression-slides.html#the-curse-of-dimensionality",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "The curse of dimensionality",
+    "text": "The curse of dimensionality\nKNN’s nearest “neighbours” become far away once \\(p\\) is large: in \\(\\mathbb R^p\\) the volume of a ball of radius \\(r\\) shrinks relative to the volume of the predictor space, so to get \\(K\\) truly local observations you need a sample size that grows exponentially in \\(p\\). Linear regression sidesteps the issue by imposing structure."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#key-takeaways",
+    "href": "slides/ch03-linear-regression-slides.html#key-takeaways",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "Key takeaways",
+    "text": "Key takeaways\n\nLinear regression estimates \\(\\beta_0, \\ldots, \\beta_p\\) by minimising RSS, with closed-form solutions and an exact \\(F\\)-distribution for the omnibus test under normal errors.\nCoefficient interpretation in multiple regression is conditional on the other predictors — not the same as the simple-regression slope.\nQualitative predictors enter via \\(k - 1\\) dummies against a reference level.\nInteractions and polynomial terms expand the model class while keeping OLS theory intact (linear in the parameters).\nAlways inspect residual, leverage, and collinearity diagnostics before trusting the fit.\nLinear regression and KNN sit at opposite ends of the flexibility-interpretability trade-off; the right choice depends on \\(n\\), \\(p\\), and how non-linear \\(f\\) is."
+  },
+  {
+    "objectID": "slides/ch03-linear-regression-slides.html#whats-next",
+    "href": "slides/ch03-linear-regression-slides.html#whats-next",
+    "title": "Chapter 3 — Linear Regression",
+    "section": "What’s next",
+    "text": "What’s next\n\nChapter 4 — Classification: logistic regression, LDA, QDA, naïve Bayes.\nChapter 5 — Resampling: cross-validation and the bootstrap, used to honestly estimate test error and standard errors when the parametric formulas are not available.\nChapter 6 — Selecting predictors when \\(p\\) is large: subset selection, ridge, lasso, PCR, and PLS."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab.html",
+    "href": "Ch07-nonlin-lab.html",
+    "title": "Non-Linear Modeling",
+    "section": "",
+    "text": "This handout adapts the Chapter 7 Python lab from the Introduction to Statistical Learning with Applications in Python (ISLP) textbook, with permission from the source available at https://www.statlearning.com. The original lab is Ch07-nonlin-lab.Rmd in the intro-stat-learning/ISLP_labs repository.\nStudents who prefer R can work through the corresponding chapter of Emil Hvitfeldt’s ISLR tidymodels labs.\nIn this lab we demonstrate some of the nonlinear models discussed in this chapter. We use the Wage data as a running example, and show that many of the complex non-linear fitting procedures discussed can easily be implemented in Python."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab.html#setup",
+    "href": "Ch07-nonlin-lab.html#setup",
+    "title": "Non-Linear Modeling",
+    "section": "Setup",
+    "text": "Setup\nAs usual, we start with some of our standard imports.\n\nimport numpy as np, pandas as pd\nfrom matplotlib.pyplot import subplots\nimport statsmodels.api as sm\nfrom ISLP import load_data\nfrom ISLP.models import (summarize,\n                         poly,\n                         ModelSpec as MS)\nfrom statsmodels.stats.anova import anova_lm\n\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package.\n\nfrom pygam import (s as s_gam,\n                   l as l_gam,\n                   f as f_gam,\n                   LinearGAM,\n                   LogisticGAM)\n\nfrom ISLP.transforms import (BSpline,\n                             NaturalSpline)\nfrom ISLP.models import bs, ns\nfrom ISLP.pygam import (approx_lam,\n                        degrees_of_freedom,\n                        plot as plot_gam,\n                        anova as anova_gam)"
+  },
+  {
+    "objectID": "Ch07-nonlin-lab.html#polynomial-regression-and-step-functions",
+    "href": "Ch07-nonlin-lab.html#polynomial-regression-and-step-functions",
+    "title": "Non-Linear Modeling",
+    "section": "Polynomial Regression and Step Functions",
+    "text": "Polynomial Regression and Step Functions\nExercise 1. Load the Wage data with load_data('Wage'). Store the response (wage) as y and the predictor (age) as age.\nSolution.\n\nWage = load_data('Wage')\ny = Wage['wage']\nage = Wage['age']\n\nThroughout most of this lab, our response is Wage['wage'], which we have stored as y above.\nExercise 2. Use poly() inside MS() to build a 4th-degree polynomial in age, fit an OLS model of y on this basis, and print the coefficient summary.\nSolution.\n\npoly_age = MS([poly('age', degree=4)]).fit(Wage)\nM = sm.OLS(y, poly_age.transform(Wage)).fit()\nsummarize(M)\n\npoly() is a helper that sets up the transformation; Poly() is the workhorse that computes it. The first line above runs the fit() method on Wage, which stores any parameters needed by Poly() on the training data so that subsequent transform() calls (on new data, or inside the plotting function below) use the same basis.\nExercise 3. Build a grid age_grid of 100 evenly spaced values spanning the observed range of age, and wrap it in a single-column DataFrame named age_df.\nSolution.\n\nage_grid = np.linspace(age.min(),\n                       age.max(),\n                       100)\nage_df = pd.DataFrame({'age': age_grid})\n\nExercise 4. Write a function plot_wage_fit(age_df, basis, title) that fits OLS on the supplied basis, evaluates it on age_df, and plots the raw data with the fitted curve and its 95% confidence bands.\nSolution.\n\ndef plot_wage_fit(age_df,\n                  basis,\n                  title):\n\n    X = basis.transform(Wage)\n    Xnew = basis.transform(age_df)\n    M = sm.OLS(y, X).fit()\n    preds = M.get_prediction(Xnew)\n    bands = preds.conf_int(alpha=0.05)\n    fig, ax = subplots(figsize=(8, 8))\n    ax.scatter(age,\n               y,\n               facecolor='gray',\n               alpha=0.5)\n    for val, ls in zip([preds.predicted_mean,\n                        bands[:, 0],\n                        bands[:, 1]],\n                       ['b', 'r--', 'r--']):\n        ax.plot(age_df.values, val, ls, linewidth=3)\n    ax.set_title(title, fontsize=20)\n    ax.set_xlabel('Age', fontsize=20)\n    ax.set_ylabel('Wage', fontsize=20)\n    return ax\n\nThe alpha argument to ax.scatter() adds transparency that gives a visual indication of density. zip() bundles the three lines (fitted mean and two confidence bands) with their colours and line types for the for loop.\nExercise 5. Use your helper to plot the degree-4 polynomial fit.\nSolution.\n\nplot_wage_fit(age_df,\n              poly_age,\n              'Degree-4 Polynomial');\n\nExercise 6. With polynomial regression we must decide on the degree of the polynomial to use. Fit polynomial models in age of degrees 1 through 5, and use anova_lm() to test which degree is sufficient.\nSolution.\n\nmodels = [MS([poly('age', degree=d)])\n          for d in range(1, 6)]\nXs = [model.fit_transform(Wage) for model in models]\nanova_lm(*[sm.OLS(y, X_).fit()\n           for X_ in Xs])\n\nThe * unpacks the list of fitted models for anova_lm()’s variable argument list. The p-value comparing linear models[0] to quadratic models[1] is essentially zero, and the cubic-vs-quartic comparison is roughly 5%, while degree 5 is unnecessary (p = 0.37). Either a cubic or a quartic polynomial gives a reasonable fit.\nExercise 7. Repeat the ANOVA, but with a linear term in education included in each model alongside a polynomial in age of degrees 1, 2, 3.\nSolution.\n\nmodels = [MS(['education', poly('age', degree=d)])\n          for d in range(1, 4)]\nXEs = [model.fit_transform(Wage)\n       for model in models]\nanova_lm(*[sm.OLS(y, X_).fit() for X_ in XEs])\n\nThe ANOVA approach works whether or not the polynomials are orthogonal, provided the models are nested. As an alternative, we could choose the polynomial degree by cross-validation (Chapter 5).\nExercise 8. Now consider predicting whether someone earns more than $250,000 per year. Fit a logistic regression (use sm.GLM with a Binomial family) of wage &gt; 250 on the same 4th-degree polynomial basis in age, and produce a plot of the predicted probability vs. age (with confidence bands and a rug plot).\nSolution.\n\nX = poly_age.transform(Wage)\nhigh_earn = Wage['high_earn'] = y &gt; 250  # shorthand\nglm = sm.GLM(y &gt; 250,\n             X,\n             family=sm.families.Binomial())\nB = glm.fit()\nsummarize(B)\n\n(The double assignment high_earn = Wage['high_earn'] = y &gt; 250 both binds the local variable high_earn and stores the indicator as a new column on the Wage DataFrame. We’ll re-use that column in Exercises 29 and 30.)\n\nnewX = poly_age.transform(age_df)\npreds = B.get_prediction(newX)\nbands = preds.conf_int(alpha=0.05)\n\nfig, ax = subplots(figsize=(8, 8))\nrng = np.random.default_rng(0)\nax.scatter(age +\n           0.2 * rng.uniform(size=y.shape[0]),\n           np.where(high_earn, 0.198, 0.002),\n           fc='gray',\n           marker='|')\nfor val, ls in zip([preds.predicted_mean,\n                    bands[:, 0],\n                    bands[:, 1]],\n                   ['b', 'r--', 'r--']):\n    ax.plot(age_df.values, val, ls, linewidth=3)\nax.set_title('Degree-4 Polynomial', fontsize=20)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylim([0, 0.2])\nax.set_ylabel('P(Wage &gt; 250)', fontsize=20);\n\nThe age values above 250 are shown as gray marks at the top of the plot; those below 250 at the bottom. A small amount of jitter prevents identical-age points from overlapping. This is called a rug plot.\nExercise 9. Fit a step-function regression: discretise age into 4 quantile-based bins with pd.qcut(), build dummy columns with pd.get_dummies(), and fit OLS.\nSolution.\n\ncut_age = pd.qcut(age, 4)\nsummarize(sm.OLS(y, pd.get_dummies(cut_age)).fit())\n\npd.qcut() chose cutpoints at the 25%, 50% and 75% quantiles, so we get four bins. pd.get_dummies() (unlike the usual model-matrix convention) keeps all category levels; combined with no intercept, each coefficient is the average wage in its bin. For non-quantile cutpoints, use pd.cut() instead."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab.html#splines",
+    "href": "Ch07-nonlin-lab.html#splines",
+    "title": "Non-Linear Modeling",
+    "section": "Splines",
+    "text": "Splines\nExercise 10. Use BSpline() from ISLP.transforms with internal_knots=[25, 40, 60] and intercept=True to build a cubic B-spline basis for age. What shape is the resulting design matrix?\nSolution.\n\nbs_ = BSpline(internal_knots=[25, 40, 60], intercept=True).fit(age)\nbs_age = bs_.transform(age)\nbs_age.shape\n\nA cubic B-spline with 3 interior knots yields a 7-column matrix (3 + degree + 1 with intercept=True).\nExercise 11. Now fit a cubic spline regression of wage on age using the helper bs() inside MS(). Pass name='bs(age)' to clean up the column labels in the summary.\nSolution.\n\nbs_age = MS([bs('age',\n                internal_knots=[25, 40, 60],\n                name='bs(age)')])\nXbs = bs_age.fit_transform(Wage)\nM = sm.OLS(y, Xbs).fit()\nsummarize(M)\n\nNote there are 6 spline coefficients rather than 7 because bs() defaults to intercept=False — the basis would normally be 7 columns, but one is dropped to accommodate the model’s overall intercept.\nExercise 12. Instead of specifying knots, ask BSpline for df=6. Inspect internal_knots_ to see where the knots ended up.\nSolution.\n\nBSpline(df=6).fit(age).internal_knots_\n\nWith df=6 and cubic splines, three knots are placed at the 25%, 50% and 75% quantiles of age — ages 33.75, 42.0, and 51.0.\nExercise 13. B-splines need not be cubic. Fit a degree-0 spline with df=3 and compare the coefficients to your earlier qcut() step-function fit.\nSolution.\n\nbs_age0 = MS([bs('age',\n                 df=3,\n                 degree=0)]).fit(Wage)\nXbs0 = bs_age0.transform(Wage)\nsummarize(sm.OLS(y, Xbs0).fit())\n\nDegree-0 B-splines are piecewise constant — equivalent to the step function from Exercise 9. With df=3 (degree 0), the knots are again at the same three quantiles. The coefficients look different because of the coding: here the intercept is a column of ones and the remaining three coefficients are increments relative to the first bin. The sums approximately recover the per-bin means (slight differences are because qcut() uses ≤ while bs() uses &lt; at the boundaries).\nExercise 14. Fit a natural cubic spline with 5 degrees of freedom using ns(), and plot the fit with plot_wage_fit().\nSolution.\n\nns_age = MS([ns('age', df=5)]).fit(Wage)\nM_ns = sm.OLS(y, ns_age.transform(Wage)).fit()\nsummarize(M_ns)\n\n\nplot_wage_fit(age_df,\n              ns_age,\n              'Natural spline, df=5');"
+  },
+  {
+    "objectID": "Ch07-nonlin-lab.html#smoothing-splines-and-gams",
+    "href": "Ch07-nonlin-lab.html#smoothing-splines-and-gams",
+    "title": "Non-Linear Modeling",
+    "section": "Smoothing Splines and GAMs",
+    "text": "Smoothing Splines and GAMs\nExercise 15. A smoothing spline is a special case of a GAM with squared-error loss and a single feature. Fit LinearGAM(s_gam(0, lam=0.6)) to predict wage from age. (Remember pygam expects a 2-D feature matrix.)\nSolution.\n\nX_age = np.asarray(age).reshape((-1, 1))\ngam = LinearGAM(s_gam(0, lam=0.6))\ngam.fit(X_age, y)\n\ns_gam(0, ...) says “apply a smoothing spline to column 0 of the feature matrix”. lam is the penalty parameter \\(\\lambda\\). The -1 inside .reshape((-1, 1)) tells NumPy to infer that dimension’s size.\nExercise 16. Investigate how the fit changes with the smoothing parameter. Loop lam over np.logspace(-2, 6, 5) and plot each resulting fit.\nSolution.\n\nfig, ax = subplots(figsize=(8, 8))\nax.scatter(age, y, facecolor='gray', alpha=0.5)\nfor lam in np.logspace(-2, 6, 5):\n    gam = LinearGAM(s_gam(0, lam=lam)).fit(X_age, y)\n    ax.plot(age_grid,\n            gam.predict(age_grid),\n            label='{:.1e}'.format(lam),\n            linewidth=3)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylabel('Wage', fontsize=20);\nax.legend(title=r'$\\lambda$');\n\nExercise 17. pygam can search for an optimal smoothing parameter. Reproduce the plot from Exercise 16, call .gridsearch(X_age, y), and add the resulting fit on top.\nSolution.\n\nfig, ax = subplots(figsize=(8, 8))\nax.scatter(age, y, facecolor='gray', alpha=0.5)\nfor lam in np.logspace(-2, 6, 5):\n    gam = LinearGAM(s_gam(0, lam=lam)).fit(X_age, y)\n    ax.plot(age_grid,\n            gam.predict(age_grid),\n            label='{:.1e}'.format(lam),\n            linewidth=3)\ngam_opt = gam.gridsearch(X_age, y)\nax.plot(age_grid,\n        gam_opt.predict(age_grid),\n        label='Grid search',\n        linewidth=4)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylabel('Wage', fontsize=20)\nax.legend(title=r'$\\lambda$')\nfig\n\nExercise 18. It’s often more interpretable to specify the effective degrees of freedom than lam. Use approx_lam() from ISLP.pygam to find a lam giving roughly 4 degrees of freedom for the age term, and verify with degrees_of_freedom().\nSolution.\n\nage_term = gam.terms[0]\nlam_4 = approx_lam(X_age, age_term, 4)\nage_term.lam = lam_4\ndegrees_of_freedom(X_age, age_term)\n\nThese degrees of freedom include the unpenalized intercept and linear term of the smoothing spline — so there are at least 2 df.\nExercise 19. Now loop over df values [1, 3, 4, 8, 15] (passing df + 1 to approx_lam() to account for the intercept), refit, and plot each.\nSolution.\n\nfig, ax = subplots(figsize=(8, 8))\nax.scatter(X_age,\n           y,\n           facecolor='gray',\n           alpha=0.3)\nfor df in [1, 3, 4, 8, 15]:\n    lam = approx_lam(X_age, age_term, df + 1)\n    age_term.lam = lam\n    gam.fit(X_age, y)\n    ax.plot(age_grid,\n            gam.predict(age_grid),\n            label='{:d}'.format(df),\n            linewidth=4)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylabel('Wage', fontsize=20);\nax.legend(title='Degrees of freedom');\n\nA value of df=1 corresponds to a straight-line fit.\n\nAdditive Models with Several Terms\nExercise 20. Build a GAM “by hand”: use natural splines (NaturalSpline) with df=4 for age and df=5 for year, get dummies for education, stack them all into a model matrix X_bh, and fit OLS.\nSolution.\n\nns_age = NaturalSpline(df=4).fit(age)\nns_year = NaturalSpline(df=5).fit(Wage['year'])\nXs = [ns_age.transform(age),\n      ns_year.transform(Wage['year']),\n      pd.get_dummies(Wage['education']).values]\nX_bh = np.hstack(Xs)\ngam_bh = sm.OLS(y, X_bh).fit()\n\nWe use all columns of the indicator matrix for education (no intercept), and stack the three component matrices horizontally to form X_bh.\nExercise 21. Construct a partial-dependence plot for age from the by-hand GAM: predict on a matrix where all columns except those for age are held at their column means, and the age columns are swept across age_grid.\nSolution.\n\nage_grid = np.linspace(age.min(),\n                       age.max(),\n                       100)\nX_age_bh = X_bh.copy()[:100]\nX_age_bh[:] = X_bh.mean(0)[None, :]\nX_age_bh[:, :4] = ns_age.transform(age_grid)\npreds = gam_bh.get_prediction(X_age_bh)\nbounds_age = preds.conf_int(alpha=0.05)\npartial_age = preds.predicted_mean\ncenter = partial_age.mean()\npartial_age -= center\nbounds_age -= center\nfig, ax = subplots(figsize=(8, 8))\nax.plot(age_grid, partial_age, 'b', linewidth=3)\nax.plot(age_grid, bounds_age[:, 0], 'r--', linewidth=3)\nax.plot(age_grid, bounds_age[:, 1], 'r--', linewidth=3)\nax.set_xlabel('Age')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of age on wage', fontsize=20);\n\nThe idea is to create a new prediction matrix in which all but the columns for age are held constant at the training-data means; the four age columns are filled with the natural spline basis evaluated at the 100 values in age_grid.\nExercise 22. Do the same for year.\nSolution.\n\nyear_grid = np.linspace(Wage['year'].min(),\n                        Wage['year'].max(),\n                        100)\nX_year_bh = X_bh.copy()[:100]\nX_year_bh[:] = X_bh.mean(0)[None, :]\nX_year_bh[:, 4:9] = ns_year.transform(year_grid)\npreds = gam_bh.get_prediction(X_year_bh)\nbounds_year = preds.conf_int(alpha=0.05)\npartial_year = preds.predicted_mean\ncenter = partial_year.mean()\npartial_year -= center\nbounds_year -= center\nfig, ax = subplots(figsize=(8, 8))\nax.plot(year_grid, partial_year, 'b', linewidth=3)\nax.plot(year_grid, bounds_year[:, 0], 'r--', linewidth=3)\nax.plot(year_grid, bounds_year[:, 1], 'r--', linewidth=3)\nax.set_xlabel('Year')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of year on wage', fontsize=20);\n\nExercise 23. Now fit the same GAM using smoothing splines via pygam. Build LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)), where f_gam is a factor term for education. (Convert education to numeric codes with .cat.codes.) Then plot the partial dependence for age using plot_gam() from ISLP.pygam.\nSolution.\n\ngam_full = LinearGAM(s_gam(0) +\n                     s_gam(1, n_splines=7) +\n                     f_gam(2, lam=0))\nXgam = np.column_stack([age,\n                        Wage['year'],\n                        Wage['education'].cat.codes])\ngam_full = gam_full.fit(Xgam, y)\n\n\nfig, ax = subplots(figsize=(8, 8))\nplot_gam(gam_full, 0, ax=ax)\nax.set_xlabel('Age')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of age on wage - default lam=0.6', fontsize=20);\n\nyear has only 7 unique values, so we use 7 basis functions. lam=0 on the factor term avoids any shrinkage. The default lam=0.6 for age produces a noticeably wiggly fit.\nExercise 24. Re-tune gam_full so that the age and year smoothers each have ~4 degrees of freedom (use approx_lam() with df=4+1), then re-plot the partial dependence for age and for year.\nSolution.\n\nage_term = gam_full.terms[0]\nage_term.lam = approx_lam(Xgam, age_term, df=4 + 1)\nyear_term = gam_full.terms[1]\nyear_term.lam = approx_lam(Xgam, year_term, df=4 + 1)\ngam_full = gam_full.fit(Xgam, y)\n\nNote that updating age_term.lam updates gam_full.terms[0] in place.\n\nfig, ax = subplots(figsize=(8, 8))\nplot_gam(gam_full,\n         1,\n         ax=ax)\nax.set_xlabel('Year')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of year on wage', fontsize=20)\n\nExercise 25. Plot the partial dependence for education — a categorical term gets a different style of plot, suited to a set of fitted constants per level.\nSolution.\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_full, 2)\nax.set_xlabel('Education')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of wage on education',\n             fontsize=20);\nax.set_xticklabels(Wage['education'].cat.categories, fontsize=8);\n\n\n\nANOVA Tests for Additive Models\nExercise 26. In all our models, the function of year looks fairly linear. Compare three models by ANOVA: a GAM that excludes year (\\(\\mathcal{M}_1\\)), a GAM that uses a linear term in year (\\(\\mathcal{M}_2\\)), and the full GAM with a smoothing spline in year (\\(\\mathcal{M}_3\\)). What do you conclude?\nSolution.\n\ngam_0 = LinearGAM(age_term + f_gam(2, lam=0))\ngam_0.fit(Xgam, y)\ngam_linear = LinearGAM(age_term +\n                       l_gam(1, lam=0) +\n                       f_gam(2, lam=0))\ngam_linear.fit(Xgam, y)\n\nanova_gam(gam_0, gam_linear, gam_full)\n\nNote the reuse of age_term — that term already has its lam set to yield 4 df, and we want to keep that across all three models.\nThere is compelling evidence that a GAM with a linear year term is better than one that omits year (p ≈ 0.002). However, there is no evidence that a nonlinear function of year is needed (p ≈ 0.435). So \\(\\mathcal{M}_2\\) is preferred.\nExercise 27. Repeat the test for age.\nSolution.\n\ngam_0 = LinearGAM(year_term +\n                  f_gam(2, lam=0))\ngam_linear = LinearGAM(l_gam(0, lam=0) +\n                       year_term +\n                       f_gam(2, lam=0))\ngam_0.fit(Xgam, y)\ngam_linear.fit(Xgam, y)\nanova_gam(gam_0, gam_linear, gam_full)\n\nVery strong evidence that a nonlinear term is required for age.\nExercise 28. Print gam_full.summary() and use gam_full.predict() to generate fitted values on the training set.\nSolution.\n\ngam_full.summary()\n\n\nYhat = gam_full.predict(Xgam)\n\nExercise 29. Fit a logistic GAM for high_earn (i.e. wage &gt; 250) using LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0)). Plot the partial dependence for education.\nSolution.\n\ngam_logit = LogisticGAM(age_term +\n                        l_gam(1, lam=0) +\n                        f_gam(2, lam=0))\ngam_logit.fit(Xgam, high_earn)\n\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_logit, 2)\nax.set_xlabel('Education')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of wage on education',\n             fontsize=20);\nax.set_xticklabels(Wage['education'].cat.categories, fontsize=8);\n\nThe fit looks flat with very wide error bars on the first category.\nExercise 30. Cross-tabulate high_earn against education. What do you see?\nSolution.\n\npd.crosstab(Wage['high_earn'], Wage['education'])\n\nThere are no high earners in the lowest education category, so the logistic GAM has nothing to estimate there.\nExercise 31. Refit the logistic GAM excluding observations in the “1. &lt; HS Grad” category, then plot the partial dependence for education, year, and age.\nSolution.\n\nonly_hs = Wage['education'] == '1. &lt; HS Grad'\nWage_ = Wage.loc[~only_hs]\nXgam_ = np.column_stack([Wage_['age'],\n                         Wage_['year'],\n                         Wage_['education'].cat.codes - 1])\nhigh_earn_ = Wage_['high_earn']\n\nWe subtract 1 from cat.codes to work around a pygam bug — the relabeling has no effect on the fit.\n\ngam_logit_ = LogisticGAM(age_term +\n                         year_term +\n                         f_gam(2, lam=0))\ngam_logit_.fit(Xgam_, high_earn_)\n\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_logit_, 2)\nax.set_xlabel('Education')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of high earner status on education', fontsize=20);\nax.set_xticklabels(Wage['education'].cat.categories[1:],\n                   fontsize=8);\n\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_logit_, 1)\nax.set_xlabel('Year')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of high earner status on year',\n             fontsize=20);\n\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_logit_, 0)\nax.set_xlabel('Age')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of high earner status on age', fontsize=20);"
+  },
+  {
+    "objectID": "Ch07-nonlin-lab.html#local-regression",
+    "href": "Ch07-nonlin-lab.html#local-regression",
+    "title": "Non-Linear Modeling",
+    "section": "Local Regression",
+    "text": "Local Regression\nExercise 32. Finally, use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; pygam does not.\nSolution.\n\nlowess = sm.nonparametric.lowess\nfig, ax = subplots(figsize=(8, 8))\nax.scatter(age, y, facecolor='gray', alpha=0.5)\nfor span in [0.2, 0.5]:\n    fitted = lowess(y,\n                    age,\n                    frac=span,\n                    xvals=age_grid)\n    ax.plot(age_grid,\n            fitted,\n            label='{:.1f}'.format(span),\n            linewidth=4)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylabel('Wage', fontsize=20);\nax.legend(title='span', fontsize=15);\n\nAs expected, a span of 0.5 produces a smoother fit than 0.2."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#setup",
+    "href": "Ch07-nonlin-lab-slides.html#setup",
+    "title": "Non-Linear Modeling",
+    "section": "Setup",
+    "text": "Setup\nAs usual, we start with some of our standard imports.\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
+    "href": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
+    "title": "Non-Linear Modeling",
+    "section": "Polynomial Regression and Step Functions",
+    "text": "Polynomial Regression and Step Functions\nExercise 1. Load the Wage data with load_data('Wage'). Store the response (wage) as y and the predictor (age) as age.\nSolution.\nThroughout most of this lab, our response is Wage['wage'], which we have stored as y above.\nExercise 2. Use poly() inside MS() to build a 4th-degree polynomial in age, fit an OLS model of y on this basis, and print the coefficient summary.\nSolution.\npoly() is a helper that sets up the transformation; Poly() is the workhorse that computes it. The first line above runs the fit() method on Wage, which stores any parameters needed by Poly() on the training data so that subsequent transform() calls (on new data, or inside the plotting function below) use the same basis.\nExercise 3. Build a grid age_grid of 100 evenly spaced values spanning the observed range of age, and wrap it in a single-column DataFrame named age_df.\nSolution.\nExercise 4. Write a function plot_wage_fit(age_df, basis, title) that fits OLS on the supplied basis, evaluates it on age_df, and plots the raw data with the fitted curve and its 95% confidence bands.\nSolution.\nThe alpha argument to ax.scatter() adds transparency that gives a visual indication of density. zip() bundles the three lines (fitted mean and two confidence bands) with their colours and line types for the for loop.\nExercise 5. Use your helper to plot the degree-4 polynomial fit.\nSolution.\nExercise 6. With polynomial regression we must decide on the degree of the polynomial to use. Fit polynomial models in age of degrees 1 through 5, and use anova_lm() to test which degree is sufficient.\nSolution.\nThe * unpacks the list of fitted models for anova_lm()’s variable argument list. The p-value comparing linear models[0] to quadratic models[1] is essentially zero, and the cubic-vs-quartic comparison is roughly 5%, while degree 5 is unnecessary (p = 0.37). Either a cubic or a quartic polynomial gives a reasonable fit.\nExercise 7. Repeat the ANOVA, but with a linear term in education included in each model alongside a polynomial in age of degrees 1, 2, 3.\nSolution.\nThe ANOVA approach works whether or not the polynomials are orthogonal, provided the models are nested. As an alternative, we could choose the polynomial degree by cross-validation (Chapter 5).\nExercise 8. Now consider predicting whether someone earns more than $250,000 per year. Fit a logistic regression (use sm.GLM with a Binomial family) of wage &gt; 250 on the same 4th-degree polynomial basis in age, and produce a plot of the predicted probability vs. age (with confidence bands and a rug plot).\nSolution.\n(The double assignment high_earn = Wage['high_earn'] = y &gt; 250 both binds the local variable high_earn and stores the indicator as a new column on the Wage DataFrame. We’ll re-use that column in Exercises 29 and 30.)\nThe age values above 250 are shown as gray marks at the top of the plot; those below 250 at the bottom. A small amount of jitter prevents identical-age points from overlapping. This is called a rug plot.\nExercise 9. Fit a step-function regression: discretise age into 4 quantile-based bins with pd.qcut(), build dummy columns with pd.get_dummies(), and fit OLS.\nSolution.\npd.qcut() chose cutpoints at the 25%, 50% and 75% quantiles, so we get four bins. pd.get_dummies() (unlike the usual model-matrix convention) keeps all category levels; combined with no intercept, each coefficient is the average wage in its bin. For non-quantile cutpoints, use pd.cut() instead."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#splines",
+    "href": "Ch07-nonlin-lab-slides.html#splines",
+    "title": "Non-Linear Modeling",
+    "section": "Splines",
+    "text": "Splines\nExercise 10. Use BSpline() from ISLP.transforms with internal_knots=[25, 40, 60] and intercept=True to build a cubic B-spline basis for age. What shape is the resulting design matrix?\nSolution.\nA cubic B-spline with 3 interior knots yields a 7-column matrix (3 + degree + 1 with intercept=True).\nExercise 11. Now fit a cubic spline regression of wage on age using the helper bs() inside MS(). Pass name='bs(age)' to clean up the column labels in the summary.\nSolution.\nNote there are 6 spline coefficients rather than 7 because bs() defaults to intercept=False — the basis would normally be 7 columns, but one is dropped to accommodate the model’s overall intercept.\nExercise 12. Instead of specifying knots, ask BSpline for df=6. Inspect internal_knots_ to see where the knots ended up.\nSolution.\nWith df=6 and cubic splines, three knots are placed at the 25%, 50% and 75% quantiles of age — ages 33.75, 42.0, and 51.0.\nExercise 13. B-splines need not be cubic. Fit a degree-0 spline with df=3 and compare the coefficients to your earlier qcut() step-function fit.\nSolution.\nDegree-0 B-splines are piecewise constant — equivalent to the step function from Exercise 9. With df=3 (degree 0), the knots are again at the same three quantiles. The coefficients look different because of the coding: here the intercept is a column of ones and the remaining three coefficients are increments relative to the first bin. The sums approximately recover the per-bin means (slight differences are because qcut() uses ≤ while bs() uses &lt; at the boundaries).\nExercise 14. Fit a natural cubic spline with 5 degrees of freedom using ns(), and plot the fit with plot_wage_fit().\nSolution."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#smoothing-splines-and-gams",
+    "href": "Ch07-nonlin-lab-slides.html#smoothing-splines-and-gams",
+    "title": "Non-Linear Modeling",
+    "section": "Smoothing Splines and GAMs",
+    "text": "Smoothing Splines and GAMs\nExercise 15. A smoothing spline is a special case of a GAM with squared-error loss and a single feature. Fit LinearGAM(s_gam(0, lam=0.6)) to predict wage from age. (Remember pygam expects a 2-D feature matrix.)\nSolution.\ns_gam(0, ...) says “apply a smoothing spline to column 0 of the feature matrix”. lam is the penalty parameter \\(\\lambda\\). The -1 inside .reshape((-1, 1)) tells NumPy to infer that dimension’s size.\nExercise 16. Investigate how the fit changes with the smoothing parameter. Loop lam over np.logspace(-2, 6, 5) and plot each resulting fit.\nSolution.\nExercise 17. pygam can search for an optimal smoothing parameter. Reproduce the plot from Exercise 16, call .gridsearch(X_age, y), and add the resulting fit on top.\nSolution.\nExercise 18. It’s often more interpretable to specify the effective degrees of freedom than lam. Use approx_lam() from ISLP.pygam to find a lam giving roughly 4 degrees of freedom for the age term, and verify with degrees_of_freedom().\nSolution.\nThese degrees of freedom include the unpenalized intercept and linear term of the smoothing spline — so there are at least 2 df.\nExercise 19. Now loop over df values [1, 3, 4, 8, 15] (passing df + 1 to approx_lam() to account for the intercept), refit, and plot each.\nSolution.\nA value of df=1 corresponds to a straight-line fit.\nAdditive Models with Several Terms\nExercise 20. Build a GAM “by hand”: use natural splines (NaturalSpline) with df=4 for age and df=5 for year, get dummies for education, stack them all into a model matrix X_bh, and fit OLS.\nSolution.\nWe use all columns of the indicator matrix for education (no intercept), and stack the three component matrices horizontally to form X_bh.\nExercise 21. Construct a partial-dependence plot for age from the by-hand GAM: predict on a matrix where all columns except those for age are held at their column means, and the age columns are swept across age_grid.\nSolution.\nThe idea is to create a new prediction matrix in which all but the columns for age are held constant at the training-data means; the four age columns are filled with the natural spline basis evaluated at the 100 values in age_grid.\nExercise 22. Do the same for year.\nSolution.\nExercise 23. Now fit the same GAM using smoothing splines via pygam. Build LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)), where f_gam is a factor term for education. (Convert education to numeric codes with .cat.codes.) Then plot the partial dependence for age using plot_gam() from ISLP.pygam.\nSolution.\nyear has only 7 unique values, so we use 7 basis functions. lam=0 on the factor term avoids any shrinkage. The default lam=0.6 for age produces a noticeably wiggly fit.\nExercise 24. Re-tune gam_full so that the age and year smoothers each have ~4 degrees of freedom (use approx_lam() with df=4+1), then re-plot the partial dependence for age and for year.\nSolution.\nNote that updating age_term.lam updates gam_full.terms[0] in place.\nExercise 25. Plot the partial dependence for education — a categorical term gets a different style of plot, suited to a set of fitted constants per level.\nSolution.\nANOVA Tests for Additive Models\nExercise 26. In all our models, the function of year looks fairly linear. Compare three models by ANOVA: a GAM that excludes year (\\(\\mathcal{M}_1\\)), a GAM that uses a linear term in year (\\(\\mathcal{M}_2\\)), and the full GAM with a smoothing spline in year (\\(\\mathcal{M}_3\\)). What do you conclude?\nSolution.\nNote the reuse of age_term — that term already has its lam set to yield 4 df, and we want to keep that across all three models.\nThere is compelling evidence that a GAM with a linear year term is better than one that omits year (p ≈ 0.002). However, there is no evidence that a nonlinear function of year is needed (p ≈ 0.435). So \\(\\mathcal{M}_2\\) is preferred.\nExercise 27. Repeat the test for age.\nSolution.\nVery strong evidence that a nonlinear term is required for age.\nExercise 28. Print gam_full.summary() and use gam_full.predict() to generate fitted values on the training set.\nSolution.\nExercise 29. Fit a logistic GAM for high_earn (i.e. wage &gt; 250) using LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0)). Plot the partial dependence for education.\nSolution.\nThe fit looks flat with very wide error bars on the first category.\nExercise 30. Cross-tabulate high_earn against education. What do you see?\nSolution.\nThere are no high earners in the lowest education category, so the logistic GAM has nothing to estimate there.\nExercise 31. Refit the logistic GAM excluding observations in the “1. &lt; HS Grad” category, then plot the partial dependence for education, year, and age.\nSolution.\nWe subtract 1 from cat.codes to work around a pygam bug — the relabeling has no effect on the fit."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#local-regression",
+    "href": "Ch07-nonlin-lab-slides.html#local-regression",
+    "title": "Non-Linear Modeling",
+    "section": "Local Regression",
+    "text": "Local Regression\nExercise 32. Finally, use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; pygam does not.\nSolution.\nAs expected, a span of 0.5 produces a smoother fit than 0.2."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISLP Labs",
+    "section": "",
+    "text": "A Quarto website that hosts handouts for the labs in An Introduction to Statistical Learning with Applications in Python (ISLP), starting with Chapter 7 — Non-Linear Modeling. The handouts re-organize each lab as a sequence of exercises with hide-able solutions, so that students can attempt the steps themselves before revealing the worked code.\nThe lab content is adapted with permission from the source available at https://www.statlearning.com, and tracks the upstream intro-stat-learning/ISLP_labs repository."
+  },
+  {
+    "objectID": "index.html#available-handouts",
+    "href": "index.html#available-handouts",
+    "title": "ISLP Labs",
+    "section": "Available handouts",
+    "text": "Available handouts\n\nChapter 7 — Non-Linear Modeling"
+  },
+  {
+    "objectID": "index.html#r-alternative",
+    "href": "index.html#r-alternative",
+    "title": "ISLP Labs",
+    "section": "R alternative",
+    "text": "R alternative\nStudents who prefer to work in R may follow the corresponding chapter of Emil Hvitfeldt’s ISLR tidymodels labs."
+  },
+  {
+    "objectID": "index.html#original-labs",
+    "href": "index.html#original-labs",
+    "title": "ISLP Labs",
+    "section": "Original labs",
+    "text": "Original labs\nThe full set of original ISLP labs (Chapters 2–13) is available as Jupyter notebooks in the intro-stat-learning/ISLP_labs repository."
+  },
+  {
+    "objectID": "index.html#building-the-handouts",
+    "href": "index.html#building-the-handouts",
+    "title": "ISLP Labs",
+    "section": "Building the handouts",
+    "text": "Building the handouts\nTwo parallel renders of the website are produced — a student worksheet (prompts only) and a solution key (solutions only) — each written to its own subdirectory of _site/. The exercise/solution toggling is provided by the coatless-quarto/assign Quarto extension.\nRender the solution key (the default profile):\nquarto render\nRender the student worksheet:\nquarto render --profile assign\nThe published GitHub Pages site combines both — its top-level index.html links to assign/ and solution/."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#what-we-will-cover",
+    "href": "slides/ch02-statistical-learning-slides.html#what-we-will-cover",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "What we will cover",
+    "text": "What we will cover\n\nWhat is statistical learning?\nWhy and how do we estimate \\(f\\)?\nTrade-offs: prediction vs. inference, flexibility vs. interpretability\nMeasuring model accuracy: MSE, bias-variance decomposition\nThe classification setting: Bayes classifier, KNN"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#data-sets-used-in-this-chapter",
+    "href": "slides/ch02-statistical-learning-slides.html#data-sets-used-in-this-chapter",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Data sets used in this chapter",
+    "text": "Data sets used in this chapter\n\nPythonR\n\n\nfrom ISLP import load_data\nWage = load_data('Wage')\nSmarket = load_data('Smarket')\nNCI60 = load_data('NCI60')\n\n\nlibrary(ISLR2)\n# Wage, Smarket, NCI60 are loaded automatically\nhead(Wage)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#three-motivating-examples",
+    "href": "slides/ch02-statistical-learning-slides.html#three-motivating-examples",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Three motivating examples",
+    "text": "Three motivating examples\n\n\n\n\n\n\n\n\n\nData set\nInput \\(X\\)\nOutput \\(Y\\)\nGoal\n\n\n\n\nWage\nage, year, education\nwage\npredict / understand wage drivers\n\n\nStock market\nyesterday’s returns, volume\nup / down\nclassify tomorrow’s direction\n\n\nNCI60 gene expression\n6,830 gene measurements\ncancer type\ngroup cancer types (unsupervised)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#wages-vs.-age-year-education",
+    "href": "slides/ch02-statistical-learning-slides.html#wages-vs.-age-year-education",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Wages vs. age, year, education",
+    "text": "Wages vs. age, year, education\n\nPythonR\n\n\nimport matplotlib.pyplot as plt\nfig, axes = plt.subplots(1, 3, figsize=(12, 4))\nWage.plot.scatter('age',  'wage', alpha=0.3, ax=axes[0])\nWage.plot.scatter('year', 'wage', alpha=0.3, ax=axes[1])\nedu_levels = Wage['education'].cat.categories\naxes[2].boxplot(\n    [Wage.loc[Wage['education'] == e, 'wage'] for e in edu_levels],\n    tick_labels=edu_levels,  # matplotlib ≥3.9; was `labels=` before\n)\naxes[2].set_xlabel('Education'); axes[2].set_ylabel('Wage')\naxes[2].tick_params(axis='x', rotation=45)\nplt.tight_layout()\n\n\npar(mfrow = c(1, 3))\nplot(Wage$age,       Wage$wage, col = \"grey\", pch = 20, xlab = \"Age\",       ylab = \"Wage\")\nplot(Wage$year,      Wage$wage, col = \"grey\", pch = 20, xlab = \"Year\",      ylab = \"Wage\")\nplot(Wage$education, Wage$wage, col = \"grey\", pch = 20, xlab = \"Education\", ylab = \"Wage\")"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#the-general-setup",
+    "href": "slides/ch02-statistical-learning-slides.html#the-general-setup",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The general setup",
+    "text": "The general setup\nWe observe a response \\(Y\\) and \\(p\\) predictors \\(X = (X_1, \\ldots, X_p)\\).\nWe assume:\n\\[Y = f(X) + \\varepsilon\\]\n\n\\(f\\) is a fixed but unknown function of \\(X_1, \\ldots, X_p\\)\n\\(\\varepsilon\\) is a random error term, independent of \\(X\\), with \\(E[\\varepsilon] = 0\\)\n\nStatistical learning is a collection of approaches for estimating \\(f\\)."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#prediction-vs.-inference",
+    "href": "slides/ch02-statistical-learning-slides.html#prediction-vs.-inference",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Prediction vs. inference",
+    "text": "Prediction vs. inference\nPrediction — we treat \\(f\\) as a black box.\n\\[\\hat{Y} = \\hat{f}(X)\\]\nWe care about accuracy, not the form of \\(\\hat{f}\\).\nInference — we want to understand how \\(Y\\) changes with \\(X\\).\n\nWhich predictors are associated with the response?\nWhat is the direction and magnitude of each association?\nCan the relationship be summarised as linear, or is it more complex?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#parametric-methods",
+    "href": "slides/ch02-statistical-learning-slides.html#parametric-methods",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Parametric methods",
+    "text": "Parametric methods\n\nAssume a functional form for \\(f\\), e.g., the linear model: \\[f(X) = \\beta_0 + \\beta_1 X_1 + \\cdots + \\beta_p X_p\\]\nUse training data to fit (estimate) the parameters \\(\\beta_0, \\ldots, \\beta_p\\).\n\n\nPythonR\n\n\nfrom sklearn.linear_model import LinearRegression\nimport pandas as pd\n\nX = pd.get_dummies(Wage[['age', 'year', 'education']], drop_first=True)\ny = Wage['wage']\n\nlm = LinearRegression().fit(X, y)\nprint(lm.coef_)\n\n\nfit &lt;- lm(wage ~ age + year + education, data = Wage)\nsummary(fit)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#non-parametric-methods",
+    "href": "slides/ch02-statistical-learning-slides.html#non-parametric-methods",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Non-parametric methods",
+    "text": "Non-parametric methods\nNo explicit assumption about the form of \\(f\\); seek an estimate that fits the data points as closely as possible without being too rough or wiggly.\nAdvantage — can fit a wider range of shapes for \\(f\\).\nDisadvantage — require many observations; harder to interpret."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#the-flexibilityinterpretability-trade-off",
+    "href": "slides/ch02-statistical-learning-slides.html#the-flexibilityinterpretability-trade-off",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The flexibility–interpretability trade-off",
+    "text": "The flexibility–interpretability trade-off\nMore flexible models can fit more complex \\(f\\), but are:\n\nharder to interpret (less useful for inference)\nmore prone to overfitting (poor test performance)\n\nLess flexible models are more interpretable and often more accurate when the true \\(f\\) is nearly linear."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#training-vs.-test-mse",
+    "href": "slides/ch02-statistical-learning-slides.html#training-vs.-test-mse",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Training vs. test MSE",
+    "text": "Training vs. test MSE\nTraining MSE — computed on data used to fit the model:\n\\[\\text{MSE}_{\\text{train}} = \\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{f}(x_i))^2\\]\nWe really care about test MSE — how well does \\(\\hat{f}\\) predict new observations?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#computing-test-mse-with-a-hold-out-set",
+    "href": "slides/ch02-statistical-learning-slides.html#computing-test-mse-with-a-hold-out-set",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Computing test MSE with a hold-out set",
+    "text": "Computing test MSE with a hold-out set\n\nPythonR\n\n\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error\n\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42)\n\nlm.fit(X_train, y_train)\nmse_test = mean_squared_error(y_test, lm.predict(X_test))\nprint(f\"Test MSE: {mse_test:.2f}\")\n\n\nset.seed(42)\ntrain_idx &lt;- sample(nrow(Wage), 0.8 * nrow(Wage))\nfit_train  &lt;- lm(wage ~ age + year + education, data = Wage[train_idx, ])\npred_test  &lt;- predict(fit_train, Wage[-train_idx, ])\nmse_test   &lt;- mean((Wage$wage[-train_idx] - pred_test)^2)\ncat(\"Test MSE:\", mse_test, \"\\n\")"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#the-bias-variance-trade-off",
+    "href": "slides/ch02-statistical-learning-slides.html#the-bias-variance-trade-off",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The bias-variance trade-off",
+    "text": "The bias-variance trade-off\nFor any \\(x_0\\) and any \\(\\hat{f}\\):\n\\[E\\!\\left[(y_0 - \\hat{f}(x_0))^2\\right]\n  = \\underbrace{\\operatorname{Var}(\\hat{f}(x_0))}_{\\text{variance}}\n  + \\underbrace{\\left[\\operatorname{Bias}(\\hat{f}(x_0))\\right]^2}_{\\text{bias}^2}\n  + \\underbrace{\\operatorname{Var}(\\varepsilon)}_{\\text{irreducible}}\\]\n\nVariance — how much \\(\\hat{f}\\) changes across different training sets\nBias — error from assuming a wrong functional form for \\(f\\)\nIrreducible error — noise in \\(Y\\); cannot be reduced by any model"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#bias-variance-in-practice",
+    "href": "slides/ch02-statistical-learning-slides.html#bias-variance-in-practice",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Bias-variance in practice",
+    "text": "Bias-variance in practice\nAs model flexibility increases:\n\n\n\n\nVariance\nBias\n\n\n\n\nVery flexible\nHigh ↑\nLow ↓\n\n\nVery inflexible\nLow ↓\nHigh ↑\n\n\n\nThe test MSE is minimised at the sweet spot where variance and bias² together are smallest — the bias-variance trade-off."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#error-rates",
+    "href": "slides/ch02-statistical-learning-slides.html#error-rates",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Error rates",
+    "text": "Error rates\nThe response \\(Y\\) is now qualitative (a class label).\nTraining error rate:\n\\[\\frac{1}{n}\\sum_{i=1}^{n} \\mathbf{1}(y_i \\neq \\hat{y}_i)\\]\nWe care about the test error rate: how often does the classifier misclassify a new observation?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#the-bayes-classifier",
+    "href": "slides/ch02-statistical-learning-slides.html#the-bayes-classifier",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The Bayes classifier",
+    "text": "The Bayes classifier\nAssigns each observation to the most probable class given the predictor values:\n\\[\\hat{Y} = \\arg\\max_j \\Pr(Y = j \\mid X = x_0)\\]\nThe resulting Bayes error rate (analogous to irreducible error) is:\n\\[1 - E\\!\\left[\\max_j \\Pr(Y = j \\mid X)\\right]\\]\nIn practice the true conditional probabilities \\(\\Pr(Y = j \\mid X)\\) are unknown. KNN estimates them from data."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#k-nearest-neighbours",
+    "href": "slides/ch02-statistical-learning-slides.html#k-nearest-neighbours",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "K-Nearest Neighbours",
+    "text": "K-Nearest Neighbours\nFor a test point \\(x_0\\), identify the \\(K\\) closest training observations \\(\\mathcal{N}_0\\) and estimate:\n\\[\\Pr(Y = j \\mid X = x_0) = \\frac{1}{K}\\sum_{i \\in \\mathcal{N}_0}\\mathbf{1}(y_i = j)\\]\n\nPythonR\n\n\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Example: predict stock market direction with KNN (K = 3)\nX_smarket = Smarket[['Lag1', 'Lag2']]\ny_smarket = Smarket['Direction']\n\nX_tr, X_te, y_tr, y_te = train_test_split(\n    X_smarket, y_smarket, test_size=0.2, random_state=0)\n\nknn = KNeighborsClassifier(n_neighbors=3).fit(X_tr, y_tr)\nprint(\"Test accuracy:\", knn.score(X_te, y_te).round(3))\n\n\nlibrary(class)\nset.seed(0)\ntrain_idx &lt;- sample(nrow(Smarket), 0.8 * nrow(Smarket))\n\nknn_pred &lt;- knn(\n  train = Smarket[train_idx,  c(\"Lag1\", \"Lag2\")],\n  test  = Smarket[-train_idx, c(\"Lag1\", \"Lag2\")],\n  cl    = Smarket$Direction[train_idx],\n  k     = 3\n)\nmean(knn_pred == Smarket$Direction[-train_idx])"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#knn-the-role-of-k",
+    "href": "slides/ch02-statistical-learning-slides.html#knn-the-role-of-k",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "KNN: the role of \\(K\\)",
+    "text": "KNN: the role of \\(K\\)\n\nSmall \\(K\\) (e.g., \\(K = 1\\)) — very flexible; low bias, high variance (overfit)\nLarge \\(K\\) (e.g., \\(K = n\\)) — inflexible; high bias, low variance (underfit)\nOptimal \\(K\\) — minimises test error; found by cross-validation (Chapter 5)\n\nKNN illustrates the bias-variance trade-off in the classification setting just as smoothing splines do in regression."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#key-takeaways",
+    "href": "slides/ch02-statistical-learning-slides.html#key-takeaways",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Key takeaways",
+    "text": "Key takeaways\n\nStatistical learning: estimating \\(f\\) in \\(Y = f(X) + \\varepsilon\\).\nChoice of method depends on the goal (prediction vs. inference) and the form of \\(f\\).\nMore flexible models reduce bias but increase variance — there is no free lunch.\nWe assess a model on test data, not training data.\nThe Bayes classifier sets the lower bound on test error; KNN approximates it when the true conditional probabilities are unknown."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#whats-next",
+    "href": "slides/ch02-statistical-learning-slides.html#whats-next",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "What’s next",
+    "text": "What’s next\n\nChapter 3: Linear regression — the simplest parametric approach.\nChapter 4: Classification — logistic regression, LDA, QDA.\nChapter 5: Cross-validation and the bootstrap — how to properly estimate test error."
+  },
+  {
     "objectID": "slides/ch02-statistical-learning.html",
     "href": "slides/ch02-statistical-learning.html",
     "title": "Chapter 2 — Statistical Learning",
@@ -203,251 +847,6 @@
     "text": "What’s next\n\nChapter 3: Linear regression — the simplest parametric approach.\nChapter 4: Classification — logistic regression, LDA, QDA.\nChapter 5: Cross-validation and the bootstrap — how to properly estimate test error."
   },
   {
-    "objectID": "slides/ch02-statistical-learning-slides.html#what-we-will-cover",
-    "href": "slides/ch02-statistical-learning-slides.html#what-we-will-cover",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "What we will cover",
-    "text": "What we will cover\n\nWhat is statistical learning?\nWhy and how do we estimate \\(f\\)?\nTrade-offs: prediction vs. inference, flexibility vs. interpretability\nMeasuring model accuracy: MSE, bias-variance decomposition\nThe classification setting: Bayes classifier, KNN"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#data-sets-used-in-this-chapter",
-    "href": "slides/ch02-statistical-learning-slides.html#data-sets-used-in-this-chapter",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Data sets used in this chapter",
-    "text": "Data sets used in this chapter\n\nPythonR\n\n\nfrom ISLP import load_data\nWage = load_data('Wage')\nSmarket = load_data('Smarket')\nNCI60 = load_data('NCI60')\n\n\nlibrary(ISLR2)\n# Wage, Smarket, NCI60 are loaded automatically\nhead(Wage)"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#three-motivating-examples",
-    "href": "slides/ch02-statistical-learning-slides.html#three-motivating-examples",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Three motivating examples",
-    "text": "Three motivating examples\n\n\n\n\n\n\n\n\n\nData set\nInput \\(X\\)\nOutput \\(Y\\)\nGoal\n\n\n\n\nWage\nage, year, education\nwage\npredict / understand wage drivers\n\n\nStock market\nyesterday’s returns, volume\nup / down\nclassify tomorrow’s direction\n\n\nNCI60 gene expression\n6,830 gene measurements\ncancer type\ngroup cancer types (unsupervised)"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#wages-vs.-age-year-education",
-    "href": "slides/ch02-statistical-learning-slides.html#wages-vs.-age-year-education",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Wages vs. age, year, education",
-    "text": "Wages vs. age, year, education\n\nPythonR\n\n\nimport matplotlib.pyplot as plt\nfig, axes = plt.subplots(1, 3, figsize=(12, 4))\nWage.plot.scatter('age',  'wage', alpha=0.3, ax=axes[0])\nWage.plot.scatter('year', 'wage', alpha=0.3, ax=axes[1])\nedu_levels = Wage['education'].cat.categories\naxes[2].boxplot(\n    [Wage.loc[Wage['education'] == e, 'wage'] for e in edu_levels],\n    tick_labels=edu_levels,  # matplotlib ≥3.9; was `labels=` before\n)\naxes[2].set_xlabel('Education'); axes[2].set_ylabel('Wage')\naxes[2].tick_params(axis='x', rotation=45)\nplt.tight_layout()\n\n\npar(mfrow = c(1, 3))\nplot(Wage$age,       Wage$wage, col = \"grey\", pch = 20, xlab = \"Age\",       ylab = \"Wage\")\nplot(Wage$year,      Wage$wage, col = \"grey\", pch = 20, xlab = \"Year\",      ylab = \"Wage\")\nplot(Wage$education, Wage$wage, col = \"grey\", pch = 20, xlab = \"Education\", ylab = \"Wage\")"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#the-general-setup",
-    "href": "slides/ch02-statistical-learning-slides.html#the-general-setup",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "The general setup",
-    "text": "The general setup\nWe observe a response \\(Y\\) and \\(p\\) predictors \\(X = (X_1, \\ldots, X_p)\\).\nWe assume:\n\\[Y = f(X) + \\varepsilon\\]\n\n\\(f\\) is a fixed but unknown function of \\(X_1, \\ldots, X_p\\)\n\\(\\varepsilon\\) is a random error term, independent of \\(X\\), with \\(E[\\varepsilon] = 0\\)\n\nStatistical learning is a collection of approaches for estimating \\(f\\)."
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#prediction-vs.-inference",
-    "href": "slides/ch02-statistical-learning-slides.html#prediction-vs.-inference",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Prediction vs. inference",
-    "text": "Prediction vs. inference\nPrediction — we treat \\(f\\) as a black box.\n\\[\\hat{Y} = \\hat{f}(X)\\]\nWe care about accuracy, not the form of \\(\\hat{f}\\).\nInference — we want to understand how \\(Y\\) changes with \\(X\\).\n\nWhich predictors are associated with the response?\nWhat is the direction and magnitude of each association?\nCan the relationship be summarised as linear, or is it more complex?"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#parametric-methods",
-    "href": "slides/ch02-statistical-learning-slides.html#parametric-methods",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Parametric methods",
-    "text": "Parametric methods\n\nAssume a functional form for \\(f\\), e.g., the linear model: \\[f(X) = \\beta_0 + \\beta_1 X_1 + \\cdots + \\beta_p X_p\\]\nUse training data to fit (estimate) the parameters \\(\\beta_0, \\ldots, \\beta_p\\).\n\n\nPythonR\n\n\nfrom sklearn.linear_model import LinearRegression\nimport pandas as pd\n\nX = pd.get_dummies(Wage[['age', 'year', 'education']], drop_first=True)\ny = Wage['wage']\n\nlm = LinearRegression().fit(X, y)\nprint(lm.coef_)\n\n\nfit &lt;- lm(wage ~ age + year + education, data = Wage)\nsummary(fit)"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#non-parametric-methods",
-    "href": "slides/ch02-statistical-learning-slides.html#non-parametric-methods",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Non-parametric methods",
-    "text": "Non-parametric methods\nNo explicit assumption about the form of \\(f\\); seek an estimate that fits the data points as closely as possible without being too rough or wiggly.\nAdvantage — can fit a wider range of shapes for \\(f\\).\nDisadvantage — require many observations; harder to interpret."
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#the-flexibilityinterpretability-trade-off",
-    "href": "slides/ch02-statistical-learning-slides.html#the-flexibilityinterpretability-trade-off",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "The flexibility–interpretability trade-off",
-    "text": "The flexibility–interpretability trade-off\nMore flexible models can fit more complex \\(f\\), but are:\n\nharder to interpret (less useful for inference)\nmore prone to overfitting (poor test performance)\n\nLess flexible models are more interpretable and often more accurate when the true \\(f\\) is nearly linear."
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#training-vs.-test-mse",
-    "href": "slides/ch02-statistical-learning-slides.html#training-vs.-test-mse",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Training vs. test MSE",
-    "text": "Training vs. test MSE\nTraining MSE — computed on data used to fit the model:\n\\[\\text{MSE}_{\\text{train}} = \\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{f}(x_i))^2\\]\nWe really care about test MSE — how well does \\(\\hat{f}\\) predict new observations?"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#computing-test-mse-with-a-hold-out-set",
-    "href": "slides/ch02-statistical-learning-slides.html#computing-test-mse-with-a-hold-out-set",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Computing test MSE with a hold-out set",
-    "text": "Computing test MSE with a hold-out set\n\nPythonR\n\n\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error\n\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42)\n\nlm.fit(X_train, y_train)\nmse_test = mean_squared_error(y_test, lm.predict(X_test))\nprint(f\"Test MSE: {mse_test:.2f}\")\n\n\nset.seed(42)\ntrain_idx &lt;- sample(nrow(Wage), 0.8 * nrow(Wage))\nfit_train  &lt;- lm(wage ~ age + year + education, data = Wage[train_idx, ])\npred_test  &lt;- predict(fit_train, Wage[-train_idx, ])\nmse_test   &lt;- mean((Wage$wage[-train_idx] - pred_test)^2)\ncat(\"Test MSE:\", mse_test, \"\\n\")"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#the-bias-variance-trade-off",
-    "href": "slides/ch02-statistical-learning-slides.html#the-bias-variance-trade-off",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "The bias-variance trade-off",
-    "text": "The bias-variance trade-off\nFor any \\(x_0\\) and any \\(\\hat{f}\\):\n\\[E\\!\\left[(y_0 - \\hat{f}(x_0))^2\\right]\n  = \\underbrace{\\operatorname{Var}(\\hat{f}(x_0))}_{\\text{variance}}\n  + \\underbrace{\\left[\\operatorname{Bias}(\\hat{f}(x_0))\\right]^2}_{\\text{bias}^2}\n  + \\underbrace{\\operatorname{Var}(\\varepsilon)}_{\\text{irreducible}}\\]\n\nVariance — how much \\(\\hat{f}\\) changes across different training sets\nBias — error from assuming a wrong functional form for \\(f\\)\nIrreducible error — noise in \\(Y\\); cannot be reduced by any model"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#bias-variance-in-practice",
-    "href": "slides/ch02-statistical-learning-slides.html#bias-variance-in-practice",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Bias-variance in practice",
-    "text": "Bias-variance in practice\nAs model flexibility increases:\n\n\n\n\nVariance\nBias\n\n\n\n\nVery flexible\nHigh ↑\nLow ↓\n\n\nVery inflexible\nLow ↓\nHigh ↑\n\n\n\nThe test MSE is minimised at the sweet spot where variance and bias² together are smallest — the bias-variance trade-off."
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#error-rates",
-    "href": "slides/ch02-statistical-learning-slides.html#error-rates",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Error rates",
-    "text": "Error rates\nThe response \\(Y\\) is now qualitative (a class label).\nTraining error rate:\n\\[\\frac{1}{n}\\sum_{i=1}^{n} \\mathbf{1}(y_i \\neq \\hat{y}_i)\\]\nWe care about the test error rate: how often does the classifier misclassify a new observation?"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#the-bayes-classifier",
-    "href": "slides/ch02-statistical-learning-slides.html#the-bayes-classifier",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "The Bayes classifier",
-    "text": "The Bayes classifier\nAssigns each observation to the most probable class given the predictor values:\n\\[\\hat{Y} = \\arg\\max_j \\Pr(Y = j \\mid X = x_0)\\]\nThe resulting Bayes error rate (analogous to irreducible error) is:\n\\[1 - E\\!\\left[\\max_j \\Pr(Y = j \\mid X)\\right]\\]\nIn practice the true conditional probabilities \\(\\Pr(Y = j \\mid X)\\) are unknown. KNN estimates them from data."
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#k-nearest-neighbours",
-    "href": "slides/ch02-statistical-learning-slides.html#k-nearest-neighbours",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "K-Nearest Neighbours",
-    "text": "K-Nearest Neighbours\nFor a test point \\(x_0\\), identify the \\(K\\) closest training observations \\(\\mathcal{N}_0\\) and estimate:\n\\[\\Pr(Y = j \\mid X = x_0) = \\frac{1}{K}\\sum_{i \\in \\mathcal{N}_0}\\mathbf{1}(y_i = j)\\]\n\nPythonR\n\n\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Example: predict stock market direction with KNN (K = 3)\nX_smarket = Smarket[['Lag1', 'Lag2']]\ny_smarket = Smarket['Direction']\n\nX_tr, X_te, y_tr, y_te = train_test_split(\n    X_smarket, y_smarket, test_size=0.2, random_state=0)\n\nknn = KNeighborsClassifier(n_neighbors=3).fit(X_tr, y_tr)\nprint(\"Test accuracy:\", knn.score(X_te, y_te).round(3))\n\n\nlibrary(class)\nset.seed(0)\ntrain_idx &lt;- sample(nrow(Smarket), 0.8 * nrow(Smarket))\n\nknn_pred &lt;- knn(\n  train = Smarket[train_idx,  c(\"Lag1\", \"Lag2\")],\n  test  = Smarket[-train_idx, c(\"Lag1\", \"Lag2\")],\n  cl    = Smarket$Direction[train_idx],\n  k     = 3\n)\nmean(knn_pred == Smarket$Direction[-train_idx])"
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#knn-the-role-of-k",
-    "href": "slides/ch02-statistical-learning-slides.html#knn-the-role-of-k",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "KNN: the role of \\(K\\)",
-    "text": "KNN: the role of \\(K\\)\n\nSmall \\(K\\) (e.g., \\(K = 1\\)) — very flexible; low bias, high variance (overfit)\nLarge \\(K\\) (e.g., \\(K = n\\)) — inflexible; high bias, low variance (underfit)\nOptimal \\(K\\) — minimises test error; found by cross-validation (Chapter 5)\n\nKNN illustrates the bias-variance trade-off in the classification setting just as smoothing splines do in regression."
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#key-takeaways",
-    "href": "slides/ch02-statistical-learning-slides.html#key-takeaways",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "Key takeaways",
-    "text": "Key takeaways\n\nStatistical learning: estimating \\(f\\) in \\(Y = f(X) + \\varepsilon\\).\nChoice of method depends on the goal (prediction vs. inference) and the form of \\(f\\).\nMore flexible models reduce bias but increase variance — there is no free lunch.\nWe assess a model on test data, not training data.\nThe Bayes classifier sets the lower bound on test error; KNN approximates it when the true conditional probabilities are unknown."
-  },
-  {
-    "objectID": "slides/ch02-statistical-learning-slides.html#whats-next",
-    "href": "slides/ch02-statistical-learning-slides.html#whats-next",
-    "title": "Chapter 2 — Statistical Learning",
-    "section": "What’s next",
-    "text": "What’s next\n\nChapter 3: Linear regression — the simplest parametric approach.\nChapter 4: Classification — logistic regression, LDA, QDA.\nChapter 5: Cross-validation and the bootstrap — how to properly estimate test error."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ISLP Labs",
-    "section": "",
-    "text": "A Quarto website that hosts handouts for the labs in An Introduction to Statistical Learning with Applications in Python (ISLP), starting with Chapter 7 — Non-Linear Modeling. The handouts re-organize each lab as a sequence of exercises with hide-able solutions, so that students can attempt the steps themselves before revealing the worked code.\nThe lab content is adapted with permission from the source available at https://www.statlearning.com, and tracks the upstream intro-stat-learning/ISLP_labs repository."
-  },
-  {
-    "objectID": "index.html#available-handouts",
-    "href": "index.html#available-handouts",
-    "title": "ISLP Labs",
-    "section": "Available handouts",
-    "text": "Available handouts\n\nChapter 7 — Non-Linear Modeling"
-  },
-  {
-    "objectID": "index.html#r-alternative",
-    "href": "index.html#r-alternative",
-    "title": "ISLP Labs",
-    "section": "R alternative",
-    "text": "R alternative\nStudents who prefer to work in R may follow the corresponding chapter of Emil Hvitfeldt’s ISLR tidymodels labs."
-  },
-  {
-    "objectID": "index.html#original-labs",
-    "href": "index.html#original-labs",
-    "title": "ISLP Labs",
-    "section": "Original labs",
-    "text": "Original labs\nThe full set of original ISLP labs (Chapters 2–13) is available as Jupyter notebooks in the intro-stat-learning/ISLP_labs repository."
-  },
-  {
-    "objectID": "index.html#building-the-handouts",
-    "href": "index.html#building-the-handouts",
-    "title": "ISLP Labs",
-    "section": "Building the handouts",
-    "text": "Building the handouts\nTwo parallel renders of the website are produced — a student worksheet (prompts only) and a solution key (solutions only) — each written to its own subdirectory of _site/. The exercise/solution toggling is provided by the coatless-quarto/assign Quarto extension.\nRender the solution key (the default profile):\nquarto render\nRender the student worksheet:\nquarto render --profile assign\nThe published GitHub Pages site combines both — its top-level index.html links to assign/ and solution/."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#setup",
-    "href": "Ch07-nonlin-lab-slides.html#setup",
-    "title": "Non-Linear Modeling",
-    "section": "Setup",
-    "text": "Setup\nAs usual, we start with some of our standard imports.\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
-    "href": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
-    "title": "Non-Linear Modeling",
-    "section": "Polynomial Regression and Step Functions",
-    "text": "Polynomial Regression and Step Functions\nExercise 1. Load the Wage data with load_data('Wage'). Store the response (wage) as y and the predictor (age) as age.\nSolution.\nThroughout most of this lab, our response is Wage['wage'], which we have stored as y above.\nExercise 2. Use poly() inside MS() to build a 4th-degree polynomial in age, fit an OLS model of y on this basis, and print the coefficient summary.\nSolution.\npoly() is a helper that sets up the transformation; Poly() is the workhorse that computes it. The first line above runs the fit() method on Wage, which stores any parameters needed by Poly() on the training data so that subsequent transform() calls (on new data, or inside the plotting function below) use the same basis.\nExercise 3. Build a grid age_grid of 100 evenly spaced values spanning the observed range of age, and wrap it in a single-column DataFrame named age_df.\nSolution.\nExercise 4. Write a function plot_wage_fit(age_df, basis, title) that fits OLS on the supplied basis, evaluates it on age_df, and plots the raw data with the fitted curve and its 95% confidence bands.\nSolution.\nThe alpha argument to ax.scatter() adds transparency that gives a visual indication of density. zip() bundles the three lines (fitted mean and two confidence bands) with their colours and line types for the for loop.\nExercise 5. Use your helper to plot the degree-4 polynomial fit.\nSolution.\nExercise 6. With polynomial regression we must decide on the degree of the polynomial to use. Fit polynomial models in age of degrees 1 through 5, and use anova_lm() to test which degree is sufficient.\nSolution.\nThe * unpacks the list of fitted models for anova_lm()’s variable argument list. The p-value comparing linear models[0] to quadratic models[1] is essentially zero, and the cubic-vs-quartic comparison is roughly 5%, while degree 5 is unnecessary (p = 0.37). Either a cubic or a quartic polynomial gives a reasonable fit.\nExercise 7. Repeat the ANOVA, but with a linear term in education included in each model alongside a polynomial in age of degrees 1, 2, 3.\nSolution.\nThe ANOVA approach works whether or not the polynomials are orthogonal, provided the models are nested. As an alternative, we could choose the polynomial degree by cross-validation (Chapter 5).\nExercise 8. Now consider predicting whether someone earns more than $250,000 per year. Fit a logistic regression (use sm.GLM with a Binomial family) of wage &gt; 250 on the same 4th-degree polynomial basis in age, and produce a plot of the predicted probability vs. age (with confidence bands and a rug plot).\nSolution.\n(The double assignment high_earn = Wage['high_earn'] = y &gt; 250 both binds the local variable high_earn and stores the indicator as a new column on the Wage DataFrame. We’ll re-use that column in Exercises 29 and 30.)\nThe age values above 250 are shown as gray marks at the top of the plot; those below 250 at the bottom. A small amount of jitter prevents identical-age points from overlapping. This is called a rug plot.\nExercise 9. Fit a step-function regression: discretise age into 4 quantile-based bins with pd.qcut(), build dummy columns with pd.get_dummies(), and fit OLS.\nSolution.\npd.qcut() chose cutpoints at the 25%, 50% and 75% quantiles, so we get four bins. pd.get_dummies() (unlike the usual model-matrix convention) keeps all category levels; combined with no intercept, each coefficient is the average wage in its bin. For non-quantile cutpoints, use pd.cut() instead."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#splines",
-    "href": "Ch07-nonlin-lab-slides.html#splines",
-    "title": "Non-Linear Modeling",
-    "section": "Splines",
-    "text": "Splines\nExercise 10. Use BSpline() from ISLP.transforms with internal_knots=[25, 40, 60] and intercept=True to build a cubic B-spline basis for age. What shape is the resulting design matrix?\nSolution.\nA cubic B-spline with 3 interior knots yields a 7-column matrix (3 + degree + 1 with intercept=True).\nExercise 11. Now fit a cubic spline regression of wage on age using the helper bs() inside MS(). Pass name='bs(age)' to clean up the column labels in the summary.\nSolution.\nNote there are 6 spline coefficients rather than 7 because bs() defaults to intercept=False — the basis would normally be 7 columns, but one is dropped to accommodate the model’s overall intercept.\nExercise 12. Instead of specifying knots, ask BSpline for df=6. Inspect internal_knots_ to see where the knots ended up.\nSolution.\nWith df=6 and cubic splines, three knots are placed at the 25%, 50% and 75% quantiles of age — ages 33.75, 42.0, and 51.0.\nExercise 13. B-splines need not be cubic. Fit a degree-0 spline with df=3 and compare the coefficients to your earlier qcut() step-function fit.\nSolution.\nDegree-0 B-splines are piecewise constant — equivalent to the step function from Exercise 9. With df=3 (degree 0), the knots are again at the same three quantiles. The coefficients look different because of the coding: here the intercept is a column of ones and the remaining three coefficients are increments relative to the first bin. The sums approximately recover the per-bin means (slight differences are because qcut() uses ≤ while bs() uses &lt; at the boundaries).\nExercise 14. Fit a natural cubic spline with 5 degrees of freedom using ns(), and plot the fit with plot_wage_fit().\nSolution."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#smoothing-splines-and-gams",
-    "href": "Ch07-nonlin-lab-slides.html#smoothing-splines-and-gams",
-    "title": "Non-Linear Modeling",
-    "section": "Smoothing Splines and GAMs",
-    "text": "Smoothing Splines and GAMs\nExercise 15. A smoothing spline is a special case of a GAM with squared-error loss and a single feature. Fit LinearGAM(s_gam(0, lam=0.6)) to predict wage from age. (Remember pygam expects a 2-D feature matrix.)\nSolution.\ns_gam(0, ...) says “apply a smoothing spline to column 0 of the feature matrix”. lam is the penalty parameter \\(\\lambda\\). The -1 inside .reshape((-1, 1)) tells NumPy to infer that dimension’s size.\nExercise 16. Investigate how the fit changes with the smoothing parameter. Loop lam over np.logspace(-2, 6, 5) and plot each resulting fit.\nSolution.\nExercise 17. pygam can search for an optimal smoothing parameter. Reproduce the plot from Exercise 16, call .gridsearch(X_age, y), and add the resulting fit on top.\nSolution.\nExercise 18. It’s often more interpretable to specify the effective degrees of freedom than lam. Use approx_lam() from ISLP.pygam to find a lam giving roughly 4 degrees of freedom for the age term, and verify with degrees_of_freedom().\nSolution.\nThese degrees of freedom include the unpenalized intercept and linear term of the smoothing spline — so there are at least 2 df.\nExercise 19. Now loop over df values [1, 3, 4, 8, 15] (passing df + 1 to approx_lam() to account for the intercept), refit, and plot each.\nSolution.\nA value of df=1 corresponds to a straight-line fit.\nAdditive Models with Several Terms\nExercise 20. Build a GAM “by hand”: use natural splines (NaturalSpline) with df=4 for age and df=5 for year, get dummies for education, stack them all into a model matrix X_bh, and fit OLS.\nSolution.\nWe use all columns of the indicator matrix for education (no intercept), and stack the three component matrices horizontally to form X_bh.\nExercise 21. Construct a partial-dependence plot for age from the by-hand GAM: predict on a matrix where all columns except those for age are held at their column means, and the age columns are swept across age_grid.\nSolution.\nThe idea is to create a new prediction matrix in which all but the columns for age are held constant at the training-data means; the four age columns are filled with the natural spline basis evaluated at the 100 values in age_grid.\nExercise 22. Do the same for year.\nSolution.\nExercise 23. Now fit the same GAM using smoothing splines via pygam. Build LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)), where f_gam is a factor term for education. (Convert education to numeric codes with .cat.codes.) Then plot the partial dependence for age using plot_gam() from ISLP.pygam.\nSolution.\nyear has only 7 unique values, so we use 7 basis functions. lam=0 on the factor term avoids any shrinkage. The default lam=0.6 for age produces a noticeably wiggly fit.\nExercise 24. Re-tune gam_full so that the age and year smoothers each have ~4 degrees of freedom (use approx_lam() with df=4+1), then re-plot the partial dependence for age and for year.\nSolution.\nNote that updating age_term.lam updates gam_full.terms[0] in place.\nExercise 25. Plot the partial dependence for education — a categorical term gets a different style of plot, suited to a set of fitted constants per level.\nSolution.\nANOVA Tests for Additive Models\nExercise 26. In all our models, the function of year looks fairly linear. Compare three models by ANOVA: a GAM that excludes year (\\(\\mathcal{M}_1\\)), a GAM that uses a linear term in year (\\(\\mathcal{M}_2\\)), and the full GAM with a smoothing spline in year (\\(\\mathcal{M}_3\\)). What do you conclude?\nSolution.\nNote the reuse of age_term — that term already has its lam set to yield 4 df, and we want to keep that across all three models.\nThere is compelling evidence that a GAM with a linear year term is better than one that omits year (p ≈ 0.002). However, there is no evidence that a nonlinear function of year is needed (p ≈ 0.435). So \\(\\mathcal{M}_2\\) is preferred.\nExercise 27. Repeat the test for age.\nSolution.\nVery strong evidence that a nonlinear term is required for age.\nExercise 28. Print gam_full.summary() and use gam_full.predict() to generate fitted values on the training set.\nSolution.\nExercise 29. Fit a logistic GAM for high_earn (i.e. wage &gt; 250) using LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0)). Plot the partial dependence for education.\nSolution.\nThe fit looks flat with very wide error bars on the first category.\nExercise 30. Cross-tabulate high_earn against education. What do you see?\nSolution.\nThere are no high earners in the lowest education category, so the logistic GAM has nothing to estimate there.\nExercise 31. Refit the logistic GAM excluding observations in the “1. &lt; HS Grad” category, then plot the partial dependence for education, year, and age.\nSolution.\nWe subtract 1 from cat.codes to work around a pygam bug — the relabeling has no effect on the fit."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#local-regression",
-    "href": "Ch07-nonlin-lab-slides.html#local-regression",
-    "title": "Non-Linear Modeling",
-    "section": "Local Regression",
-    "text": "Local Regression\nExercise 32. Finally, use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; pygam does not.\nSolution.\nAs expected, a span of 0.5 produces a smoother fit than 0.2."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab.html",
-    "href": "Ch07-nonlin-lab.html",
-    "title": "Non-Linear Modeling",
-    "section": "",
-    "text": "This handout adapts the Chapter 7 Python lab from the Introduction to Statistical Learning with Applications in Python (ISLP) textbook, with permission from the source available at https://www.statlearning.com. The original lab is Ch07-nonlin-lab.Rmd in the intro-stat-learning/ISLP_labs repository.\nStudents who prefer R can work through the corresponding chapter of Emil Hvitfeldt’s ISLR tidymodels labs.\nIn this lab we demonstrate some of the nonlinear models discussed in this chapter. We use the Wage data as a running example, and show that many of the complex non-linear fitting procedures discussed can easily be implemented in Python."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab.html#setup",
-    "href": "Ch07-nonlin-lab.html#setup",
-    "title": "Non-Linear Modeling",
-    "section": "Setup",
-    "text": "Setup\nAs usual, we start with some of our standard imports.\n\nimport numpy as np, pandas as pd\nfrom matplotlib.pyplot import subplots\nimport statsmodels.api as sm\nfrom ISLP import load_data\nfrom ISLP.models import (summarize,\n                         poly,\n                         ModelSpec as MS)\nfrom statsmodels.stats.anova import anova_lm\n\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package.\n\nfrom pygam import (s as s_gam,\n                   l as l_gam,\n                   f as f_gam,\n                   LinearGAM,\n                   LogisticGAM)\n\nfrom ISLP.transforms import (BSpline,\n                             NaturalSpline)\nfrom ISLP.models import bs, ns\nfrom ISLP.pygam import (approx_lam,\n                        degrees_of_freedom,\n                        plot as plot_gam,\n                        anova as anova_gam)"
-  },
-  {
-    "objectID": "Ch07-nonlin-lab.html#polynomial-regression-and-step-functions",
-    "href": "Ch07-nonlin-lab.html#polynomial-regression-and-step-functions",
-    "title": "Non-Linear Modeling",
-    "section": "Polynomial Regression and Step Functions",
-    "text": "Polynomial Regression and Step Functions\nExercise 1. Load the Wage data with load_data('Wage'). Store the response (wage) as y and the predictor (age) as age.\nSolution.\n\nWage = load_data('Wage')\ny = Wage['wage']\nage = Wage['age']\n\nThroughout most of this lab, our response is Wage['wage'], which we have stored as y above.\nExercise 2. Use poly() inside MS() to build a 4th-degree polynomial in age, fit an OLS model of y on this basis, and print the coefficient summary.\nSolution.\n\npoly_age = MS([poly('age', degree=4)]).fit(Wage)\nM = sm.OLS(y, poly_age.transform(Wage)).fit()\nsummarize(M)\n\npoly() is a helper that sets up the transformation; Poly() is the workhorse that computes it. The first line above runs the fit() method on Wage, which stores any parameters needed by Poly() on the training data so that subsequent transform() calls (on new data, or inside the plotting function below) use the same basis.\nExercise 3. Build a grid age_grid of 100 evenly spaced values spanning the observed range of age, and wrap it in a single-column DataFrame named age_df.\nSolution.\n\nage_grid = np.linspace(age.min(),\n                       age.max(),\n                       100)\nage_df = pd.DataFrame({'age': age_grid})\n\nExercise 4. Write a function plot_wage_fit(age_df, basis, title) that fits OLS on the supplied basis, evaluates it on age_df, and plots the raw data with the fitted curve and its 95% confidence bands.\nSolution.\n\ndef plot_wage_fit(age_df,\n                  basis,\n                  title):\n\n    X = basis.transform(Wage)\n    Xnew = basis.transform(age_df)\n    M = sm.OLS(y, X).fit()\n    preds = M.get_prediction(Xnew)\n    bands = preds.conf_int(alpha=0.05)\n    fig, ax = subplots(figsize=(8, 8))\n    ax.scatter(age,\n               y,\n               facecolor='gray',\n               alpha=0.5)\n    for val, ls in zip([preds.predicted_mean,\n                        bands[:, 0],\n                        bands[:, 1]],\n                       ['b', 'r--', 'r--']):\n        ax.plot(age_df.values, val, ls, linewidth=3)\n    ax.set_title(title, fontsize=20)\n    ax.set_xlabel('Age', fontsize=20)\n    ax.set_ylabel('Wage', fontsize=20)\n    return ax\n\nThe alpha argument to ax.scatter() adds transparency that gives a visual indication of density. zip() bundles the three lines (fitted mean and two confidence bands) with their colours and line types for the for loop.\nExercise 5. Use your helper to plot the degree-4 polynomial fit.\nSolution.\n\nplot_wage_fit(age_df,\n              poly_age,\n              'Degree-4 Polynomial');\n\nExercise 6. With polynomial regression we must decide on the degree of the polynomial to use. Fit polynomial models in age of degrees 1 through 5, and use anova_lm() to test which degree is sufficient.\nSolution.\n\nmodels = [MS([poly('age', degree=d)])\n          for d in range(1, 6)]\nXs = [model.fit_transform(Wage) for model in models]\nanova_lm(*[sm.OLS(y, X_).fit()\n           for X_ in Xs])\n\nThe * unpacks the list of fitted models for anova_lm()’s variable argument list. The p-value comparing linear models[0] to quadratic models[1] is essentially zero, and the cubic-vs-quartic comparison is roughly 5%, while degree 5 is unnecessary (p = 0.37). Either a cubic or a quartic polynomial gives a reasonable fit.\nExercise 7. Repeat the ANOVA, but with a linear term in education included in each model alongside a polynomial in age of degrees 1, 2, 3.\nSolution.\n\nmodels = [MS(['education', poly('age', degree=d)])\n          for d in range(1, 4)]\nXEs = [model.fit_transform(Wage)\n       for model in models]\nanova_lm(*[sm.OLS(y, X_).fit() for X_ in XEs])\n\nThe ANOVA approach works whether or not the polynomials are orthogonal, provided the models are nested. As an alternative, we could choose the polynomial degree by cross-validation (Chapter 5).\nExercise 8. Now consider predicting whether someone earns more than $250,000 per year. Fit a logistic regression (use sm.GLM with a Binomial family) of wage &gt; 250 on the same 4th-degree polynomial basis in age, and produce a plot of the predicted probability vs. age (with confidence bands and a rug plot).\nSolution.\n\nX = poly_age.transform(Wage)\nhigh_earn = Wage['high_earn'] = y &gt; 250  # shorthand\nglm = sm.GLM(y &gt; 250,\n             X,\n             family=sm.families.Binomial())\nB = glm.fit()\nsummarize(B)\n\n(The double assignment high_earn = Wage['high_earn'] = y &gt; 250 both binds the local variable high_earn and stores the indicator as a new column on the Wage DataFrame. We’ll re-use that column in Exercises 29 and 30.)\n\nnewX = poly_age.transform(age_df)\npreds = B.get_prediction(newX)\nbands = preds.conf_int(alpha=0.05)\n\nfig, ax = subplots(figsize=(8, 8))\nrng = np.random.default_rng(0)\nax.scatter(age +\n           0.2 * rng.uniform(size=y.shape[0]),\n           np.where(high_earn, 0.198, 0.002),\n           fc='gray',\n           marker='|')\nfor val, ls in zip([preds.predicted_mean,\n                    bands[:, 0],\n                    bands[:, 1]],\n                   ['b', 'r--', 'r--']):\n    ax.plot(age_df.values, val, ls, linewidth=3)\nax.set_title('Degree-4 Polynomial', fontsize=20)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylim([0, 0.2])\nax.set_ylabel('P(Wage &gt; 250)', fontsize=20);\n\nThe age values above 250 are shown as gray marks at the top of the plot; those below 250 at the bottom. A small amount of jitter prevents identical-age points from overlapping. This is called a rug plot.\nExercise 9. Fit a step-function regression: discretise age into 4 quantile-based bins with pd.qcut(), build dummy columns with pd.get_dummies(), and fit OLS.\nSolution.\n\ncut_age = pd.qcut(age, 4)\nsummarize(sm.OLS(y, pd.get_dummies(cut_age)).fit())\n\npd.qcut() chose cutpoints at the 25%, 50% and 75% quantiles, so we get four bins. pd.get_dummies() (unlike the usual model-matrix convention) keeps all category levels; combined with no intercept, each coefficient is the average wage in its bin. For non-quantile cutpoints, use pd.cut() instead."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab.html#splines",
-    "href": "Ch07-nonlin-lab.html#splines",
-    "title": "Non-Linear Modeling",
-    "section": "Splines",
-    "text": "Splines\nExercise 10. Use BSpline() from ISLP.transforms with internal_knots=[25, 40, 60] and intercept=True to build a cubic B-spline basis for age. What shape is the resulting design matrix?\nSolution.\n\nbs_ = BSpline(internal_knots=[25, 40, 60], intercept=True).fit(age)\nbs_age = bs_.transform(age)\nbs_age.shape\n\nA cubic B-spline with 3 interior knots yields a 7-column matrix (3 + degree + 1 with intercept=True).\nExercise 11. Now fit a cubic spline regression of wage on age using the helper bs() inside MS(). Pass name='bs(age)' to clean up the column labels in the summary.\nSolution.\n\nbs_age = MS([bs('age',\n                internal_knots=[25, 40, 60],\n                name='bs(age)')])\nXbs = bs_age.fit_transform(Wage)\nM = sm.OLS(y, Xbs).fit()\nsummarize(M)\n\nNote there are 6 spline coefficients rather than 7 because bs() defaults to intercept=False — the basis would normally be 7 columns, but one is dropped to accommodate the model’s overall intercept.\nExercise 12. Instead of specifying knots, ask BSpline for df=6. Inspect internal_knots_ to see where the knots ended up.\nSolution.\n\nBSpline(df=6).fit(age).internal_knots_\n\nWith df=6 and cubic splines, three knots are placed at the 25%, 50% and 75% quantiles of age — ages 33.75, 42.0, and 51.0.\nExercise 13. B-splines need not be cubic. Fit a degree-0 spline with df=3 and compare the coefficients to your earlier qcut() step-function fit.\nSolution.\n\nbs_age0 = MS([bs('age',\n                 df=3,\n                 degree=0)]).fit(Wage)\nXbs0 = bs_age0.transform(Wage)\nsummarize(sm.OLS(y, Xbs0).fit())\n\nDegree-0 B-splines are piecewise constant — equivalent to the step function from Exercise 9. With df=3 (degree 0), the knots are again at the same three quantiles. The coefficients look different because of the coding: here the intercept is a column of ones and the remaining three coefficients are increments relative to the first bin. The sums approximately recover the per-bin means (slight differences are because qcut() uses ≤ while bs() uses &lt; at the boundaries).\nExercise 14. Fit a natural cubic spline with 5 degrees of freedom using ns(), and plot the fit with plot_wage_fit().\nSolution.\n\nns_age = MS([ns('age', df=5)]).fit(Wage)\nM_ns = sm.OLS(y, ns_age.transform(Wage)).fit()\nsummarize(M_ns)\n\n\nplot_wage_fit(age_df,\n              ns_age,\n              'Natural spline, df=5');"
-  },
-  {
-    "objectID": "Ch07-nonlin-lab.html#smoothing-splines-and-gams",
-    "href": "Ch07-nonlin-lab.html#smoothing-splines-and-gams",
-    "title": "Non-Linear Modeling",
-    "section": "Smoothing Splines and GAMs",
-    "text": "Smoothing Splines and GAMs\nExercise 15. A smoothing spline is a special case of a GAM with squared-error loss and a single feature. Fit LinearGAM(s_gam(0, lam=0.6)) to predict wage from age. (Remember pygam expects a 2-D feature matrix.)\nSolution.\n\nX_age = np.asarray(age).reshape((-1, 1))\ngam = LinearGAM(s_gam(0, lam=0.6))\ngam.fit(X_age, y)\n\ns_gam(0, ...) says “apply a smoothing spline to column 0 of the feature matrix”. lam is the penalty parameter \\(\\lambda\\). The -1 inside .reshape((-1, 1)) tells NumPy to infer that dimension’s size.\nExercise 16. Investigate how the fit changes with the smoothing parameter. Loop lam over np.logspace(-2, 6, 5) and plot each resulting fit.\nSolution.\n\nfig, ax = subplots(figsize=(8, 8))\nax.scatter(age, y, facecolor='gray', alpha=0.5)\nfor lam in np.logspace(-2, 6, 5):\n    gam = LinearGAM(s_gam(0, lam=lam)).fit(X_age, y)\n    ax.plot(age_grid,\n            gam.predict(age_grid),\n            label='{:.1e}'.format(lam),\n            linewidth=3)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylabel('Wage', fontsize=20);\nax.legend(title=r'$\\lambda$');\n\nExercise 17. pygam can search for an optimal smoothing parameter. Reproduce the plot from Exercise 16, call .gridsearch(X_age, y), and add the resulting fit on top.\nSolution.\n\nfig, ax = subplots(figsize=(8, 8))\nax.scatter(age, y, facecolor='gray', alpha=0.5)\nfor lam in np.logspace(-2, 6, 5):\n    gam = LinearGAM(s_gam(0, lam=lam)).fit(X_age, y)\n    ax.plot(age_grid,\n            gam.predict(age_grid),\n            label='{:.1e}'.format(lam),\n            linewidth=3)\ngam_opt = gam.gridsearch(X_age, y)\nax.plot(age_grid,\n        gam_opt.predict(age_grid),\n        label='Grid search',\n        linewidth=4)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylabel('Wage', fontsize=20)\nax.legend(title=r'$\\lambda$')\nfig\n\nExercise 18. It’s often more interpretable to specify the effective degrees of freedom than lam. Use approx_lam() from ISLP.pygam to find a lam giving roughly 4 degrees of freedom for the age term, and verify with degrees_of_freedom().\nSolution.\n\nage_term = gam.terms[0]\nlam_4 = approx_lam(X_age, age_term, 4)\nage_term.lam = lam_4\ndegrees_of_freedom(X_age, age_term)\n\nThese degrees of freedom include the unpenalized intercept and linear term of the smoothing spline — so there are at least 2 df.\nExercise 19. Now loop over df values [1, 3, 4, 8, 15] (passing df + 1 to approx_lam() to account for the intercept), refit, and plot each.\nSolution.\n\nfig, ax = subplots(figsize=(8, 8))\nax.scatter(X_age,\n           y,\n           facecolor='gray',\n           alpha=0.3)\nfor df in [1, 3, 4, 8, 15]:\n    lam = approx_lam(X_age, age_term, df + 1)\n    age_term.lam = lam\n    gam.fit(X_age, y)\n    ax.plot(age_grid,\n            gam.predict(age_grid),\n            label='{:d}'.format(df),\n            linewidth=4)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylabel('Wage', fontsize=20);\nax.legend(title='Degrees of freedom');\n\nA value of df=1 corresponds to a straight-line fit.\n\nAdditive Models with Several Terms\nExercise 20. Build a GAM “by hand”: use natural splines (NaturalSpline) with df=4 for age and df=5 for year, get dummies for education, stack them all into a model matrix X_bh, and fit OLS.\nSolution.\n\nns_age = NaturalSpline(df=4).fit(age)\nns_year = NaturalSpline(df=5).fit(Wage['year'])\nXs = [ns_age.transform(age),\n      ns_year.transform(Wage['year']),\n      pd.get_dummies(Wage['education']).values]\nX_bh = np.hstack(Xs)\ngam_bh = sm.OLS(y, X_bh).fit()\n\nWe use all columns of the indicator matrix for education (no intercept), and stack the three component matrices horizontally to form X_bh.\nExercise 21. Construct a partial-dependence plot for age from the by-hand GAM: predict on a matrix where all columns except those for age are held at their column means, and the age columns are swept across age_grid.\nSolution.\n\nage_grid = np.linspace(age.min(),\n                       age.max(),\n                       100)\nX_age_bh = X_bh.copy()[:100]\nX_age_bh[:] = X_bh.mean(0)[None, :]\nX_age_bh[:, :4] = ns_age.transform(age_grid)\npreds = gam_bh.get_prediction(X_age_bh)\nbounds_age = preds.conf_int(alpha=0.05)\npartial_age = preds.predicted_mean\ncenter = partial_age.mean()\npartial_age -= center\nbounds_age -= center\nfig, ax = subplots(figsize=(8, 8))\nax.plot(age_grid, partial_age, 'b', linewidth=3)\nax.plot(age_grid, bounds_age[:, 0], 'r--', linewidth=3)\nax.plot(age_grid, bounds_age[:, 1], 'r--', linewidth=3)\nax.set_xlabel('Age')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of age on wage', fontsize=20);\n\nThe idea is to create a new prediction matrix in which all but the columns for age are held constant at the training-data means; the four age columns are filled with the natural spline basis evaluated at the 100 values in age_grid.\nExercise 22. Do the same for year.\nSolution.\n\nyear_grid = np.linspace(Wage['year'].min(),\n                        Wage['year'].max(),\n                        100)\nX_year_bh = X_bh.copy()[:100]\nX_year_bh[:] = X_bh.mean(0)[None, :]\nX_year_bh[:, 4:9] = ns_year.transform(year_grid)\npreds = gam_bh.get_prediction(X_year_bh)\nbounds_year = preds.conf_int(alpha=0.05)\npartial_year = preds.predicted_mean\ncenter = partial_year.mean()\npartial_year -= center\nbounds_year -= center\nfig, ax = subplots(figsize=(8, 8))\nax.plot(year_grid, partial_year, 'b', linewidth=3)\nax.plot(year_grid, bounds_year[:, 0], 'r--', linewidth=3)\nax.plot(year_grid, bounds_year[:, 1], 'r--', linewidth=3)\nax.set_xlabel('Year')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of year on wage', fontsize=20);\n\nExercise 23. Now fit the same GAM using smoothing splines via pygam. Build LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)), where f_gam is a factor term for education. (Convert education to numeric codes with .cat.codes.) Then plot the partial dependence for age using plot_gam() from ISLP.pygam.\nSolution.\n\ngam_full = LinearGAM(s_gam(0) +\n                     s_gam(1, n_splines=7) +\n                     f_gam(2, lam=0))\nXgam = np.column_stack([age,\n                        Wage['year'],\n                        Wage['education'].cat.codes])\ngam_full = gam_full.fit(Xgam, y)\n\n\nfig, ax = subplots(figsize=(8, 8))\nplot_gam(gam_full, 0, ax=ax)\nax.set_xlabel('Age')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of age on wage - default lam=0.6', fontsize=20);\n\nyear has only 7 unique values, so we use 7 basis functions. lam=0 on the factor term avoids any shrinkage. The default lam=0.6 for age produces a noticeably wiggly fit.\nExercise 24. Re-tune gam_full so that the age and year smoothers each have ~4 degrees of freedom (use approx_lam() with df=4+1), then re-plot the partial dependence for age and for year.\nSolution.\n\nage_term = gam_full.terms[0]\nage_term.lam = approx_lam(Xgam, age_term, df=4 + 1)\nyear_term = gam_full.terms[1]\nyear_term.lam = approx_lam(Xgam, year_term, df=4 + 1)\ngam_full = gam_full.fit(Xgam, y)\n\nNote that updating age_term.lam updates gam_full.terms[0] in place.\n\nfig, ax = subplots(figsize=(8, 8))\nplot_gam(gam_full,\n         1,\n         ax=ax)\nax.set_xlabel('Year')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of year on wage', fontsize=20)\n\nExercise 25. Plot the partial dependence for education — a categorical term gets a different style of plot, suited to a set of fitted constants per level.\nSolution.\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_full, 2)\nax.set_xlabel('Education')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of wage on education',\n             fontsize=20);\nax.set_xticklabels(Wage['education'].cat.categories, fontsize=8);\n\n\n\nANOVA Tests for Additive Models\nExercise 26. In all our models, the function of year looks fairly linear. Compare three models by ANOVA: a GAM that excludes year (\\(\\mathcal{M}_1\\)), a GAM that uses a linear term in year (\\(\\mathcal{M}_2\\)), and the full GAM with a smoothing spline in year (\\(\\mathcal{M}_3\\)). What do you conclude?\nSolution.\n\ngam_0 = LinearGAM(age_term + f_gam(2, lam=0))\ngam_0.fit(Xgam, y)\ngam_linear = LinearGAM(age_term +\n                       l_gam(1, lam=0) +\n                       f_gam(2, lam=0))\ngam_linear.fit(Xgam, y)\n\nanova_gam(gam_0, gam_linear, gam_full)\n\nNote the reuse of age_term — that term already has its lam set to yield 4 df, and we want to keep that across all three models.\nThere is compelling evidence that a GAM with a linear year term is better than one that omits year (p ≈ 0.002). However, there is no evidence that a nonlinear function of year is needed (p ≈ 0.435). So \\(\\mathcal{M}_2\\) is preferred.\nExercise 27. Repeat the test for age.\nSolution.\n\ngam_0 = LinearGAM(year_term +\n                  f_gam(2, lam=0))\ngam_linear = LinearGAM(l_gam(0, lam=0) +\n                       year_term +\n                       f_gam(2, lam=0))\ngam_0.fit(Xgam, y)\ngam_linear.fit(Xgam, y)\nanova_gam(gam_0, gam_linear, gam_full)\n\nVery strong evidence that a nonlinear term is required for age.\nExercise 28. Print gam_full.summary() and use gam_full.predict() to generate fitted values on the training set.\nSolution.\n\ngam_full.summary()\n\n\nYhat = gam_full.predict(Xgam)\n\nExercise 29. Fit a logistic GAM for high_earn (i.e. wage &gt; 250) using LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0)). Plot the partial dependence for education.\nSolution.\n\ngam_logit = LogisticGAM(age_term +\n                        l_gam(1, lam=0) +\n                        f_gam(2, lam=0))\ngam_logit.fit(Xgam, high_earn)\n\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_logit, 2)\nax.set_xlabel('Education')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of wage on education',\n             fontsize=20);\nax.set_xticklabels(Wage['education'].cat.categories, fontsize=8);\n\nThe fit looks flat with very wide error bars on the first category.\nExercise 30. Cross-tabulate high_earn against education. What do you see?\nSolution.\n\npd.crosstab(Wage['high_earn'], Wage['education'])\n\nThere are no high earners in the lowest education category, so the logistic GAM has nothing to estimate there.\nExercise 31. Refit the logistic GAM excluding observations in the “1. &lt; HS Grad” category, then plot the partial dependence for education, year, and age.\nSolution.\n\nonly_hs = Wage['education'] == '1. &lt; HS Grad'\nWage_ = Wage.loc[~only_hs]\nXgam_ = np.column_stack([Wage_['age'],\n                         Wage_['year'],\n                         Wage_['education'].cat.codes - 1])\nhigh_earn_ = Wage_['high_earn']\n\nWe subtract 1 from cat.codes to work around a pygam bug — the relabeling has no effect on the fit.\n\ngam_logit_ = LogisticGAM(age_term +\n                         year_term +\n                         f_gam(2, lam=0))\ngam_logit_.fit(Xgam_, high_earn_)\n\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_logit_, 2)\nax.set_xlabel('Education')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of high earner status on education', fontsize=20);\nax.set_xticklabels(Wage['education'].cat.categories[1:],\n                   fontsize=8);\n\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_logit_, 1)\nax.set_xlabel('Year')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of high earner status on year',\n             fontsize=20);\n\n\nfig, ax = subplots(figsize=(8, 8))\nax = plot_gam(gam_logit_, 0)\nax.set_xlabel('Age')\nax.set_ylabel('Effect on wage')\nax.set_title('Partial dependence of high earner status on age', fontsize=20);"
-  },
-  {
-    "objectID": "Ch07-nonlin-lab.html#local-regression",
-    "href": "Ch07-nonlin-lab.html#local-regression",
-    "title": "Non-Linear Modeling",
-    "section": "Local Regression",
-    "text": "Local Regression\nExercise 32. Finally, use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; pygam does not.\nSolution.\n\nlowess = sm.nonparametric.lowess\nfig, ax = subplots(figsize=(8, 8))\nax.scatter(age, y, facecolor='gray', alpha=0.5)\nfor span in [0.2, 0.5]:\n    fitted = lowess(y,\n                    age,\n                    frac=span,\n                    xvals=age_grid)\n    ax.plot(age_grid,\n            fitted,\n            label='{:.1f}'.format(span),\n            linewidth=4)\nax.set_xlabel('Age', fontsize=20)\nax.set_ylabel('Wage', fontsize=20);\nax.legend(title='span', fontsize=15);\n\nAs expected, a span of 0.5 produces a smoother fit than 0.2."
-  },
-  {
     "objectID": "slides/index.html",
     "href": "slides/index.html",
     "title": "ISL slide decks",
@@ -459,7 +858,7 @@
     "href": "slides/index.html#available-decks",
     "title": "ISL slide decks",
     "section": "Available decks",
-    "text": "Available decks\n\n\n\nChapter\nTitle\nFormats\n\n\n\n\n2\nStatistical Learning\nHTML · Slides\n\n\n\nMore chapters to follow."
+    "text": "Available decks\n\n\n\nChapter\nTitle\nFormats\n\n\n\n\n2\nStatistical Learning\nHTML · Slides\n\n\n3\nLinear Regression\nHTML · Slides\n\n\n\nMore chapters to follow."
   },
   {
     "objectID": "slides/index.html#template",
