@@ -9,19 +9,17 @@ project:
 profile:
   default: solution
 
-# `execute.enabled: false` is intentional. The handout displays code
-# verbatim from the upstream lab; we do not run Python on every CI
-# render. Students execute the code locally with the `requirements.txt`
-# environment. To switch to fully-rendered outputs in the published
-# site, flip `enabled: true` AND add a Python setup step in
-# publish.yml + preview.yml (`pip install -r requirements.txt`).
-# `freeze` is omitted because there is nothing to freeze when
-# execution is disabled.
+# Python chunks in `Ch07-nonlin-lab.qmd` execute at render time so the
+# rendered handout shows real figures, tables, and console output (not
+# just the code as text). The publish + preview workflows install the
+# subset of `requirements.txt` needed for the website in
+# `requirements-website.txt`. `freeze: auto` keeps repeat renders fast
+# by skipping re-execution when the source has not changed.
 execute:
   warning: false
   message: false
   cache: false
-  enabled: false
+  freeze: auto
 
 filters:
   - assign

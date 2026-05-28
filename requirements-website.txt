@@ -1,0 +1,19 @@
+# Subset of `requirements.txt` needed to render the Quarto website
+# (currently only `Ch07-nonlin-lab.qmd` imports Python). Heavy deps from
+# the full lab series — torch / pytorch-lightning / torchvision /
+# torchmetrics / lifelines / l0bnb / numba / lxml / joblib — are
+# intentionally excluded; they would 10× the publish.yml install time
+# and are not imported by anything the website renders today.
+#
+# Keep in sync with `requirements.txt` for the shared packages. If a
+# future chapter is added to the website that uses one of the excluded
+# packages, lift it here.
+numpy==2.3.5
+scipy==1.16.3
+pandas==3.0.0
+scikit-learn==1.8.0
+statsmodels==0.14.6
+pygam==0.12.0
+ISLP==0.4.1
+matplotlib
+jupyter
