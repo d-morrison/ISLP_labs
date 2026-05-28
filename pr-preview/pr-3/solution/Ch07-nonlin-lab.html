@@ -79,9 +79,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="site_libs/quarto-html/quarto-syntax-highlighting-c875dbb4c9335aca9cc352e974a4ec92.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap-bca6b61b0cb527b4e2b48b61b1ce0e08.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
-<link href="site_libs/bootstrap/bootstrap-dark-02db3f0e260385249f3aa29c59169727.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
-<link href="site_libs/bootstrap/bootstrap-bca6b61b0cb527b4e2b48b61b1ce0e08.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-66cfaf0e5240f8b685f9cc3859c09af1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="site_libs/bootstrap/bootstrap-dark-ea7ada866ed06d4b705389d0970b3b17.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="site_libs/bootstrap/bootstrap-66cfaf0e5240f8b685f9cc3859c09af1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -426,7 +426,7 @@ window.Quarto = {
 <section id="setup" class="level2">
 <h2 class="anchored" data-anchor-id="setup">Setup</h2>
 <p>As usual, we start with some of our standard imports.</p>
-<div id="2c49e642" class="cell">
+<div id="54db5497" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> subplots</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
@@ -437,7 +437,7 @@ window.Quarto = {
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.anova <span class="im">import</span> anova_lm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We again collect the new imports needed for this lab. Many of these are developed specifically for the <code>ISLP</code> package.</p>
-<div id="d50259bc" class="cell">
+<div id="2d314d1c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> pygam <span class="im">import</span> (s <span class="im">as</span> s_gam,</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>                   l <span class="im">as</span> l_gam,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>                   f <span class="im">as</span> f_gam,</span>
@@ -457,7 +457,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="polynomial-regression-and-step-functions">Polynomial Regression and Step Functions</h2>
 <p><strong>Exercise 1.</strong> Load the <code>Wage</code> data with <code>load_data('Wage')</code>. Store the response (<code>wage</code>) as <code>y</code> and the predictor (<code>age</code>) as <code>age</code>.</p>
 <p><em>Solution.</em></p>
-<div id="152eeae3" class="cell">
+<div id="6dbefe4a" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Wage <span class="op">=</span> load_data(<span class="st">'Wage'</span>)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> Wage[<span class="st">'wage'</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>age <span class="op">=</span> Wage[<span class="st">'age'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -465,7 +465,7 @@ window.Quarto = {
 <p>Throughout most of this lab, our response is <code>Wage['wage']</code>, which we have stored as <code>y</code> above.</p>
 <p><strong>Exercise 2.</strong> Use <code>poly()</code> inside <code>MS()</code> to build a 4th-degree polynomial in <code>age</code>, fit an OLS model of <code>y</code> on this basis, and print the coefficient summary.</p>
 <p><em>Solution.</em></p>
-<div id="d3f911b5" class="cell">
+<div id="5a572c6c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>poly_age <span class="op">=</span> MS([poly(<span class="st">'age'</span>, degree<span class="op">=</span><span class="dv">4</span>)]).fit(Wage)</span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> sm.OLS(y, poly_age.transform(Wage)).fit()</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>summarize(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -473,7 +473,7 @@ window.Quarto = {
 <p><code>poly()</code> is a <em>helper</em> that sets up the transformation; <code>Poly()</code> is the workhorse that computes it. The first line above runs the <code>fit()</code> method on <code>Wage</code>, which stores any parameters needed by <code>Poly()</code> on the training data so that subsequent <code>transform()</code> calls (on new data, or inside the plotting function below) use the same basis.</p>
 <p><strong>Exercise 3.</strong> Build a grid <code>age_grid</code> of 100 evenly spaced values spanning the observed range of <code>age</code>, and wrap it in a single-column <code>DataFrame</code> named <code>age_df</code>.</p>
 <p><em>Solution.</em></p>
-<div id="10d8a4b3" class="cell">
+<div id="bf8663b4" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>age_grid <span class="op">=</span> np.linspace(age.<span class="bu">min</span>(),</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>                       age.<span class="bu">max</span>(),</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">100</span>)</span>
@@ -481,7 +481,7 @@ window.Quarto = {
 </div>
 <p><strong>Exercise 4.</strong> Write a function <code>plot_wage_fit(age_df, basis, title)</code> that fits OLS on the supplied <code>basis</code>, evaluates it on <code>age_df</code>, and plots the raw data with the fitted curve and its 95% confidence bands.</p>
 <p><em>Solution.</em></p>
-<div id="ac8e3edd" class="cell">
+<div id="1a287f48" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> plot_wage_fit(age_df,</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>                  basis,</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>                  title):</span>
@@ -509,14 +509,14 @@ window.Quarto = {
 <p>The <code>alpha</code> argument to <code>ax.scatter()</code> adds transparency that gives a visual indication of density. <code>zip()</code> bundles the three lines (fitted mean and two confidence bands) with their colours and line types for the <code>for</code> loop.</p>
 <p><strong>Exercise 5.</strong> Use your helper to plot the degree-4 polynomial fit.</p>
 <p><em>Solution.</em></p>
-<div id="00483f50" class="cell">
+<div id="892ac018" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>plot_wage_fit(age_df,</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>              poly_age,</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">'Degree-4 Polynomial'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Exercise 6.</strong> With polynomial regression we must decide on the degree of the polynomial to use. Fit polynomial models in <code>age</code> of degrees 1 through 5, and use <code>anova_lm()</code> to test which degree is sufficient.</p>
 <p><em>Solution.</em></p>
-<div id="22b0716d" class="cell">
+<div id="9ee7eefc" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [MS([poly(<span class="st">'age'</span>, degree<span class="op">=</span>d)])</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> d <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>)]</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>Xs <span class="op">=</span> [model.fit_transform(Wage) <span class="cf">for</span> model <span class="kw">in</span> models]</span>
@@ -526,7 +526,7 @@ window.Quarto = {
 <p>The <code>*</code> unpacks the list of fitted models for <code>anova_lm()</code>’s variable argument list. The p-value comparing linear <code>models[0]</code> to quadratic <code>models[1]</code> is essentially zero, and the cubic-vs-quartic comparison is roughly 5%, while degree 5 is unnecessary (p = 0.37). Either a cubic or a quartic polynomial gives a reasonable fit.</p>
 <p><strong>Exercise 7.</strong> Repeat the ANOVA, but with a linear term in <code>education</code> included in each model alongside a polynomial in <code>age</code> of degrees 1, 2, 3.</p>
 <p><em>Solution.</em></p>
-<div id="fce95556" class="cell">
+<div id="456ac78d" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>models <span class="op">=</span> [MS([<span class="st">'education'</span>, poly(<span class="st">'age'</span>, degree<span class="op">=</span>d)])</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>          <span class="cf">for</span> d <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span>)]</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>XEs <span class="op">=</span> [model.fit_transform(Wage)</span>
@@ -536,7 +536,7 @@ window.Quarto = {
 <p>The ANOVA approach works whether or not the polynomials are orthogonal, provided the models are <em>nested</em>. As an alternative, we could choose the polynomial degree by cross-validation (Chapter 5).</p>
 <p><strong>Exercise 8.</strong> Now consider predicting whether someone earns more than $250,000 per year. Fit a logistic regression (use <code>sm.GLM</code> with a <code>Binomial</code> family) of <code>wage &gt; 250</code> on the same 4th-degree polynomial basis in <code>age</code>, and produce a plot of the predicted probability vs. age (with confidence bands and a rug plot).</p>
 <p><em>Solution.</em></p>
-<div id="7cb1e06e" class="cell">
+<div id="8257d6a8" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> poly_age.transform(Wage)</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>high_earn <span class="op">=</span> Wage[<span class="st">'high_earn'</span>] <span class="op">=</span> y <span class="op">&gt;</span> <span class="dv">250</span>  <span class="co"># shorthand</span></span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>glm <span class="op">=</span> sm.GLM(y <span class="op">&gt;</span> <span class="dv">250</span>,</span>
@@ -546,7 +546,7 @@ window.Quarto = {
 <span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>summarize(B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>(The double assignment <code>high_earn = Wage['high_earn'] = y &gt; 250</code> both binds the local variable <code>high_earn</code> and stores the indicator as a new column on the <code>Wage</code> DataFrame. We’ll re-use that column in Exercises 29 and 30.)</p>
-<div id="3720abf5" class="cell">
+<div id="48729ea0" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>newX <span class="op">=</span> poly_age.transform(age_df)</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>preds <span class="op">=</span> B.get_prediction(newX)</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>bands <span class="op">=</span> preds.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
@@ -571,7 +571,7 @@ window.Quarto = {
 <p>The <code>age</code> values above 250 are shown as gray marks at the top of the plot; those below 250 at the bottom. A small amount of jitter prevents identical-age points from overlapping. This is called a <em>rug plot</em>.</p>
 <p><strong>Exercise 9.</strong> Fit a step-function regression: discretise <code>age</code> into 4 quantile-based bins with <code>pd.qcut()</code>, build dummy columns with <code>pd.get_dummies()</code>, and fit OLS.</p>
 <p><em>Solution.</em></p>
-<div id="cd502500" class="cell">
+<div id="8d1eebf2" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>cut_age <span class="op">=</span> pd.qcut(age, <span class="dv">4</span>)</span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>summarize(sm.OLS(y, pd.get_dummies(cut_age)).fit())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
@@ -581,7 +581,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="splines">Splines</h2>
 <p><strong>Exercise 10.</strong> Use <code>BSpline()</code> from <code>ISLP.transforms</code> with <code>internal_knots=[25, 40, 60]</code> and <code>intercept=True</code> to build a cubic B-spline basis for <code>age</code>. What shape is the resulting design matrix?</p>
 <p><em>Solution.</em></p>
-<div id="5be4a6e5" class="cell">
+<div id="25598d37" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>bs_ <span class="op">=</span> BSpline(internal_knots<span class="op">=</span>[<span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">60</span>], intercept<span class="op">=</span><span class="va">True</span>).fit(age)</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>bs_age <span class="op">=</span> bs_.transform(age)</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>bs_age.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -589,7 +589,7 @@ window.Quarto = {
 <p>A cubic B-spline with 3 interior knots yields a 7-column matrix (<code>3 + degree + 1</code> with <code>intercept=True</code>).</p>
 <p><strong>Exercise 11.</strong> Now fit a cubic spline regression of <code>wage</code> on <code>age</code> using the helper <code>bs()</code> inside <code>MS()</code>. Pass <code>name='bs(age)'</code> to clean up the column labels in the summary.</p>
 <p><em>Solution.</em></p>
-<div id="a374f45f" class="cell">
+<div id="92cabe8c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>bs_age <span class="op">=</span> MS([bs(<span class="st">'age'</span>,</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>                internal_knots<span class="op">=</span>[<span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">60</span>],</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>                name<span class="op">=</span><span class="st">'bs(age)'</span>)])</span>
@@ -600,13 +600,13 @@ window.Quarto = {
 <p>Note there are 6 spline coefficients rather than 7 because <code>bs()</code> defaults to <code>intercept=False</code> — the basis would normally be 7 columns, but one is dropped to accommodate the model’s overall intercept.</p>
 <p><strong>Exercise 12.</strong> Instead of specifying knots, ask <code>BSpline</code> for <code>df=6</code>. Inspect <code>internal_knots_</code> to see where the knots ended up.</p>
 <p><em>Solution.</em></p>
-<div id="89a1b24b" class="cell">
+<div id="cfa3affa" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>BSpline(df<span class="op">=</span><span class="dv">6</span>).fit(age).internal_knots_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>With <code>df=6</code> and cubic splines, three knots are placed at the 25%, 50% and 75% quantiles of <code>age</code> — ages 33.75, 42.0, and 51.0.</p>
 <p><strong>Exercise 13.</strong> B-splines need not be cubic. Fit a degree-0 spline with <code>df=3</code> and compare the coefficients to your earlier <code>qcut()</code> step-function fit.</p>
 <p><em>Solution.</em></p>
-<div id="e1678261" class="cell">
+<div id="96fdf6fd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>bs_age0 <span class="op">=</span> MS([bs(<span class="st">'age'</span>,</span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>                 df<span class="op">=</span><span class="dv">3</span>,</span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                 degree<span class="op">=</span><span class="dv">0</span>)]).fit(Wage)</span>
@@ -616,12 +616,12 @@ window.Quarto = {
 <p>Degree-0 B-splines are piecewise constant — equivalent to the step function from Exercise 9. With <code>df=3</code> (degree 0), the knots are again at the same three quantiles. The coefficients look different because of the coding: here the intercept is a column of ones and the remaining three coefficients are <em>increments</em> relative to the first bin. The sums approximately recover the per-bin means (slight differences are because <code>qcut()</code> uses <code>≤</code> while <code>bs()</code> uses <code>&lt;</code> at the boundaries).</p>
 <p><strong>Exercise 14.</strong> Fit a natural cubic spline with 5 degrees of freedom using <code>ns()</code>, and plot the fit with <code>plot_wage_fit()</code>.</p>
 <p><em>Solution.</em></p>
-<div id="05dff214" class="cell">
+<div id="d8721697" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>ns_age <span class="op">=</span> MS([ns(<span class="st">'age'</span>, df<span class="op">=</span><span class="dv">5</span>)]).fit(Wage)</span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>M_ns <span class="op">=</span> sm.OLS(y, ns_age.transform(Wage)).fit()</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>summarize(M_ns)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="f3913e06" class="cell">
+<div id="9367b52c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>plot_wage_fit(age_df,</span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>              ns_age,</span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>              <span class="st">'Natural spline, df=5'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -631,7 +631,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="smoothing-splines-and-gams">Smoothing Splines and GAMs</h2>
 <p><strong>Exercise 15.</strong> A smoothing spline is a special case of a GAM with squared-error loss and a single feature. Fit <code>LinearGAM(s_gam(0, lam=0.6))</code> to predict <code>wage</code> from <code>age</code>. (Remember <code>pygam</code> expects a 2-D feature matrix.)</p>
 <p><em>Solution.</em></p>
-<div id="17031da8" class="cell">
+<div id="7cd3b45c" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>X_age <span class="op">=</span> np.asarray(age).reshape((<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>gam <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>, lam<span class="op">=</span><span class="fl">0.6</span>))</span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>gam.fit(X_age, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -639,7 +639,7 @@ window.Quarto = {
 <p><code>s_gam(0, ...)</code> says “apply a smoothing spline to column 0 of the feature matrix”. <code>lam</code> is the penalty parameter <span class="math inline">\(\lambda\)</span>. The <code>-1</code> inside <code>.reshape((-1, 1))</code> tells NumPy to infer that dimension’s size.</p>
 <p><strong>Exercise 16.</strong> Investigate how the fit changes with the smoothing parameter. Loop <code>lam</code> over <code>np.logspace(-2, 6, 5)</code> and plot each resulting fit.</p>
 <p><em>Solution.</em></p>
-<div id="fe740984" class="cell">
+<div id="67c585dd" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> lam <span class="kw">in</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>):</span>
@@ -654,7 +654,7 @@ window.Quarto = {
 </div>
 <p><strong>Exercise 17.</strong> <code>pygam</code> can search for an optimal smoothing parameter. Reproduce the plot from Exercise 16, call <code>.gridsearch(X_age, y)</code>, and add the resulting fit on top.</p>
 <p><em>Solution.</em></p>
-<div id="ac3da1a6" class="cell">
+<div id="3047048d" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> lam <span class="kw">in</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>):</span>
@@ -675,7 +675,7 @@ window.Quarto = {
 </div>
 <p><strong>Exercise 18.</strong> It’s often more interpretable to specify the <em>effective degrees of freedom</em> than <code>lam</code>. Use <code>approx_lam()</code> from <code>ISLP.pygam</code> to find a <code>lam</code> giving roughly 4 degrees of freedom for the age term, and verify with <code>degrees_of_freedom()</code>.</p>
 <p><em>Solution.</em></p>
-<div id="76f363fd" class="cell">
+<div id="64c45a9d" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>age_term <span class="op">=</span> gam.terms[<span class="dv">0</span>]</span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>lam_4 <span class="op">=</span> approx_lam(X_age, age_term, <span class="dv">4</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>age_term.lam <span class="op">=</span> lam_4</span>
@@ -684,7 +684,7 @@ window.Quarto = {
 <p>These degrees of freedom include the unpenalized intercept and linear term of the smoothing spline — so there are at least 2 df.</p>
 <p><strong>Exercise 19.</strong> Now loop over <code>df</code> values <code>[1, 3, 4, 8, 15]</code> (passing <code>df + 1</code> to <code>approx_lam()</code> to account for the intercept), refit, and plot each.</p>
 <p><em>Solution.</em></p>
-<div id="c99b55b2" class="cell">
+<div id="33c26996" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>ax.scatter(X_age,</span>
 <span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>           y,</span>
@@ -707,7 +707,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="additive-models-with-several-terms">Additive Models with Several Terms</h3>
 <p><strong>Exercise 20.</strong> Build a GAM “by hand”: use natural splines (<code>NaturalSpline</code>) with <code>df=4</code> for <code>age</code> and <code>df=5</code> for <code>year</code>, get dummies for <code>education</code>, stack them all into a model matrix <code>X_bh</code>, and fit OLS.</p>
 <p><em>Solution.</em></p>
-<div id="6d4d5c32" class="cell">
+<div id="bc9e1a22" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>ns_age <span class="op">=</span> NaturalSpline(df<span class="op">=</span><span class="dv">4</span>).fit(age)</span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>ns_year <span class="op">=</span> NaturalSpline(df<span class="op">=</span><span class="dv">5</span>).fit(Wage[<span class="st">'year'</span>])</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>Xs <span class="op">=</span> [ns_age.transform(age),</span>
@@ -719,7 +719,7 @@ window.Quarto = {
 <p>We use all columns of the indicator matrix for <code>education</code> (no intercept), and stack the three component matrices horizontally to form <code>X_bh</code>.</p>
 <p><strong>Exercise 21.</strong> Construct a partial-dependence plot for <code>age</code> from the by-hand GAM: predict on a matrix where all columns except those for <code>age</code> are held at their column means, and the <code>age</code> columns are swept across <code>age_grid</code>.</p>
 <p><em>Solution.</em></p>
-<div id="f433a125" class="cell">
+<div id="e2a7c1bf" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>age_grid <span class="op">=</span> np.linspace(age.<span class="bu">min</span>(),</span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>                       age.<span class="bu">max</span>(),</span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>                       <span class="dv">100</span>)</span>
@@ -743,7 +743,7 @@ window.Quarto = {
 <p>The idea is to create a new prediction matrix in which all but the columns for <code>age</code> are held constant at the training-data means; the four <code>age</code> columns are filled with the natural spline basis evaluated at the 100 values in <code>age_grid</code>.</p>
 <p><strong>Exercise 22.</strong> Do the same for <code>year</code>.</p>
 <p><em>Solution.</em></p>
-<div id="0b909423" class="cell">
+<div id="32f429fc" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>year_grid <span class="op">=</span> np.linspace(Wage[<span class="st">'year'</span>].<span class="bu">min</span>(),</span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>                        Wage[<span class="st">'year'</span>].<span class="bu">max</span>(),</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a>                        <span class="dv">100</span>)</span>
@@ -766,7 +766,7 @@ window.Quarto = {
 </div>
 <p><strong>Exercise 23.</strong> Now fit the same GAM using <em>smoothing</em> splines via <code>pygam</code>. Build <code>LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0))</code>, where <code>f_gam</code> is a factor term for <code>education</code>. (Convert <code>education</code> to numeric codes with <code>.cat.codes</code>.) Then plot the partial dependence for <code>age</code> using <code>plot_gam()</code> from <code>ISLP.pygam</code>.</p>
 <p><em>Solution.</em></p>
-<div id="60e8ddb7" class="cell">
+<div id="f91d1888" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>gam_full <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span></span>
 <span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>                     s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span></span>
 <span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a>                     f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
@@ -775,7 +775,7 @@ window.Quarto = {
 <span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>                        Wage[<span class="st">'education'</span>].cat.codes])</span>
 <span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>gam_full <span class="op">=</span> gam_full.fit(Xgam, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="c3f5af68" class="cell">
+<div id="1c4038eb" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>plot_gam(gam_full, <span class="dv">0</span>, ax<span class="op">=</span>ax)</span>
 <span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Age'</span>)</span>
@@ -785,7 +785,7 @@ window.Quarto = {
 <p><code>year</code> has only 7 unique values, so we use 7 basis functions. <code>lam=0</code> on the factor term avoids any shrinkage. The default <code>lam=0.6</code> for <code>age</code> produces a noticeably wiggly fit.</p>
 <p><strong>Exercise 24.</strong> Re-tune <code>gam_full</code> so that the <code>age</code> and <code>year</code> smoothers each have ~4 degrees of freedom (use <code>approx_lam()</code> with <code>df=4+1</code>), then re-plot the partial dependence for <code>age</code> and for <code>year</code>.</p>
 <p><em>Solution.</em></p>
-<div id="992ad89f" class="cell">
+<div id="5573d223" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>age_term <span class="op">=</span> gam_full.terms[<span class="dv">0</span>]</span>
 <span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>age_term.lam <span class="op">=</span> approx_lam(Xgam, age_term, df<span class="op">=</span><span class="dv">4</span> <span class="op">+</span> <span class="dv">1</span>)</span>
 <span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>year_term <span class="op">=</span> gam_full.terms[<span class="dv">1</span>]</span>
@@ -793,7 +793,7 @@ window.Quarto = {
 <span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>gam_full <span class="op">=</span> gam_full.fit(Xgam, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Note that updating <code>age_term.lam</code> updates <code>gam_full.terms[0]</code> in place.</p>
-<div id="494b74c1" class="cell">
+<div id="8303e89b" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>plot_gam(gam_full,</span>
 <span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a>         <span class="dv">1</span>,</span>
@@ -804,7 +804,7 @@ window.Quarto = {
 </div>
 <p><strong>Exercise 25.</strong> Plot the partial dependence for <code>education</code> — a categorical term gets a different style of plot, suited to a set of fitted constants per level.</p>
 <p><em>Solution.</em></p>
-<div id="46f92ee5" class="cell">
+<div id="0fc4c2ab" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plot_gam(gam_full, <span class="dv">2</span>)</span>
 <span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
@@ -818,7 +818,7 @@ window.Quarto = {
 <h3 class="anchored" data-anchor-id="anova-tests-for-additive-models">ANOVA Tests for Additive Models</h3>
 <p><strong>Exercise 26.</strong> In all our models, the function of <code>year</code> looks fairly linear. Compare three models by ANOVA: a GAM that <em>excludes</em> <code>year</code> (<span class="math inline">\(\mathcal{M}_1\)</span>), a GAM that uses a <em>linear</em> term in <code>year</code> (<span class="math inline">\(\mathcal{M}_2\)</span>), and the full GAM with a smoothing spline in <code>year</code> (<span class="math inline">\(\mathcal{M}_3\)</span>). What do you conclude?</p>
 <p><em>Solution.</em></p>
-<div id="a0618951" class="cell">
+<div id="21d22321" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>gam_0 <span class="op">=</span> LinearGAM(age_term <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
 <span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a>gam_0.fit(Xgam, y)</span>
 <span id="cb32-3"><a href="#cb32-3" aria-hidden="true" tabindex="-1"></a>gam_linear <span class="op">=</span> LinearGAM(age_term <span class="op">+</span></span>
@@ -832,7 +832,7 @@ window.Quarto = {
 <p>There is compelling evidence that a GAM with a linear <code>year</code> term is better than one that omits <code>year</code> (p ≈ 0.002). However, there is no evidence that a nonlinear function of <code>year</code> is needed (p ≈ 0.435). So <span class="math inline">\(\mathcal{M}_2\)</span> is preferred.</p>
 <p><strong>Exercise 27.</strong> Repeat the test for <code>age</code>.</p>
 <p><em>Solution.</em></p>
-<div id="cc72bc48" class="cell">
+<div id="2c4053c3" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>gam_0 <span class="op">=</span> LinearGAM(year_term <span class="op">+</span></span>
 <span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>                  f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
 <span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>gam_linear <span class="op">=</span> LinearGAM(l_gam(<span class="dv">0</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
@@ -845,21 +845,21 @@ window.Quarto = {
 <p>Very strong evidence that a nonlinear term is required for <code>age</code>.</p>
 <p><strong>Exercise 28.</strong> Print <code>gam_full.summary()</code> and use <code>gam_full.predict()</code> to generate fitted values on the training set.</p>
 <p><em>Solution.</em></p>
-<div id="9e1776cc" class="cell">
+<div id="1364c7af" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>gam_full.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="55716d9d" class="cell">
+<div id="4db1f987" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a>Yhat <span class="op">=</span> gam_full.predict(Xgam)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p><strong>Exercise 29.</strong> Fit a logistic GAM for <code>high_earn</code> (i.e.&nbsp;<code>wage &gt; 250</code>) using <code>LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0))</code>. Plot the partial dependence for <code>education</code>.</p>
 <p><em>Solution.</em></p>
-<div id="d289e751" class="cell">
+<div id="03798bc9" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>gam_logit <span class="op">=</span> LogisticGAM(age_term <span class="op">+</span></span>
 <span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                        l_gam(<span class="dv">1</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
 <span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>                        f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
 <span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>gam_logit.fit(Xgam, high_earn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="01756010" class="cell">
+<div id="c7a90245" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plot_gam(gam_logit, <span class="dv">2</span>)</span>
 <span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
@@ -871,13 +871,13 @@ window.Quarto = {
 <p>The fit looks flat with very wide error bars on the first category.</p>
 <p><strong>Exercise 30.</strong> Cross-tabulate <code>high_earn</code> against <code>education</code>. What do you see?</p>
 <p><em>Solution.</em></p>
-<div id="e478ed4b" class="cell">
+<div id="3c5e68ab" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>pd.crosstab(Wage[<span class="st">'high_earn'</span>], Wage[<span class="st">'education'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>There are <em>no</em> high earners in the lowest education category, so the logistic GAM has nothing to estimate there.</p>
 <p><strong>Exercise 31.</strong> Refit the logistic GAM excluding observations in the “1. &lt; HS Grad” category, then plot the partial dependence for <code>education</code>, <code>year</code>, and <code>age</code>.</p>
 <p><em>Solution.</em></p>
-<div id="30189e38" class="cell">
+<div id="9af94fe8" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a>only_hs <span class="op">=</span> Wage[<span class="st">'education'</span>] <span class="op">==</span> <span class="st">'1. &lt; HS Grad'</span></span>
 <span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>Wage_ <span class="op">=</span> Wage.loc[<span class="op">~</span>only_hs]</span>
 <span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a>Xgam_ <span class="op">=</span> np.column_stack([Wage_[<span class="st">'age'</span>],</span>
@@ -886,13 +886,13 @@ window.Quarto = {
 <span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a>high_earn_ <span class="op">=</span> Wage_[<span class="st">'high_earn'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>We subtract 1 from <code>cat.codes</code> to work around a <code>pygam</code> bug — the relabeling has no effect on the fit.</p>
-<div id="55435e83" class="cell">
+<div id="7a6e7740" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb40"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>gam_logit_ <span class="op">=</span> LogisticGAM(age_term <span class="op">+</span></span>
 <span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>                         year_term <span class="op">+</span></span>
 <span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>                         f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
 <span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>gam_logit_.fit(Xgam_, high_earn_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="bb0e2638" class="cell">
+<div id="76c2f26d" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">2</span>)</span>
 <span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
@@ -901,7 +901,7 @@ window.Quarto = {
 <span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>ax.set_xticklabels(Wage[<span class="st">'education'</span>].cat.categories[<span class="dv">1</span>:],</span>
 <span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a>                   fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="1eb1d67a" class="cell">
+<div id="d5d282da" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">1</span>)</span>
 <span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Year'</span>)</span>
@@ -909,7 +909,7 @@ window.Quarto = {
 <span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Partial dependence of high earner status on year'</span>,</span>
 <span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="5c961afd" class="cell">
+<div id="c8a1873e" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">0</span>)</span>
 <span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Age'</span>)</span>
@@ -922,7 +922,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="local-regression">Local Regression</h2>
 <p><strong>Exercise 32.</strong> Finally, use <code>sm.nonparametric.lowess</code> to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; <code>pygam</code> does not.</p>
 <p><em>Solution.</em></p>
-<div id="9f68c21d" class="cell">
+<div id="f193254f" class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>lowess <span class="op">=</span> sm.nonparametric.lowess</span>
 <span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
 <span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
