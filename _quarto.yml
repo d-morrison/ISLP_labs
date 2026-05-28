@@ -26,9 +26,9 @@ filters:
   - assign
   - d-morrison/div-anchors
   - d-morrison/equation-anchors
-  # callouty-theorem: pending installation (d-morrison/callouty-theorem does
-  # not exist as a public Quarto extension; vendor from epi204 or use
-  # sun123zxy/callouty-theorem when content needs theorem callout boxes)
+  - coatless-quarto/custom-callout
+  # Uncomment once callouty-theorem is installed (quarto add sun123zxy/callouty-theorem):
+  # - sun123zxy/callouty-theorem
 
 website:
   title: "ISLP Labs"
@@ -61,8 +61,6 @@ website:
 
 format:
   html:
-    filters:
-      - coatless-quarto/custom-callout
     theme:
       light: cosmo
       dark: darkly
@@ -95,8 +93,6 @@ format:
     progress: true
     transition: slide
   pdf:
-    filters:
-      - coatless-quarto/custom-callout
     pdf-engine: lualatex
     geometry:
       - top=20mm
