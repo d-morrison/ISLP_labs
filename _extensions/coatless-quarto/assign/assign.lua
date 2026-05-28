@@ -1,3 +1,32 @@
+-- Vendored from ucdavis/epi204 (vignettes/_extensions/coatless-quarto/assign/assign.lua);
+-- epi204's fork of coatless-quarto/assign. The fork wraps `.sol` content
+-- in a foldable `quarto.Callout` so solutions render as collapsible blocks
+-- in html/revealjs/pdf/latex. Upstream credit: coatless-quarto/assign.
+
+local function in_callout_output()
+  if quarto and quarto.doc and quarto.doc.is_format then
+    return quarto.doc.is_format("html")
+      or quarto.doc.is_format("revealjs")
+      or quarto.doc.is_format("pdf")
+      or quarto.doc.is_format("latex")
+  end
+
+  return false
+end
+
+local function solution_callout(div)
+  return pandoc.Div({
+    quarto.Callout({
+      type = "solution",
+      appearance = "default",
+      collapse = true,
+      icon = false,
+      title = pandoc.Inlines("Solution"),
+      content = div.content
+    })
+  })
+end
+
 -- Reformat all Div content
 function Div(div)
 
@@ -28,11 +57,12 @@ function Div(div)
   end
 
   if div.classes:includes("sol") then
-    -- Insert "Solution." label as its own Para. div.content holds Block
-    -- elements, so an Inline (Emph) must be wrapped in a Para to be valid
-    -- Pandoc AST; some Pandoc versions error otherwise.
-    local sol_label = pandoc.Para{pandoc.Emph{pandoc.Str("Solution.")}}
-    table.insert(div.content, 1, sol_label)
+    if in_callout_output() then
+      div = solution_callout(div)
+    else
+      local new_emph = pandoc.Emph{pandoc.Str("Solution.")}
+      table.insert(div.content, 1, new_emph)
+    end
   end
 
   -- Return the modified ConditionalBlock
