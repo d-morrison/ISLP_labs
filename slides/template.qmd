@@ -2,14 +2,9 @@
 title: "Chapter N — Topic"
 subtitle: "Template slide deck (Python ↔ R)"
 format:
+  html: default
   revealjs:
     output-file: template-slides.html
-    theme: simple
-    slide-number: true
-    incremental: false
-    smaller: true
-    scrollable: true
-  html: default
 ---
 
 # Section heading {.section}
@@ -31,8 +26,7 @@ Regular content slides start at H2.
 
 ### Python
 
-```{python}
-#| eval: false
+```python
 # Replace this with the example for the chapter the deck covers.
 import numpy as np
 x = np.arange(1, 6)
@@ -41,8 +35,7 @@ x.mean()
 
 ### R
 
-```{r}
-#| eval: false
+```r
 # Replace this with the R equivalent.
 x <- 1:5
 mean(x)
@@ -50,9 +43,18 @@ mean(x)
 
 :::
 
-`{.panel-tabset}` is Quarto's standard tab block. Anything inside `:::`
-becomes one tab; the H3 headings (`### Python`, `### R`) are the tab
-labels. Switch the active tab without re-rendering the slide.
+<!--
+Author note (not rendered):
+
+The code blocks above use plain markdown fences (```python, ```r) on
+purpose, NOT Quarto execution chunks (```{python}, ```{r}). Plain fences
+are pure syntax highlighting — no Python or R engine is invoked, so the
+preview / publish workflows do not need Python or R installed. When
+chapter decks eventually run real code, switch to ```{python} / ```{r}
+chunks AND add `setup-python` (and `r-lib/actions/setup-r` for R) steps
+to .github/workflows/{publish,preview}.yml, plus a `requirements.txt`
+and (for R) a `renv.lock` to pin versions.
+-->
 
 ## A second tabset slide
 
@@ -60,19 +62,25 @@ labels. Switch the active tab without re-rendering the slide.
 
 ### Python
 
-```{python}
-#| eval: false
+```python
 # Example 2
 ```
 
 ### R
 
-```{r}
-#| eval: false
+```r
 # Example 2
 ```
 
 :::
+
+<!--
+Author note: prose written after the tabset's closing ::: and before
+the next H2 will render INSIDE the previous slide in revealjs (and
+inside the previous section in html). To put commentary on its own
+slide, use a fresh ## heading. To document something for the .qmd
+author only, use an HTML comment like this one.
+-->
 
 ## How to add a new chapter deck
 
