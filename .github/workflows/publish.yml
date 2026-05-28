@@ -24,13 +24,13 @@ jobs:
 
       - name: Render (solution)
         uses: quarto-dev/quarto-actions/render@v2
-        env:
-          QUARTO_PROFILE: solution
+        with:
+          args: --profile solution
 
       - name: Render (assign)
         uses: quarto-dev/quarto-actions/render@v2
-        env:
-          QUARTO_PROFILE: assign
+        with:
+          args: --profile assign
 
       - name: Create landing page
         run: bash .github/scripts/create-landing-page.sh
