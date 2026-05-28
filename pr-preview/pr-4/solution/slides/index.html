@@ -82,6 +82,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <link href="../site_libs/bootstrap/bootstrap-66cfaf0e5240f8b685f9cc3859c09af1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
 <link href="../site_libs/bootstrap/bootstrap-dark-ea7ada866ed06d4b705389d0970b3b17.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
 <link href="../site_libs/bootstrap/bootstrap-66cfaf0e5240f8b685f9cc3859c09af1.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.js"></script>
+<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -314,7 +316,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-slides">    
         <li>
     <a class="dropdown-item" href="../slides/index.html">
- <span class="dropdown-text">Slide-deck section (scaffold)</span></a>
+ <span class="dropdown-text">Slide-deck section</span></a>
+  </li>  
+        <li>
+    <a class="dropdown-item" href="../slides/ch02-statistical-learning.html">
+ <span class="dropdown-text">Ch. 2 — Statistical Learning</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../slides/template.html">
@@ -355,7 +361,8 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#template" id="toc-template" class="nav-link active" data-scroll-target="#template">Template</a></li>
+  <li><a href="#available-decks" id="toc-available-decks" class="nav-link active" data-scroll-target="#available-decks">Available decks</a></li>
+  <li><a href="#template" id="toc-template" class="nav-link" data-scroll-target="#template">Template</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/d-morrison/ISLP_labs/edit/stable/slides/index.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/blob/stable/slides/index.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></nav>
     </div>
@@ -388,19 +395,210 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<p>This section is a <strong>placeholder</strong> for Quarto-revealjs slide decks that mirror the official PDF slide decks at <a href="https://www.statlearning.com/resources-python">statlearning.com → resources for Python</a>. The plan is one Quarto deck per ISL chapter with each code example shown side-by-side in Python and R via Quarto <code>panel-tabset</code> blocks.</p>
-<p><strong>No deck content has been authored yet.</strong> The official slides are copyrighted by their authors (James, Witten, Hastie, Tibshirani), so the slide <em>text and figures</em> will not be reproduced here. Each chapter deck in this section will be either:</p>
-<ul>
-<li>a <strong>course-companion</strong> that links to the official PDF for a given chapter and adds only original framing, exercises, and the Python/R tabset code listings authored by us, or</li>
-<li>(with explicit permission from the authors / with content the user authors themselves) a fuller deck.</li>
-</ul>
-<p>That decision is pending — see the PR description / discussion for prior-art research and the open IP question.</p>
+<p>This section contains Quarto-revealjs slide decks adapted from the official PDF slide decks at <a href="https://www.statlearning.com/resources-python">statlearning.com → resources for Python</a>, reproduced here with permission from the authors (James, Witten, Hastie, Tibshirani).</p>
+<p>Each chapter deck follows the <strong>Python ↔︎ R tabset</strong> pattern: every code example appears side-by-side in Python (using the <a href="https://islp.readthedocs.io/en/latest/">ISLP</a> package) and R (using <a href="https://cran.r-project.org/package=ISLR2">ISLR2</a>), so readers can follow along in either language.</p>
+<section id="available-decks" class="level2">
+<h2 class="anchored" data-anchor-id="available-decks">Available decks</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Chapter</th>
+<th>Title</th>
+<th>Slides</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>2</td>
+<td>Statistical Learning</td>
+<td><a href="../slides/ch02-statistical-learning.html">HTML</a></td>
+</tr>
+</tbody>
+</table>
+<p><em>More chapters to follow.</em></p>
+</section>
 <section id="template" class="level2">
 <h2 class="anchored" data-anchor-id="template">Template</h2>
-<p>See <a href="../slides/template.html">template.qmd</a> for the Python/R tabset pattern and revealjs front matter the chapter decks will follow.</p>
+<p>See <a href="../slides/template.html">template.qmd</a> for the Python/R tabset pattern and revealjs front matter that chapter decks follow.</p>
 
 
 <!-- -->
+
+<script>
+function getQuartoHeadingAnchorIcon() {
+  const afterBodyScript = document.getElementById("quarto-html-after-body");
+  if (!afterBodyScript) {
+    return null;
+  }
+
+  const match = afterBodyScript.textContent.match(/const icon = ["']([^"']+)["']/);
+  return match ? match[1] : null;
+}
+
+// Quarto chain-link glyph from Bootstrap Icons.
+const chainLinkIconFallback = "\ue9cb";
+const headingAnchorIcon = getQuartoHeadingAnchorIcon();
+const defaultAnchorIconFallback =
+  headingAnchorIcon && headingAnchorIcon !== "#" ? headingAnchorIcon : chainLinkIconFallback;
+
+function getDefaultAnchorTemplate() {
+  // Prefer Quarto heading anchors first so the visible chain-link icon is reused.
+  const defaultAnchor =
+    document.querySelector(".anchored > a.anchorjs-link") ||
+    document.querySelector("a.anchorjs-link[data-anchorjs-icon]");
+  if (!defaultAnchor) {
+    return null;
+  }
+
+  return {
+    // Detect icon value from the template anchor's attribute or text.
+    icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
+    hasDataIcon: defaultAnchor.hasAttribute("data-anchorjs-icon"),
+    style: defaultAnchor.getAttribute("style")
+  };
+}
+
+function normalizeAnchorIcon(icon) {
+  if (!icon || icon === "#") {
+    return defaultAnchorIconFallback;
+  }
+
+  return icon;
+}
+
+function createChainLinkSvgIcon() {
+  const svgNs = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNs, "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("fill", "currentColor");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  svg.setAttribute("class", "equation-anchor-icon");
+
+  [
+    "M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-2H11a4 4 0 0 1-4 3H4a4 4 0 0 1 0-8h2.354z",
+    "M9.646 10.5H12a3 3 0 1 0 0-6H9a3 3 0 0 0-2.83 2H5a4 4 0 0 1 4-3h3a4 4 0 0 1 0 8H9.646z",
+    "M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"
+  ].forEach(function (pathData) {
+    const path = document.createElementNS(svgNs, "path");
+    path.setAttribute("d", pathData);
+    svg.appendChild(path);
+  });
+
+  return svg;
+}
+
+function alignEquationAnchorWithDefault(anchor, template) {
+  if (!anchor) {
+    return;
+  }
+
+  anchor.classList.remove("external");
+  anchor.classList.add("no-external");
+
+  const normalizedIcon = normalizeAnchorIcon(template && template.icon);
+  if (normalizedIcon === chainLinkIconFallback) {
+    anchor.removeAttribute("data-anchorjs-icon");
+    anchor.textContent = "";
+    anchor.appendChild(createChainLinkSvgIcon());
+  } else if (template && template.hasDataIcon) {
+    anchor.setAttribute("data-anchorjs-icon", normalizedIcon);
+    anchor.textContent = normalizedIcon;
+  } else {
+    anchor.removeAttribute("data-anchorjs-icon");
+    anchor.textContent = normalizedIcon;
+  }
+
+  if (template && template.style) {
+    anchor.setAttribute("style", template.style);
+  } else {
+    anchor.removeAttribute("style");
+  }
+}
+
+function alignEquationAnchorsWithDefault() {
+  const template = getDefaultAnchorTemplate();
+  document.querySelectorAll("a.equation-anchor").forEach(function (anchor) {
+    alignEquationAnchorWithDefault(anchor, template);
+  });
+}
+
+function ensureEquationAnchorStyles() {
+  if (document.getElementById("equation-anchor-styles")) {
+    return;
+  }
+
+  const style = document.createElement("style");
+  style.id = "equation-anchor-styles";
+  style.textContent = `
+    .equation-anchor-target {
+      --equation-anchor-offset: 1.2rem;
+      position: relative;
+      display: block;
+    }
+    .equation-anchor {
+      position: absolute;
+      left: calc(-1 * var(--equation-anchor-offset));
+      top: 50%;
+      transform: translateY(-50%);
+      text-decoration: none;
+      opacity: 0.7;
+      font-size: 0.9em;
+    }
+    .equation-anchor:hover {
+      opacity: 1;
+    }
+    .equation-anchor-icon {
+      width: 0.9em;
+      height: 0.9em;
+      vertical-align: -0.125em;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  ensureEquationAnchorStyles();
+
+  let counter = 0;
+
+  document.querySelectorAll(".math.display").forEach(function (mathEl) {
+    // For labeled equations, Quarto wraps the math display span in an eq-* span.
+    // For unlabeled equations, use the parent element (typically a <p>).
+    const labeledContainer = mathEl.closest("[id^='eq-']");
+    const target = labeledContainer || mathEl.parentElement;
+
+    if (!target) {
+      return;
+    }
+
+    // Skip if already processed.
+    if (target.querySelector(".equation-anchor")) {
+      return;
+    }
+
+    // Use the labeled container's id, or assign an auto-generated id.
+    let id = labeledContainer ? labeledContainer.id : target.id;
+    if (!id) {
+      counter++;
+      id = "eq-anchor-" + counter;
+      target.id = id;
+    }
+
+    target.classList.add("equation-anchor-target");
+
+    const anchor = document.createElement("a");
+    anchor.className = "equation-anchor anchorjs-link";
+    anchor.href = "#" + id;
+    anchor.setAttribute("aria-label", "Permalink to this equation");
+    target.appendChild(anchor);
+  });
+
+  alignEquationAnchorsWithDefault();
+});
+
+window.addEventListener("load", alignEquationAnchorsWithDefault);
+</script>
 
 </section>
 
@@ -877,30 +1075,30 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">  html: default</span></span>
 <span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">---</span></span>
 <span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>This section is a **placeholder** for Quarto-revealjs slide decks that</span>
-<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>mirror the official PDF slide decks at</span>
-<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">statlearning.com → resources for Python</span><span class="co">](https://www.statlearning.com/resources-python)</span>.</span>
-<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>The plan is one Quarto deck per ISL chapter with each code example shown</span>
-<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>side-by-side in Python and R via Quarto <span class="in">`panel-tabset`</span> blocks.</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>This section contains Quarto-revealjs slide decks adapted from the official PDF</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>slide decks at</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">statlearning.com → resources for Python</span><span class="co">](https://www.statlearning.com/resources-python)</span>,</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>reproduced here with permission from the authors (James, Witten, Hastie,</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>Tibshirani).</span>
 <span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>**No deck content has been authored yet.** The official slides are</span>
-<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>copyrighted by their authors (James, Witten, Hastie, Tibshirani), so</span>
-<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>the slide *text and figures* will not be reproduced here. Each chapter</span>
-<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>deck in this section will be either:</span>
-<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>a **course-companion** that links to the official PDF for a given</span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  chapter and adds only original framing, exercises, and the Python/R</span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  tabset code listings authored by us, or</span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="ss">- </span>(with explicit permission from the authors / with content the user</span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  authors themselves) a fuller deck.</span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>That decision is pending — see the PR description / discussion for</span>
-<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>prior-art research and the open IP question.</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>Each chapter deck follows the **Python ↔ R tabset** pattern: every code example</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>appears side-by-side in Python (using the</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">ISLP</span><span class="co">](https://islp.readthedocs.io/en/latest/)</span> package) and R (using</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">[</span><span class="ot">ISLR2</span><span class="co">](https://cran.r-project.org/package=ISLR2)</span>), so readers can follow along</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a>in either language.</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="fu">## Available decks</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> Chapter <span class="pp">|</span> Title <span class="pp">|</span> Slides <span class="pp">|</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="pp">|---------|-------|--------|</span></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="pp">|</span> 2 <span class="pp">|</span> Statistical Learning <span class="pp">|</span> <span class="co">[</span><span class="ot">HTML</span><span class="co">](ch02-statistical-learning.qmd)</span> <span class="pp">|</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a>*More chapters to follow.*</span>
 <span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a><span class="fu">## Template</span></span>
 <span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>See <span class="co">[</span><span class="ot">template.qmd</span><span class="co">](template.qmd)</span> for the Python/R tabset pattern and</span>
-<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>revealjs front matter the chapter decks will follow.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>revealjs front matter that chapter decks follow.</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button" data-in-quarto-modal=""><i class="bi"></i></button></div>
 </div></div></div></div></div>
 </div> <!-- /content -->
 <footer class="footer">

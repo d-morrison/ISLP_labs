@@ -63,6 +63,349 @@
     "text": "How to add a new chapter deck\n\nCopy template.qmd to slides/ChNN-&lt;topic&gt;.qmd.\nUpdate the YAML title, subtitle, and revealjs.output-file: ChNN-&lt;topic&gt;-slides.html.\nReplace the template slides with chapter content (subject to the IP discussion in slides/index.qmd).\nAdd the deck to the navbar in the project root _quarto.yml."
   },
   {
+    "objectID": "slides/ch02-statistical-learning.html",
+    "href": "slides/ch02-statistical-learning.html",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "",
+    "text": "What is statistical learning?\nWhy and how do we estimate \\(f\\)?\nTrade-offs: prediction vs. inference, flexibility vs. interpretability\nMeasuring model accuracy: MSE, bias-variance decomposition\nThe classification setting: Bayes classifier, KNN\n\n\n\n\n\nPythonR\n\n\nfrom ISLP import load_data\nWage = load_data('Wage')\nSmarket = load_data('Smarket')\nNCI60 = load_data('NCI60')\n\n\nlibrary(ISLR2)\n# Wage, Smarket, NCI60 are loaded automatically\nhead(Wage)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#what-we-will-cover",
+    "href": "slides/ch02-statistical-learning.html#what-we-will-cover",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "",
+    "text": "What is statistical learning?\nWhy and how do we estimate \\(f\\)?\nTrade-offs: prediction vs. inference, flexibility vs. interpretability\nMeasuring model accuracy: MSE, bias-variance decomposition\nThe classification setting: Bayes classifier, KNN"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#data-sets-used-in-this-chapter",
+    "href": "slides/ch02-statistical-learning.html#data-sets-used-in-this-chapter",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "",
+    "text": "PythonR\n\n\nfrom ISLP import load_data\nWage = load_data('Wage')\nSmarket = load_data('Smarket')\nNCI60 = load_data('NCI60')\n\n\nlibrary(ISLR2)\n# Wage, Smarket, NCI60 are loaded automatically\nhead(Wage)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#three-motivating-examples",
+    "href": "slides/ch02-statistical-learning.html#three-motivating-examples",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Three motivating examples",
+    "text": "Three motivating examples\n\n\n\n\n\n\n\n\n\nData set\nInput \\(X\\)\nOutput \\(Y\\)\nGoal\n\n\n\n\nWage\nage, year, education\nwage\npredict / understand wage drivers\n\n\nStock market\nyesterday’s returns, volume\nup / down\nclassify tomorrow’s direction\n\n\nNCI60 gene expression\n6,830 gene measurements\ncancer type\ngroup cancer types (unsupervised)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#wages-vs.-age-year-education",
+    "href": "slides/ch02-statistical-learning.html#wages-vs.-age-year-education",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Wages vs. age, year, education",
+    "text": "Wages vs. age, year, education\n\nPythonR\n\n\nimport matplotlib.pyplot as plt\nfig, axes = plt.subplots(1, 3, figsize=(12, 4))\nWage.plot.scatter('age',       'wage', alpha=0.3, ax=axes[0])\nWage.plot.scatter('year',      'wage', alpha=0.3, ax=axes[1])\nWage['education'].value_counts().sort_index().plot.bar(ax=axes[2])\nplt.tight_layout()\n\n\npar(mfrow = c(1, 3))\nplot(Wage$age,       Wage$wage, col = \"grey\", pch = 20, xlab = \"Age\",       ylab = \"Wage\")\nplot(Wage$year,      Wage$wage, col = \"grey\", pch = 20, xlab = \"Year\",      ylab = \"Wage\")\nplot(Wage$education, Wage$wage, col = \"grey\", pch = 20, xlab = \"Education\", ylab = \"Wage\")"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#the-general-setup",
+    "href": "slides/ch02-statistical-learning.html#the-general-setup",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The general setup",
+    "text": "The general setup\nWe observe a response \\(Y\\) and \\(p\\) predictors \\(X = (X_1, \\ldots, X_p)\\).\nWe assume:\n\\[Y = f(X) + \\varepsilon\\]\n\n\\(f\\) is a fixed but unknown function of \\(X_1, \\ldots, X_p\\)\n\\(\\varepsilon\\) is a random error term, independent of \\(X\\), with \\(E[\\varepsilon] = 0\\)\n\nStatistical learning is a collection of approaches for estimating \\(f\\)."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#prediction-vs.-inference",
+    "href": "slides/ch02-statistical-learning.html#prediction-vs.-inference",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Prediction vs. inference",
+    "text": "Prediction vs. inference\nPrediction — we treat \\(f\\) as a black box.\n\\[\\hat{Y} = \\hat{f}(X)\\]\nWe care about accuracy, not the form of \\(\\hat{f}\\).\nInference — we want to understand how \\(Y\\) changes with \\(X\\).\n\nWhich predictors are associated with the response?\nWhat is the direction and magnitude of each association?\nCan the relationship be summarised as linear, or is it more complex?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#parametric-methods",
+    "href": "slides/ch02-statistical-learning.html#parametric-methods",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Parametric methods",
+    "text": "Parametric methods\n\nAssume a functional form for \\(f\\), e.g., the linear model: \\[f(X) = \\beta_0 + \\beta_1 X_1 + \\cdots + \\beta_p X_p\\]\nUse training data to fit (estimate) the parameters \\(\\beta_0, \\ldots, \\beta_p\\).\n\n\nPythonR\n\n\nfrom sklearn.linear_model import LinearRegression\nimport pandas as pd\n\nX = pd.get_dummies(Wage[['age', 'year', 'education']], drop_first=True)\ny = Wage['wage']\n\nlm = LinearRegression().fit(X, y)\nprint(lm.coef_)\n\n\nfit &lt;- lm(wage ~ age + year + education, data = Wage)\nsummary(fit)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#non-parametric-methods",
+    "href": "slides/ch02-statistical-learning.html#non-parametric-methods",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Non-parametric methods",
+    "text": "Non-parametric methods\nNo explicit assumption about the form of \\(f\\); seek an estimate that fits the data points as closely as possible without being too rough or wiggly.\nAdvantage — can fit a wider range of shapes for \\(f\\).\nDisadvantage — require many observations; harder to interpret."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#the-flexibilityinterpretability-trade-off",
+    "href": "slides/ch02-statistical-learning.html#the-flexibilityinterpretability-trade-off",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The flexibility–interpretability trade-off",
+    "text": "The flexibility–interpretability trade-off\nMore flexible models can fit more complex \\(f\\), but are:\n\nharder to interpret (less useful for inference)\nmore prone to overfitting (poor test performance)\n\nLess flexible models are more interpretable and often more accurate when the true \\(f\\) is nearly linear."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#training-vs.-test-mse",
+    "href": "slides/ch02-statistical-learning.html#training-vs.-test-mse",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Training vs. test MSE",
+    "text": "Training vs. test MSE\nTraining MSE — computed on data used to fit the model:\n\\[\\text{MSE}_{\\text{train}} = \\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{f}(x_i))^2\\]\nWe really care about test MSE — how well does \\(\\hat{f}\\) predict new observations?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#computing-test-mse-with-a-hold-out-set",
+    "href": "slides/ch02-statistical-learning.html#computing-test-mse-with-a-hold-out-set",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Computing test MSE with a hold-out set",
+    "text": "Computing test MSE with a hold-out set\n\nPythonR\n\n\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error\n\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42)\n\nlm.fit(X_train, y_train)\nmse_test = mean_squared_error(y_test, lm.predict(X_test))\nprint(f\"Test MSE: {mse_test:.2f}\")\n\n\nset.seed(42)\ntrain_idx &lt;- sample(nrow(Wage), 0.8 * nrow(Wage))\nfit_train  &lt;- lm(wage ~ age + year + education, data = Wage[train_idx, ])\npred_test  &lt;- predict(fit_train, Wage[-train_idx, ])\nmse_test   &lt;- mean((Wage$wage[-train_idx] - pred_test)^2)\ncat(\"Test MSE:\", mse_test, \"\\n\")"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#the-bias-variance-trade-off",
+    "href": "slides/ch02-statistical-learning.html#the-bias-variance-trade-off",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The bias-variance trade-off",
+    "text": "The bias-variance trade-off\nFor any \\(x_0\\) and any \\(\\hat{f}\\):\n\\[E\\!\\left[(y_0 - \\hat{f}(x_0))^2\\right]\n  = \\underbrace{\\operatorname{Var}(\\hat{f}(x_0))}_{\\text{variance}}\n  + \\underbrace{\\left[\\operatorname{Bias}(\\hat{f}(x_0))\\right]^2}_{\\text{bias}^2}\n  + \\underbrace{\\operatorname{Var}(\\varepsilon)}_{\\text{irreducible}}\\]\n\nVariance — how much \\(\\hat{f}\\) changes across different training sets\nBias — error from assuming a wrong functional form for \\(f\\)\nIrreducible error — noise in \\(Y\\); cannot be reduced by any model"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#bias-variance-in-practice",
+    "href": "slides/ch02-statistical-learning.html#bias-variance-in-practice",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Bias-variance in practice",
+    "text": "Bias-variance in practice\nAs model flexibility increases:\n\n\n\n\nVariance\nBias\n\n\n\n\nVery flexible\nHigh ↑\nLow ↓\n\n\nVery inflexible\nLow ↓\nHigh ↑\n\n\n\nThe test MSE is minimised at the sweet spot where variance and bias² together are smallest — the bias-variance trade-off."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#error-rates",
+    "href": "slides/ch02-statistical-learning.html#error-rates",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Error rates",
+    "text": "Error rates\nThe response \\(Y\\) is now qualitative (a class label).\nTraining error rate:\n\\[\\frac{1}{n}\\sum_{i=1}^{n} \\mathbf{1}(y_i \\neq \\hat{y}_i)\\]\nWe care about the test error rate: how often does the classifier misclassify a new observation?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#the-bayes-classifier",
+    "href": "slides/ch02-statistical-learning.html#the-bayes-classifier",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The Bayes classifier",
+    "text": "The Bayes classifier\nAssigns each observation to the most probable class given the predictor values:\n\\[\\hat{Y} = \\arg\\max_j \\Pr(Y = j \\mid X = x_0)\\]\nThe resulting Bayes error rate (analogous to irreducible error) is:\n\\[1 - E\\!\\left[\\max_j \\Pr(Y = j \\mid X)\\right]\\]\nIn practice the true conditional probabilities \\(\\Pr(Y = j \\mid X)\\) are unknown. KNN estimates them from data."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#k-nearest-neighbours",
+    "href": "slides/ch02-statistical-learning.html#k-nearest-neighbours",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "K-Nearest Neighbours",
+    "text": "K-Nearest Neighbours\nFor a test point \\(x_0\\), identify the \\(K\\) closest training observations \\(\\mathcal{N}_0\\) and estimate:\n\\[\\Pr(Y = j \\mid X = x_0) = \\frac{1}{K}\\sum_{i \\in \\mathcal{N}_0}\\mathbf{1}(y_i = j)\\]\n\nPythonR\n\n\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Example: predict stock market direction with KNN (K = 3)\nX_smarket = Smarket[['Lag1', 'Lag2']]\ny_smarket = Smarket['Direction']\n\nX_tr, X_te, y_tr, y_te = train_test_split(\n    X_smarket, y_smarket, test_size=0.2, random_state=0)\n\nknn = KNeighborsClassifier(n_neighbors=3).fit(X_tr, y_tr)\nprint(\"Test accuracy:\", knn.score(X_te, y_te).round(3))\n\n\nlibrary(class)\nset.seed(0)\ntrain_idx &lt;- sample(nrow(Smarket), 0.8 * nrow(Smarket))\n\nknn_pred &lt;- knn(\n  train = Smarket[train_idx,  c(\"Lag1\", \"Lag2\")],\n  test  = Smarket[-train_idx, c(\"Lag1\", \"Lag2\")],\n  cl    = Smarket$Direction[train_idx],\n  k     = 3\n)\nmean(knn_pred == Smarket$Direction[-train_idx])"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#knn-the-role-of-k",
+    "href": "slides/ch02-statistical-learning.html#knn-the-role-of-k",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "KNN: the role of \\(K\\)",
+    "text": "KNN: the role of \\(K\\)\n\nSmall \\(K\\) (e.g., \\(K = 1\\)) — very flexible; low bias, high variance (overfit)\nLarge \\(K\\) (e.g., \\(K = n\\)) — inflexible; high bias, low variance (underfit)\nOptimal \\(K\\) — minimises test error; found by cross-validation (Chapter 5)\n\nKNN illustrates the bias-variance trade-off in the classification setting just as smoothing splines do in regression."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#key-takeaways",
+    "href": "slides/ch02-statistical-learning.html#key-takeaways",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Key takeaways",
+    "text": "Key takeaways\n\nStatistical learning: estimating \\(f\\) in \\(Y = f(X) + \\varepsilon\\).\nChoice of method depends on the goal (prediction vs. inference) and the form of \\(f\\).\nMore flexible models reduce bias but increase variance — there is no free lunch.\nWe assess a model on test data, not training data.\nThe Bayes classifier sets the lower bound on test error; KNN approximates it when the true conditional probabilities are unknown."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning.html#whats-next",
+    "href": "slides/ch02-statistical-learning.html#whats-next",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "What’s next",
+    "text": "What’s next\n\nChapter 3: Linear regression — the simplest parametric approach.\nChapter 4: Classification — logistic regression, LDA, QDA.\nChapter 5: Cross-validation and the bootstrap — how to properly estimate test error."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#what-we-will-cover",
+    "href": "slides/ch02-statistical-learning-slides.html#what-we-will-cover",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "What we will cover",
+    "text": "What we will cover\n\nWhat is statistical learning?\nWhy and how do we estimate \\(f\\)?\nTrade-offs: prediction vs. inference, flexibility vs. interpretability\nMeasuring model accuracy: MSE, bias-variance decomposition\nThe classification setting: Bayes classifier, KNN"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#data-sets-used-in-this-chapter",
+    "href": "slides/ch02-statistical-learning-slides.html#data-sets-used-in-this-chapter",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Data sets used in this chapter",
+    "text": "Data sets used in this chapter\n\nPythonR\n\n\nfrom ISLP import load_data\nWage = load_data('Wage')\nSmarket = load_data('Smarket')\nNCI60 = load_data('NCI60')\n\n\nlibrary(ISLR2)\n# Wage, Smarket, NCI60 are loaded automatically\nhead(Wage)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#three-motivating-examples",
+    "href": "slides/ch02-statistical-learning-slides.html#three-motivating-examples",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Three motivating examples",
+    "text": "Three motivating examples\n\n\n\n\n\n\n\n\n\nData set\nInput \\(X\\)\nOutput \\(Y\\)\nGoal\n\n\n\n\nWage\nage, year, education\nwage\npredict / understand wage drivers\n\n\nStock market\nyesterday’s returns, volume\nup / down\nclassify tomorrow’s direction\n\n\nNCI60 gene expression\n6,830 gene measurements\ncancer type\ngroup cancer types (unsupervised)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#wages-vs.-age-year-education",
+    "href": "slides/ch02-statistical-learning-slides.html#wages-vs.-age-year-education",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Wages vs. age, year, education",
+    "text": "Wages vs. age, year, education\n\nPythonR\n\n\nimport matplotlib.pyplot as plt\nfig, axes = plt.subplots(1, 3, figsize=(12, 4))\nWage.plot.scatter('age',       'wage', alpha=0.3, ax=axes[0])\nWage.plot.scatter('year',      'wage', alpha=0.3, ax=axes[1])\nWage['education'].value_counts().sort_index().plot.bar(ax=axes[2])\nplt.tight_layout()\n\n\npar(mfrow = c(1, 3))\nplot(Wage$age,       Wage$wage, col = \"grey\", pch = 20, xlab = \"Age\",       ylab = \"Wage\")\nplot(Wage$year,      Wage$wage, col = \"grey\", pch = 20, xlab = \"Year\",      ylab = \"Wage\")\nplot(Wage$education, Wage$wage, col = \"grey\", pch = 20, xlab = \"Education\", ylab = \"Wage\")"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#the-general-setup",
+    "href": "slides/ch02-statistical-learning-slides.html#the-general-setup",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The general setup",
+    "text": "The general setup\nWe observe a response \\(Y\\) and \\(p\\) predictors \\(X = (X_1, \\ldots, X_p)\\).\nWe assume:\n\\[Y = f(X) + \\varepsilon\\]\n\n\\(f\\) is a fixed but unknown function of \\(X_1, \\ldots, X_p\\)\n\\(\\varepsilon\\) is a random error term, independent of \\(X\\), with \\(E[\\varepsilon] = 0\\)\n\nStatistical learning is a collection of approaches for estimating \\(f\\)."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#prediction-vs.-inference",
+    "href": "slides/ch02-statistical-learning-slides.html#prediction-vs.-inference",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Prediction vs. inference",
+    "text": "Prediction vs. inference\nPrediction — we treat \\(f\\) as a black box.\n\\[\\hat{Y} = \\hat{f}(X)\\]\nWe care about accuracy, not the form of \\(\\hat{f}\\).\nInference — we want to understand how \\(Y\\) changes with \\(X\\).\n\nWhich predictors are associated with the response?\nWhat is the direction and magnitude of each association?\nCan the relationship be summarised as linear, or is it more complex?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#parametric-methods",
+    "href": "slides/ch02-statistical-learning-slides.html#parametric-methods",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Parametric methods",
+    "text": "Parametric methods\n\nAssume a functional form for \\(f\\), e.g., the linear model: \\[f(X) = \\beta_0 + \\beta_1 X_1 + \\cdots + \\beta_p X_p\\]\nUse training data to fit (estimate) the parameters \\(\\beta_0, \\ldots, \\beta_p\\).\n\n\nPythonR\n\n\nfrom sklearn.linear_model import LinearRegression\nimport pandas as pd\n\nX = pd.get_dummies(Wage[['age', 'year', 'education']], drop_first=True)\ny = Wage['wage']\n\nlm = LinearRegression().fit(X, y)\nprint(lm.coef_)\n\n\nfit &lt;- lm(wage ~ age + year + education, data = Wage)\nsummary(fit)"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#non-parametric-methods",
+    "href": "slides/ch02-statistical-learning-slides.html#non-parametric-methods",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Non-parametric methods",
+    "text": "Non-parametric methods\nNo explicit assumption about the form of \\(f\\); seek an estimate that fits the data points as closely as possible without being too rough or wiggly.\nAdvantage — can fit a wider range of shapes for \\(f\\).\nDisadvantage — require many observations; harder to interpret."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#the-flexibilityinterpretability-trade-off",
+    "href": "slides/ch02-statistical-learning-slides.html#the-flexibilityinterpretability-trade-off",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The flexibility–interpretability trade-off",
+    "text": "The flexibility–interpretability trade-off\nMore flexible models can fit more complex \\(f\\), but are:\n\nharder to interpret (less useful for inference)\nmore prone to overfitting (poor test performance)\n\nLess flexible models are more interpretable and often more accurate when the true \\(f\\) is nearly linear."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#training-vs.-test-mse",
+    "href": "slides/ch02-statistical-learning-slides.html#training-vs.-test-mse",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Training vs. test MSE",
+    "text": "Training vs. test MSE\nTraining MSE — computed on data used to fit the model:\n\\[\\text{MSE}_{\\text{train}} = \\frac{1}{n}\\sum_{i=1}^{n}(y_i - \\hat{f}(x_i))^2\\]\nWe really care about test MSE — how well does \\(\\hat{f}\\) predict new observations?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#computing-test-mse-with-a-hold-out-set",
+    "href": "slides/ch02-statistical-learning-slides.html#computing-test-mse-with-a-hold-out-set",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Computing test MSE with a hold-out set",
+    "text": "Computing test MSE with a hold-out set\n\nPythonR\n\n\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.metrics import mean_squared_error\n\nX_train, X_test, y_train, y_test = train_test_split(\n    X, y, test_size=0.2, random_state=42)\n\nlm.fit(X_train, y_train)\nmse_test = mean_squared_error(y_test, lm.predict(X_test))\nprint(f\"Test MSE: {mse_test:.2f}\")\n\n\nset.seed(42)\ntrain_idx &lt;- sample(nrow(Wage), 0.8 * nrow(Wage))\nfit_train  &lt;- lm(wage ~ age + year + education, data = Wage[train_idx, ])\npred_test  &lt;- predict(fit_train, Wage[-train_idx, ])\nmse_test   &lt;- mean((Wage$wage[-train_idx] - pred_test)^2)\ncat(\"Test MSE:\", mse_test, \"\\n\")"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#the-bias-variance-trade-off",
+    "href": "slides/ch02-statistical-learning-slides.html#the-bias-variance-trade-off",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The bias-variance trade-off",
+    "text": "The bias-variance trade-off\nFor any \\(x_0\\) and any \\(\\hat{f}\\):\n\\[E\\!\\left[(y_0 - \\hat{f}(x_0))^2\\right]\n  = \\underbrace{\\operatorname{Var}(\\hat{f}(x_0))}_{\\text{variance}}\n  + \\underbrace{\\left[\\operatorname{Bias}(\\hat{f}(x_0))\\right]^2}_{\\text{bias}^2}\n  + \\underbrace{\\operatorname{Var}(\\varepsilon)}_{\\text{irreducible}}\\]\n\nVariance — how much \\(\\hat{f}\\) changes across different training sets\nBias — error from assuming a wrong functional form for \\(f\\)\nIrreducible error — noise in \\(Y\\); cannot be reduced by any model"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#bias-variance-in-practice",
+    "href": "slides/ch02-statistical-learning-slides.html#bias-variance-in-practice",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Bias-variance in practice",
+    "text": "Bias-variance in practice\nAs model flexibility increases:\n\n\n\n\nVariance\nBias\n\n\n\n\nVery flexible\nHigh ↑\nLow ↓\n\n\nVery inflexible\nLow ↓\nHigh ↑\n\n\n\nThe test MSE is minimised at the sweet spot where variance and bias² together are smallest — the bias-variance trade-off."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#error-rates",
+    "href": "slides/ch02-statistical-learning-slides.html#error-rates",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Error rates",
+    "text": "Error rates\nThe response \\(Y\\) is now qualitative (a class label).\nTraining error rate:\n\\[\\frac{1}{n}\\sum_{i=1}^{n} \\mathbf{1}(y_i \\neq \\hat{y}_i)\\]\nWe care about the test error rate: how often does the classifier misclassify a new observation?"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#the-bayes-classifier",
+    "href": "slides/ch02-statistical-learning-slides.html#the-bayes-classifier",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "The Bayes classifier",
+    "text": "The Bayes classifier\nAssigns each observation to the most probable class given the predictor values:\n\\[\\hat{Y} = \\arg\\max_j \\Pr(Y = j \\mid X = x_0)\\]\nThe resulting Bayes error rate (analogous to irreducible error) is:\n\\[1 - E\\!\\left[\\max_j \\Pr(Y = j \\mid X)\\right]\\]\nIn practice the true conditional probabilities \\(\\Pr(Y = j \\mid X)\\) are unknown. KNN estimates them from data."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#k-nearest-neighbours",
+    "href": "slides/ch02-statistical-learning-slides.html#k-nearest-neighbours",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "K-Nearest Neighbours",
+    "text": "K-Nearest Neighbours\nFor a test point \\(x_0\\), identify the \\(K\\) closest training observations \\(\\mathcal{N}_0\\) and estimate:\n\\[\\Pr(Y = j \\mid X = x_0) = \\frac{1}{K}\\sum_{i \\in \\mathcal{N}_0}\\mathbf{1}(y_i = j)\\]\n\nPythonR\n\n\nfrom sklearn.neighbors import KNeighborsClassifier\n\n# Example: predict stock market direction with KNN (K = 3)\nX_smarket = Smarket[['Lag1', 'Lag2']]\ny_smarket = Smarket['Direction']\n\nX_tr, X_te, y_tr, y_te = train_test_split(\n    X_smarket, y_smarket, test_size=0.2, random_state=0)\n\nknn = KNeighborsClassifier(n_neighbors=3).fit(X_tr, y_tr)\nprint(\"Test accuracy:\", knn.score(X_te, y_te).round(3))\n\n\nlibrary(class)\nset.seed(0)\ntrain_idx &lt;- sample(nrow(Smarket), 0.8 * nrow(Smarket))\n\nknn_pred &lt;- knn(\n  train = Smarket[train_idx,  c(\"Lag1\", \"Lag2\")],\n  test  = Smarket[-train_idx, c(\"Lag1\", \"Lag2\")],\n  cl    = Smarket$Direction[train_idx],\n  k     = 3\n)\nmean(knn_pred == Smarket$Direction[-train_idx])"
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#knn-the-role-of-k",
+    "href": "slides/ch02-statistical-learning-slides.html#knn-the-role-of-k",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "KNN: the role of \\(K\\)",
+    "text": "KNN: the role of \\(K\\)\n\nSmall \\(K\\) (e.g., \\(K = 1\\)) — very flexible; low bias, high variance (overfit)\nLarge \\(K\\) (e.g., \\(K = n\\)) — inflexible; high bias, low variance (underfit)\nOptimal \\(K\\) — minimises test error; found by cross-validation (Chapter 5)\n\nKNN illustrates the bias-variance trade-off in the classification setting just as smoothing splines do in regression."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#key-takeaways",
+    "href": "slides/ch02-statistical-learning-slides.html#key-takeaways",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "Key takeaways",
+    "text": "Key takeaways\n\nStatistical learning: estimating \\(f\\) in \\(Y = f(X) + \\varepsilon\\).\nChoice of method depends on the goal (prediction vs. inference) and the form of \\(f\\).\nMore flexible models reduce bias but increase variance — there is no free lunch.\nWe assess a model on test data, not training data.\nThe Bayes classifier sets the lower bound on test error; KNN approximates it when the true conditional probabilities are unknown."
+  },
+  {
+    "objectID": "slides/ch02-statistical-learning-slides.html#whats-next",
+    "href": "slides/ch02-statistical-learning-slides.html#whats-next",
+    "title": "Chapter 2 — Statistical Learning",
+    "section": "What’s next",
+    "text": "What’s next\n\nChapter 3: Linear regression — the simplest parametric approach.\nChapter 4: Classification — logistic regression, LDA, QDA.\nChapter 5: Cross-validation and the bootstrap — how to properly estimate test error."
+  },
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "ISLP Labs",
+    "section": "",
+    "text": "A Quarto website that hosts handouts for the labs in An Introduction to Statistical Learning with Applications in Python (ISLP), starting with Chapter 7 — Non-Linear Modeling. The handouts re-organize each lab as a sequence of exercises with hide-able solutions, so that students can attempt the steps themselves before revealing the worked code.\nThe lab content is adapted with permission from the source available at https://www.statlearning.com, and tracks the upstream intro-stat-learning/ISLP_labs repository."
+  },
+  {
+    "objectID": "index.html#available-handouts",
+    "href": "index.html#available-handouts",
+    "title": "ISLP Labs",
+    "section": "Available handouts",
+    "text": "Available handouts\n\nChapter 7 — Non-Linear Modeling"
+  },
+  {
+    "objectID": "index.html#r-alternative",
+    "href": "index.html#r-alternative",
+    "title": "ISLP Labs",
+    "section": "R alternative",
+    "text": "R alternative\nStudents who prefer to work in R may follow the corresponding chapter of Emil Hvitfeldt’s ISLR tidymodels labs."
+  },
+  {
+    "objectID": "index.html#original-labs",
+    "href": "index.html#original-labs",
+    "title": "ISLP Labs",
+    "section": "Original labs",
+    "text": "Original labs\nThe full set of original ISLP labs (Chapters 2–13) is available as Jupyter notebooks in the intro-stat-learning/ISLP_labs repository."
+  },
+  {
+    "objectID": "index.html#building-the-handouts",
+    "href": "index.html#building-the-handouts",
+    "title": "ISLP Labs",
+    "section": "Building the handouts",
+    "text": "Building the handouts\nTwo parallel renders of the website are produced — a student worksheet (prompts only) and a solution key (solutions only) — each written to its own subdirectory of _site/. The exercise/solution toggling is provided by the coatless-quarto/assign Quarto extension.\nRender the solution key (the default profile):\nquarto render\nRender the student worksheet:\nquarto render --profile assign\nThe published GitHub Pages site combines both — its top-level index.html links to assign/ and solution/."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#setup",
+    "href": "Ch07-nonlin-lab-slides.html#setup",
+    "title": "Non-Linear Modeling",
+    "section": "Setup",
+    "text": "Setup\nAs usual, we start with some of our standard imports.\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
+    "href": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
+    "title": "Non-Linear Modeling",
+    "section": "Polynomial Regression and Step Functions",
+    "text": "Polynomial Regression and Step Functions\nExercise 1. Load the Wage data with load_data('Wage'). Store the response (wage) as y and the predictor (age) as age.\nExercise 2. Use poly() inside MS() to build a 4th-degree polynomial in age, fit an OLS model of y on this basis, and print the coefficient summary.\nExercise 3. Build a grid age_grid of 100 evenly spaced values spanning the observed range of age, and wrap it in a single-column DataFrame named age_df.\nExercise 4. Write a function plot_wage_fit(age_df, basis, title) that fits OLS on the supplied basis, evaluates it on age_df, and plots the raw data with the fitted curve and its 95% confidence bands.\nExercise 5. Use your helper to plot the degree-4 polynomial fit.\nExercise 6. With polynomial regression we must decide on the degree of the polynomial to use. Fit polynomial models in age of degrees 1 through 5, and use anova_lm() to test which degree is sufficient.\nExercise 7. Repeat the ANOVA, but with a linear term in education included in each model alongside a polynomial in age of degrees 1, 2, 3.\nExercise 8. Now consider predicting whether someone earns more than $250,000 per year. Fit a logistic regression (use sm.GLM with a Binomial family) of wage &gt; 250 on the same 4th-degree polynomial basis in age, and produce a plot of the predicted probability vs. age (with confidence bands and a rug plot).\nExercise 9. Fit a step-function regression: discretise age into 4 quantile-based bins with pd.qcut(), build dummy columns with pd.get_dummies(), and fit OLS."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#splines",
+    "href": "Ch07-nonlin-lab-slides.html#splines",
+    "title": "Non-Linear Modeling",
+    "section": "Splines",
+    "text": "Splines\nExercise 10. Use BSpline() from ISLP.transforms with internal_knots=[25, 40, 60] and intercept=True to build a cubic B-spline basis for age. What shape is the resulting design matrix?\nExercise 11. Now fit a cubic spline regression of wage on age using the helper bs() inside MS(). Pass name='bs(age)' to clean up the column labels in the summary.\nExercise 12. Instead of specifying knots, ask BSpline for df=6. Inspect internal_knots_ to see where the knots ended up.\nExercise 13. B-splines need not be cubic. Fit a degree-0 spline with df=3 and compare the coefficients to your earlier qcut() step-function fit.\nExercise 14. Fit a natural cubic spline with 5 degrees of freedom using ns(), and plot the fit with plot_wage_fit()."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#smoothing-splines-and-gams",
+    "href": "Ch07-nonlin-lab-slides.html#smoothing-splines-and-gams",
+    "title": "Non-Linear Modeling",
+    "section": "Smoothing Splines and GAMs",
+    "text": "Smoothing Splines and GAMs\nExercise 15. A smoothing spline is a special case of a GAM with squared-error loss and a single feature. Fit LinearGAM(s_gam(0, lam=0.6)) to predict wage from age. (Remember pygam expects a 2-D feature matrix.)\nExercise 16. Investigate how the fit changes with the smoothing parameter. Loop lam over np.logspace(-2, 6, 5) and plot each resulting fit.\nExercise 17. pygam can search for an optimal smoothing parameter. Reproduce the plot from Exercise 16, call .gridsearch(X_age, y), and add the resulting fit on top.\nExercise 18. It’s often more interpretable to specify the effective degrees of freedom than lam. Use approx_lam() from ISLP.pygam to find a lam giving roughly 4 degrees of freedom for the age term, and verify with degrees_of_freedom().\nExercise 19. Now loop over df values [1, 3, 4, 8, 15] (passing df + 1 to approx_lam() to account for the intercept), refit, and plot each.\nAdditive Models with Several Terms\nExercise 20. Build a GAM “by hand”: use natural splines (NaturalSpline) with df=4 for age and df=5 for year, get dummies for education, stack them all into a model matrix X_bh, and fit OLS.\nExercise 21. Construct a partial-dependence plot for age from the by-hand GAM: predict on a matrix where all columns except those for age are held at their column means, and the age columns are swept across age_grid.\nExercise 22. Do the same for year.\nExercise 23. Now fit the same GAM using smoothing splines via pygam. Build LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)), where f_gam is a factor term for education. (Convert education to numeric codes with .cat.codes.) Then plot the partial dependence for age using plot_gam() from ISLP.pygam.\nExercise 24. Re-tune gam_full so that the age and year smoothers each have ~4 degrees of freedom (use approx_lam() with df=4+1), then re-plot the partial dependence for age and for year.\nExercise 25. Plot the partial dependence for education — a categorical term gets a different style of plot, suited to a set of fitted constants per level.\nANOVA Tests for Additive Models\nExercise 26. In all our models, the function of year looks fairly linear. Compare three models by ANOVA: a GAM that excludes year (\\(\\mathcal{M}_1\\)), a GAM that uses a linear term in year (\\(\\mathcal{M}_2\\)), and the full GAM with a smoothing spline in year (\\(\\mathcal{M}_3\\)). What do you conclude?\nExercise 27. Repeat the test for age.\nExercise 28. Print gam_full.summary() and use gam_full.predict() to generate fitted values on the training set.\nExercise 29. Fit a logistic GAM for high_earn (i.e. wage &gt; 250) using LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0)). Plot the partial dependence for education.\nExercise 30. Cross-tabulate high_earn against education. What do you see?\nExercise 31. Refit the logistic GAM excluding observations in the “1. &lt; HS Grad” category, then plot the partial dependence for education, year, and age."
+  },
+  {
+    "objectID": "Ch07-nonlin-lab-slides.html#local-regression",
+    "href": "Ch07-nonlin-lab-slides.html#local-regression",
+    "title": "Non-Linear Modeling",
+    "section": "Local Regression",
+    "text": "Local Regression\nExercise 32. Finally, use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; pygam does not."
+  },
+  {
     "objectID": "Ch07-nonlin-lab.html",
     "href": "Ch07-nonlin-lab.html",
     "title": "Non-Linear Modeling",
@@ -105,87 +448,24 @@
     "text": "Local Regression\nExercise 32. Finally, use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; pygam does not."
   },
   {
-    "objectID": "Ch07-nonlin-lab-slides.html#setup",
-    "href": "Ch07-nonlin-lab-slides.html#setup",
-    "title": "Non-Linear Modeling",
-    "section": "Setup",
-    "text": "Setup\nAs usual, we start with some of our standard imports.\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
-    "href": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
-    "title": "Non-Linear Modeling",
-    "section": "Polynomial Regression and Step Functions",
-    "text": "Polynomial Regression and Step Functions\nExercise 1. Load the Wage data with load_data('Wage'). Store the response (wage) as y and the predictor (age) as age.\nExercise 2. Use poly() inside MS() to build a 4th-degree polynomial in age, fit an OLS model of y on this basis, and print the coefficient summary.\nExercise 3. Build a grid age_grid of 100 evenly spaced values spanning the observed range of age, and wrap it in a single-column DataFrame named age_df.\nExercise 4. Write a function plot_wage_fit(age_df, basis, title) that fits OLS on the supplied basis, evaluates it on age_df, and plots the raw data with the fitted curve and its 95% confidence bands.\nExercise 5. Use your helper to plot the degree-4 polynomial fit.\nExercise 6. With polynomial regression we must decide on the degree of the polynomial to use. Fit polynomial models in age of degrees 1 through 5, and use anova_lm() to test which degree is sufficient.\nExercise 7. Repeat the ANOVA, but with a linear term in education included in each model alongside a polynomial in age of degrees 1, 2, 3.\nExercise 8. Now consider predicting whether someone earns more than $250,000 per year. Fit a logistic regression (use sm.GLM with a Binomial family) of wage &gt; 250 on the same 4th-degree polynomial basis in age, and produce a plot of the predicted probability vs. age (with confidence bands and a rug plot).\nExercise 9. Fit a step-function regression: discretise age into 4 quantile-based bins with pd.qcut(), build dummy columns with pd.get_dummies(), and fit OLS."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#splines",
-    "href": "Ch07-nonlin-lab-slides.html#splines",
-    "title": "Non-Linear Modeling",
-    "section": "Splines",
-    "text": "Splines\nExercise 10. Use BSpline() from ISLP.transforms with internal_knots=[25, 40, 60] and intercept=True to build a cubic B-spline basis for age. What shape is the resulting design matrix?\nExercise 11. Now fit a cubic spline regression of wage on age using the helper bs() inside MS(). Pass name='bs(age)' to clean up the column labels in the summary.\nExercise 12. Instead of specifying knots, ask BSpline for df=6. Inspect internal_knots_ to see where the knots ended up.\nExercise 13. B-splines need not be cubic. Fit a degree-0 spline with df=3 and compare the coefficients to your earlier qcut() step-function fit.\nExercise 14. Fit a natural cubic spline with 5 degrees of freedom using ns(), and plot the fit with plot_wage_fit()."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#smoothing-splines-and-gams",
-    "href": "Ch07-nonlin-lab-slides.html#smoothing-splines-and-gams",
-    "title": "Non-Linear Modeling",
-    "section": "Smoothing Splines and GAMs",
-    "text": "Smoothing Splines and GAMs\nExercise 15. A smoothing spline is a special case of a GAM with squared-error loss and a single feature. Fit LinearGAM(s_gam(0, lam=0.6)) to predict wage from age. (Remember pygam expects a 2-D feature matrix.)\nExercise 16. Investigate how the fit changes with the smoothing parameter. Loop lam over np.logspace(-2, 6, 5) and plot each resulting fit.\nExercise 17. pygam can search for an optimal smoothing parameter. Reproduce the plot from Exercise 16, call .gridsearch(X_age, y), and add the resulting fit on top.\nExercise 18. It’s often more interpretable to specify the effective degrees of freedom than lam. Use approx_lam() from ISLP.pygam to find a lam giving roughly 4 degrees of freedom for the age term, and verify with degrees_of_freedom().\nExercise 19. Now loop over df values [1, 3, 4, 8, 15] (passing df + 1 to approx_lam() to account for the intercept), refit, and plot each.\nAdditive Models with Several Terms\nExercise 20. Build a GAM “by hand”: use natural splines (NaturalSpline) with df=4 for age and df=5 for year, get dummies for education, stack them all into a model matrix X_bh, and fit OLS.\nExercise 21. Construct a partial-dependence plot for age from the by-hand GAM: predict on a matrix where all columns except those for age are held at their column means, and the age columns are swept across age_grid.\nExercise 22. Do the same for year.\nExercise 23. Now fit the same GAM using smoothing splines via pygam. Build LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)), where f_gam is a factor term for education. (Convert education to numeric codes with .cat.codes.) Then plot the partial dependence for age using plot_gam() from ISLP.pygam.\nExercise 24. Re-tune gam_full so that the age and year smoothers each have ~4 degrees of freedom (use approx_lam() with df=4+1), then re-plot the partial dependence for age and for year.\nExercise 25. Plot the partial dependence for education — a categorical term gets a different style of plot, suited to a set of fitted constants per level.\nANOVA Tests for Additive Models\nExercise 26. In all our models, the function of year looks fairly linear. Compare three models by ANOVA: a GAM that excludes year (\\(\\mathcal{M}_1\\)), a GAM that uses a linear term in year (\\(\\mathcal{M}_2\\)), and the full GAM with a smoothing spline in year (\\(\\mathcal{M}_3\\)). What do you conclude?\nExercise 27. Repeat the test for age.\nExercise 28. Print gam_full.summary() and use gam_full.predict() to generate fitted values on the training set.\nExercise 29. Fit a logistic GAM for high_earn (i.e. wage &gt; 250) using LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0)). Plot the partial dependence for education.\nExercise 30. Cross-tabulate high_earn against education. What do you see?\nExercise 31. Refit the logistic GAM excluding observations in the “1. &lt; HS Grad” category, then plot the partial dependence for education, year, and age."
-  },
-  {
-    "objectID": "Ch07-nonlin-lab-slides.html#local-regression",
-    "href": "Ch07-nonlin-lab-slides.html#local-regression",
-    "title": "Non-Linear Modeling",
-    "section": "Local Regression",
-    "text": "Local Regression\nExercise 32. Finally, use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; pygam does not."
-  },
-  {
-    "objectID": "index.html",
-    "href": "index.html",
-    "title": "ISLP Labs",
-    "section": "",
-    "text": "A Quarto website that hosts handouts for the labs in An Introduction to Statistical Learning with Applications in Python (ISLP), starting with Chapter 7 — Non-Linear Modeling. The handouts re-organize each lab as a sequence of exercises with hide-able solutions, so that students can attempt the steps themselves before revealing the worked code.\nThe lab content is adapted with permission from the source available at https://www.statlearning.com, and tracks the upstream intro-stat-learning/ISLP_labs repository."
-  },
-  {
-    "objectID": "index.html#available-handouts",
-    "href": "index.html#available-handouts",
-    "title": "ISLP Labs",
-    "section": "Available handouts",
-    "text": "Available handouts\n\nChapter 7 — Non-Linear Modeling"
-  },
-  {
-    "objectID": "index.html#r-alternative",
-    "href": "index.html#r-alternative",
-    "title": "ISLP Labs",
-    "section": "R alternative",
-    "text": "R alternative\nStudents who prefer to work in R may follow the corresponding chapter of Emil Hvitfeldt’s ISLR tidymodels labs."
-  },
-  {
-    "objectID": "index.html#original-labs",
-    "href": "index.html#original-labs",
-    "title": "ISLP Labs",
-    "section": "Original labs",
-    "text": "Original labs\nThe full set of original ISLP labs (Chapters 2–13) is available as Jupyter notebooks in the intro-stat-learning/ISLP_labs repository."
-  },
-  {
-    "objectID": "index.html#building-the-handouts",
-    "href": "index.html#building-the-handouts",
-    "title": "ISLP Labs",
-    "section": "Building the handouts",
-    "text": "Building the handouts\nTwo parallel renders of the website are produced — a student worksheet (prompts only) and a solution key (solutions only) — each written to its own subdirectory of _site/. The exercise/solution toggling is provided by the coatless-quarto/assign Quarto extension.\nRender the solution key (the default profile):\nquarto render\nRender the student worksheet:\nquarto render --profile assign\nThe published GitHub Pages site combines both — its top-level index.html links to assign/ and solution/."
-  },
-  {
     "objectID": "slides/index.html",
     "href": "slides/index.html",
     "title": "ISL slide decks",
     "section": "",
-    "text": "This section is a placeholder for Quarto-revealjs slide decks that mirror the official PDF slide decks at statlearning.com → resources for Python. The plan is one Quarto deck per ISL chapter with each code example shown side-by-side in Python and R via Quarto panel-tabset blocks.\nNo deck content has been authored yet. The official slides are copyrighted by their authors (James, Witten, Hastie, Tibshirani), so the slide text and figures will not be reproduced here. Each chapter deck in this section will be either:\nThat decision is pending — see the PR description / discussion for prior-art research and the open IP question."
+    "text": "This section contains Quarto-revealjs slide decks adapted from the official PDF slide decks at statlearning.com → resources for Python, reproduced here with permission from the authors (James, Witten, Hastie, Tibshirani).\nEach chapter deck follows the Python ↔︎ R tabset pattern: every code example appears side-by-side in Python (using the ISLP package) and R (using ISLR2), so readers can follow along in either language."
+  },
+  {
+    "objectID": "slides/index.html#available-decks",
+    "href": "slides/index.html#available-decks",
+    "title": "ISL slide decks",
+    "section": "Available decks",
+    "text": "Available decks\n\n\n\nChapter\nTitle\nSlides\n\n\n\n\n2\nStatistical Learning\nHTML\n\n\n\nMore chapters to follow."
   },
   {
     "objectID": "slides/index.html#template",
     "href": "slides/index.html#template",
     "title": "ISL slide decks",
     "section": "Template",
-    "text": "Template\nSee template.qmd for the Python/R tabset pattern and revealjs front matter the chapter decks will follow."
+    "text": "Template\nSee template.qmd for the Python/R tabset pattern and revealjs front matter that chapter decks follow."
   }
 ]

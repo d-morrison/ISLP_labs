@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Chapter N — Topic – ISLP Labs — Student Worksheet</title>
+<title>Chapter 2 — Statistical Learning – ISLP Labs — Student Worksheet</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -108,6 +108,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -191,14 +220,14 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
         
-    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="template-slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
+    <div class="quarto-alternate-formats"><h2>Other Formats</h2><ul><li><a href="ch02-statistical-learning-slides.html"><i class="bi bi-file-slides"></i>RevealJS</a></li></ul></div></div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Chapter N — Topic</h1>
-<p class="subtitle lead">Template slide deck (Python ↔︎ R)</p>
+<h1 class="title">Chapter 2 — Statistical Learning</h1>
+<p class="subtitle lead">Introduction to Statistical Learning, 2nd ed.</p>
 </div>
 
 
@@ -221,78 +250,326 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 
-<section id="section-heading" class="level1 section">
-<h1 class="section">Section heading</h1>
-<p>A section divider slide. Replace with the section title for the chapter this deck covers.</p>
-<section id="a-regular-slide" class="level2">
-<h2 class="anchored" data-anchor-id="a-regular-slide">A regular slide</h2>
-<p>Regular content slides start at H2.</p>
+<section id="overview" class="level1">
+<h1>Overview</h1>
+<section id="what-we-will-cover" class="level2">
+<h2 class="anchored" data-anchor-id="what-we-will-cover">What we will cover</h2>
 <ul>
-<li>Bullet</li>
-<li>Bullet</li>
-<li>Bullet</li>
+<li>What is statistical learning?</li>
+<li>Why and how do we estimate <span class="math inline">\(f\)</span>?</li>
+<li>Trade-offs: prediction vs.&nbsp;inference, flexibility vs.&nbsp;interpretability</li>
+<li>Measuring model accuracy: MSE, bias-variance decomposition</li>
+<li>The classification setting: Bayes classifier, KNN</li>
 </ul>
 </section>
-<section id="python-r-code-side-by-side" class="level2">
-<h2 class="anchored" data-anchor-id="python-r-code-side-by-side">Python ↔︎ R code, side-by-side</h2>
+<section id="data-sets-used-in-this-chapter" class="level2">
+<h2 class="anchored" data-anchor-id="data-sets-used-in-this-chapter">Data sets used in this chapter</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-1-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-1" role="tab" aria-controls="tabset-1-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-1-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-1-2" role="tab" aria-controls="tabset-1-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-1-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this with the example for the chapter the deck covers.</span></span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.arange(<span class="dv">1</span>, <span class="dv">6</span>)</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x.mean()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> ISLP <span class="im">import</span> load_data</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Wage <span class="op">=</span> load_data(<span class="st">'Wage'</span>)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Smarket <span class="op">=</span> load_data(<span class="st">'Smarket'</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>NCI60 <span class="op">=</span> load_data(<span class="st">'NCI60'</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-1-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-1-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Replace this with the R equivalent.</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="dv">1</span><span class="sc">:</span><span class="dv">5</span></span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(x)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ISLR2)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Wage, Smarket, NCI60 are loaded automatically</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(Wage)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<!--
-Author note (not rendered):
-
-The code blocks above use plain markdown fences (```python, ```r) on
-purpose, NOT Quarto execution chunks (```{python}, ```{r}). Plain fences
-are pure syntax highlighting — no Python or R engine is invoked, so the
-preview / publish workflows do not need Python or R installed. When
-chapter decks eventually run real code, switch to ```{python} / ```{r}
-chunks AND add `setup-python` (and `r-lib/actions/setup-r` for R) steps
-to .github/workflows/{publish,preview}.yml, plus a `requirements.txt`
-and (for R) a `renv.lock` to pin versions.
--->
 </section>
-<section id="a-second-tabset-slide" class="level2">
-<h2 class="anchored" data-anchor-id="a-second-tabset-slide">A second tabset slide</h2>
+</section>
+<section id="what-is-statistical-learning" class="level1">
+<h1>What Is Statistical Learning?</h1>
+<section id="three-motivating-examples" class="level2">
+<h2 class="anchored" data-anchor-id="three-motivating-examples">Three motivating examples</h2>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 25%">
+<col style="width: 28%">
+<col style="width: 30%">
+<col style="width: 15%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Data set</th>
+<th>Input <span class="math inline">\(X\)</span></th>
+<th>Output <span class="math inline">\(Y\)</span></th>
+<th>Goal</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Wage</td>
+<td>age, year, education</td>
+<td>wage</td>
+<td>predict / understand wage drivers</td>
+</tr>
+<tr class="even">
+<td>Stock market</td>
+<td>yesterday’s returns, volume</td>
+<td>up / down</td>
+<td>classify tomorrow’s direction</td>
+</tr>
+<tr class="odd">
+<td>NCI60 gene expression</td>
+<td>6,830 gene measurements</td>
+<td>cancer type</td>
+<td>group cancer types (unsupervised)</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="wages-vs.-age-year-education" class="level2">
+<h2 class="anchored" data-anchor-id="wages-vs.-age-year-education">Wages vs.&nbsp;age, year, education</h2>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-2-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-1" role="tab" aria-controls="tabset-2-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-2-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-2-2" role="tab" aria-controls="tabset-2-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-2-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">4</span>))</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>Wage.plot.scatter(<span class="st">'age'</span>,       <span class="st">'wage'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>Wage.plot.scatter(<span class="st">'year'</span>,      <span class="st">'wage'</span>, alpha<span class="op">=</span><span class="fl">0.3</span>, ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>Wage[<span class="st">'education'</span>].value_counts().sort_index().plot.bar(ax<span class="op">=</span>axes[<span class="dv">2</span>])</span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-2-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-2-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Example 2</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">3</span>))</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Wage<span class="sc">$</span>age,       Wage<span class="sc">$</span>wage, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">xlab =</span> <span class="st">"Age"</span>,       <span class="at">ylab =</span> <span class="st">"Wage"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Wage<span class="sc">$</span>year,      Wage<span class="sc">$</span>wage, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">xlab =</span> <span class="st">"Year"</span>,      <span class="at">ylab =</span> <span class="st">"Wage"</span>)</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(Wage<span class="sc">$</span>education, Wage<span class="sc">$</span>wage, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">xlab =</span> <span class="st">"Education"</span>, <span class="at">ylab =</span> <span class="st">"Wage"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
-<!--
-Author note: prose written after the tabset's closing ::: and before
-the next H2 will render INSIDE the previous slide in revealjs (and
-inside the previous section in html). To put commentary on its own
-slide, use a fresh ## heading. To document something for the .qmd
-author only, use an HTML comment like this one.
--->
 </section>
-<section id="how-to-add-a-new-chapter-deck" class="level2">
-<h2 class="anchored" data-anchor-id="how-to-add-a-new-chapter-deck">How to add a new chapter deck</h2>
+<section id="the-general-setup" class="level2">
+<h2 class="anchored" data-anchor-id="the-general-setup">The general setup</h2>
+<p>We observe a response <span class="math inline">\(Y\)</span> and <span class="math inline">\(p\)</span> predictors <span class="math inline">\(X = (X_1, \ldots, X_p)\)</span>.</p>
+<p>We assume:</p>
+<p><span class="math display">\[Y = f(X) + \varepsilon\]</span></p>
+<ul>
+<li><span class="math inline">\(f\)</span> is a fixed but unknown function of <span class="math inline">\(X_1, \ldots, X_p\)</span></li>
+<li><span class="math inline">\(\varepsilon\)</span> is a random error term, independent of <span class="math inline">\(X\)</span>, with <span class="math inline">\(E[\varepsilon] = 0\)</span></li>
+</ul>
+<p>Statistical learning is a collection of approaches for estimating <span class="math inline">\(f\)</span>.</p>
+</section>
+<section id="prediction-vs.-inference" class="level2">
+<h2 class="anchored" data-anchor-id="prediction-vs.-inference">Prediction vs.&nbsp;inference</h2>
+<p><strong>Prediction</strong> — we treat <span class="math inline">\(f\)</span> as a black box.</p>
+<p><span class="math display">\[\hat{Y} = \hat{f}(X)\]</span></p>
+<p>We care about accuracy, not the form of <span class="math inline">\(\hat{f}\)</span>.</p>
+<p><strong>Inference</strong> — we want to understand how <span class="math inline">\(Y\)</span> changes with <span class="math inline">\(X\)</span>.</p>
+<ul>
+<li>Which predictors are associated with the response?</li>
+<li>What is the direction and magnitude of each association?</li>
+<li>Can the relationship be summarised as linear, or is it more complex?</li>
+</ul>
+</section>
+</section>
+<section id="estimating-f" class="level1">
+<h1>Estimating <span class="math inline">\(f\)</span></h1>
+<section id="parametric-methods" class="level2">
+<h2 class="anchored" data-anchor-id="parametric-methods">Parametric methods</h2>
 <ol type="1">
-<li>Copy <code>template.qmd</code> to <code>slides/ChNN-&lt;topic&gt;.qmd</code>.</li>
-<li>Update the YAML <code>title</code>, <code>subtitle</code>, and <code>revealjs.output-file: ChNN-&lt;topic&gt;-slides.html</code>.</li>
-<li>Replace the template slides with chapter content (subject to the IP discussion in <code>slides/index.qmd</code>).</li>
-<li>Add the deck to the navbar in the project root <code>_quarto.yml</code>.</li>
+<li>Assume a functional form for <span class="math inline">\(f\)</span>, e.g., the linear model: <span class="math display">\[f(X) = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p\]</span></li>
+<li>Use training data to fit (estimate) the parameters <span class="math inline">\(\beta_0, \ldots, \beta_p\)</span>.</li>
 </ol>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-3-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-1" role="tab" aria-controls="tabset-3-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-3-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-3-2" role="tab" aria-controls="tabset-3-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-3-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.linear_model <span class="im">import</span> LinearRegression</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> pd.get_dummies(Wage[[<span class="st">'age'</span>, <span class="st">'year'</span>, <span class="st">'education'</span>]], drop_first<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> Wage[<span class="st">'wage'</span>]</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>lm <span class="op">=</span> LinearRegression().fit(X, y)</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(lm.coef_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-3-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-3-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> age <span class="sc">+</span> year <span class="sc">+</span> education, <span class="at">data =</span> Wage)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="non-parametric-methods" class="level2">
+<h2 class="anchored" data-anchor-id="non-parametric-methods">Non-parametric methods</h2>
+<p>No explicit assumption about the form of <span class="math inline">\(f\)</span>; seek an estimate that fits the data points as closely as possible without being too rough or wiggly.</p>
+<p><strong>Advantage</strong> — can fit a wider range of shapes for <span class="math inline">\(f\)</span>.</p>
+<p><strong>Disadvantage</strong> — require many observations; harder to interpret.</p>
+</section>
+<section id="the-flexibilityinterpretability-trade-off" class="level2">
+<h2 class="anchored" data-anchor-id="the-flexibilityinterpretability-trade-off">The flexibility–interpretability trade-off</h2>
+<p>More flexible models can fit more complex <span class="math inline">\(f\)</span>, but are:</p>
+<ul>
+<li>harder to interpret (less useful for inference)</li>
+<li>more prone to <em>overfitting</em> (poor test performance)</li>
+</ul>
+<p>Less flexible models are more interpretable and often more accurate when the true <span class="math inline">\(f\)</span> is nearly linear.</p>
+</section>
+</section>
+<section id="assessing-model-accuracy" class="level1">
+<h1>Assessing Model Accuracy</h1>
+<section id="training-vs.-test-mse" class="level2">
+<h2 class="anchored" data-anchor-id="training-vs.-test-mse">Training vs.&nbsp;test MSE</h2>
+<p><strong>Training MSE</strong> — computed on data used to fit the model:</p>
+<p><span class="math display">\[\text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{f}(x_i))^2\]</span></p>
+<p>We really care about <strong>test MSE</strong> — how well does <span class="math inline">\(\hat{f}\)</span> predict <em>new</em> observations?</p>
+</section>
+<section id="computing-test-mse-with-a-hold-out-set" class="level2">
+<h2 class="anchored" data-anchor-id="computing-test-mse-with-a-hold-out-set">Computing test MSE with a hold-out set</h2>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-4-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-1" role="tab" aria-controls="tabset-4-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-4-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-4-2" role="tab" aria-controls="tabset-4-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-4-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.model_selection <span class="im">import</span> train_test_split</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>X_train, X_test, y_train, y_test <span class="op">=</span> train_test_split(</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    X, y, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">42</span>)</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>lm.fit(X_train, y_train)</span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>mse_test <span class="op">=</span> mean_squared_error(y_test, lm.predict(X_test))</span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"Test MSE: </span><span class="sc">{</span>mse_test<span class="sc">:.2f}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-4-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-4-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>train_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(Wage), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(Wage))</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>fit_train  <span class="ot">&lt;-</span> <span class="fu">lm</span>(wage <span class="sc">~</span> age <span class="sc">+</span> year <span class="sc">+</span> education, <span class="at">data =</span> Wage[train_idx, ])</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a>pred_test  <span class="ot">&lt;-</span> <span class="fu">predict</span>(fit_train, Wage[<span class="sc">-</span>train_idx, ])</span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>mse_test   <span class="ot">&lt;-</span> <span class="fu">mean</span>((Wage<span class="sc">$</span>wage[<span class="sc">-</span>train_idx] <span class="sc">-</span> pred_test)<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="fu">cat</span>(<span class="st">"Test MSE:"</span>, mse_test, <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="the-bias-variance-trade-off" class="level2">
+<h2 class="anchored" data-anchor-id="the-bias-variance-trade-off">The bias-variance trade-off</h2>
+<p>For any <span class="math inline">\(x_0\)</span> and any <span class="math inline">\(\hat{f}\)</span>:</p>
+<p><span class="math display">\[E\!\left[(y_0 - \hat{f}(x_0))^2\right]
+  = \underbrace{\operatorname{Var}(\hat{f}(x_0))}_{\text{variance}}
+  + \underbrace{\left[\operatorname{Bias}(\hat{f}(x_0))\right]^2}_{\text{bias}^2}
+  + \underbrace{\operatorname{Var}(\varepsilon)}_{\text{irreducible}}\]</span></p>
+<ul>
+<li><strong>Variance</strong> — how much <span class="math inline">\(\hat{f}\)</span> changes across different training sets</li>
+<li><strong>Bias</strong> — error from assuming a wrong functional form for <span class="math inline">\(f\)</span></li>
+<li><strong>Irreducible error</strong> — noise in <span class="math inline">\(Y\)</span>; cannot be reduced by any model</li>
+</ul>
+</section>
+<section id="bias-variance-in-practice" class="level2">
+<h2 class="anchored" data-anchor-id="bias-variance-in-practice">Bias-variance in practice</h2>
+<p>As model flexibility increases:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th>Variance</th>
+<th>Bias</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Very flexible</td>
+<td>High ↑</td>
+<td>Low ↓</td>
+</tr>
+<tr class="even">
+<td>Very inflexible</td>
+<td>Low ↓</td>
+<td>High ↑</td>
+</tr>
+</tbody>
+</table>
+<p>The test MSE is minimised at the <em>sweet spot</em> where variance and bias² together are smallest — the bias-variance trade-off.</p>
+</section>
+</section>
+<section id="the-classification-setting" class="level1">
+<h1>The Classification Setting</h1>
+<section id="error-rates" class="level2">
+<h2 class="anchored" data-anchor-id="error-rates">Error rates</h2>
+<p>The response <span class="math inline">\(Y\)</span> is now qualitative (a <em>class label</em>).</p>
+<p><strong>Training error rate</strong>:</p>
+<p><span class="math display">\[\frac{1}{n}\sum_{i=1}^{n} \mathbf{1}(y_i \neq \hat{y}_i)\]</span></p>
+<p>We care about the <strong>test error rate</strong>: how often does the classifier misclassify a new observation?</p>
+</section>
+<section id="the-bayes-classifier" class="level2">
+<h2 class="anchored" data-anchor-id="the-bayes-classifier">The Bayes classifier</h2>
+<p>Assigns each observation to the most probable class given the predictor values:</p>
+<p><span class="math display">\[\hat{Y} = \arg\max_j \Pr(Y = j \mid X = x_0)\]</span></p>
+<p>The resulting <strong>Bayes error rate</strong> (analogous to irreducible error) is:</p>
+<p><span class="math display">\[1 - E\!\left[\max_j \Pr(Y = j \mid X)\right]\]</span></p>
+<p>In practice the true conditional probabilities <span class="math inline">\(\Pr(Y = j \mid X)\)</span> are unknown. KNN estimates them from data.</p>
+</section>
+<section id="k-nearest-neighbours" class="level2">
+<h2 class="anchored" data-anchor-id="k-nearest-neighbours">K-Nearest Neighbours</h2>
+<p>For a test point <span class="math inline">\(x_0\)</span>, identify the <span class="math inline">\(K\)</span> closest training observations <span class="math inline">\(\mathcal{N}_0\)</span> and estimate:</p>
+<p><span class="math display">\[\Pr(Y = j \mid X = x_0) = \frac{1}{K}\sum_{i \in \mathcal{N}_0}\mathbf{1}(y_i = j)\]</span></p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-5-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-1" role="tab" aria-controls="tabset-5-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-5-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-5-2" role="tab" aria-controls="tabset-5-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-5-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.neighbors <span class="im">import</span> KNeighborsClassifier</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Example: predict stock market direction with KNN (K = 3)</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>X_smarket <span class="op">=</span> Smarket[[<span class="st">'Lag1'</span>, <span class="st">'Lag2'</span>]]</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>y_smarket <span class="op">=</span> Smarket[<span class="st">'Direction'</span>]</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>X_tr, X_te, y_tr, y_te <span class="op">=</span> train_test_split(</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>    X_smarket, y_smarket, test_size<span class="op">=</span><span class="fl">0.2</span>, random_state<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>knn <span class="op">=</span> KNeighborsClassifier(n_neighbors<span class="op">=</span><span class="dv">3</span>).fit(X_tr, y_tr)</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Test accuracy:"</span>, knn.score(X_te, y_te).<span class="bu">round</span>(<span class="dv">3</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-5-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-5-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(class)</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">0</span>)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>train_idx <span class="ot">&lt;-</span> <span class="fu">sample</span>(<span class="fu">nrow</span>(Smarket), <span class="fl">0.8</span> <span class="sc">*</span> <span class="fu">nrow</span>(Smarket))</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>knn_pred <span class="ot">&lt;-</span> <span class="fu">knn</span>(</span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">train =</span> Smarket[train_idx,  <span class="fu">c</span>(<span class="st">"Lag1"</span>, <span class="st">"Lag2"</span>)],</span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">test  =</span> Smarket[<span class="sc">-</span>train_idx, <span class="fu">c</span>(<span class="st">"Lag1"</span>, <span class="st">"Lag2"</span>)],</span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">cl    =</span> Smarket<span class="sc">$</span>Direction[train_idx],</span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">k     =</span> <span class="dv">3</span></span>
+<span id="cb10-10"><a href="#cb10-10" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb10-11"><a href="#cb10-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mean</span>(knn_pred <span class="sc">==</span> Smarket<span class="sc">$</span>Direction[<span class="sc">-</span>train_idx])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="knn-the-role-of-k" class="level2">
+<h2 class="anchored" data-anchor-id="knn-the-role-of-k">KNN: the role of <span class="math inline">\(K\)</span></h2>
+<ul>
+<li><strong>Small <span class="math inline">\(K\)</span></strong> (e.g., <span class="math inline">\(K = 1\)</span>) — very flexible; low bias, high variance (overfit)</li>
+<li><strong>Large <span class="math inline">\(K\)</span></strong> (e.g., <span class="math inline">\(K = n\)</span>) — inflexible; high bias, low variance (underfit)</li>
+<li><strong>Optimal <span class="math inline">\(K\)</span></strong> — minimises test error; found by cross-validation (Chapter 5)</li>
+</ul>
+<p>KNN illustrates the bias-variance trade-off in the classification setting just as smoothing splines do in regression.</p>
+</section>
+</section>
+<section id="summary" class="level1">
+<h1>Summary</h1>
+<section id="key-takeaways" class="level2">
+<h2 class="anchored" data-anchor-id="key-takeaways">Key takeaways</h2>
+<ol type="1">
+<li>Statistical learning: estimating <span class="math inline">\(f\)</span> in <span class="math inline">\(Y = f(X) + \varepsilon\)</span>.</li>
+<li>Choice of method depends on the goal (prediction vs.&nbsp;inference) and the form of <span class="math inline">\(f\)</span>.</li>
+<li>More flexible models reduce bias but increase variance — there is no free lunch.</li>
+<li>We assess a model on <strong>test</strong> data, not training data.</li>
+<li>The Bayes classifier sets the lower bound on test error; KNN approximates it when the true conditional probabilities are unknown.</li>
+</ol>
+</section>
+<section id="whats-next" class="level2">
+<h2 class="anchored" data-anchor-id="whats-next">What’s next</h2>
+<ul>
+<li><strong>Chapter 3</strong>: Linear regression — the simplest parametric approach.</li>
+<li><strong>Chapter 4</strong>: Classification — logistic regression, LDA, QDA.</li>
+<li><strong>Chapter 5</strong>: Cross-validation and the bootstrap — how to properly estimate test error.</li>
+</ul>
 
 
 <script>
@@ -883,7 +1160,7 @@ window.addEventListener("load", alignEquationAnchorsWithDefault);
     </div>   
     <div class="nav-footer-center">
 <p>Lab content adapted from <a href="https://www.statlearning.com">statlearning.com</a> · Built with <a href="https://quarto.org">Quarto</a></p>
-<div class="toc-actions"><ul><li><a href="https://github.com/d-morrison/ISLP_labs/edit/stable/slides/template.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/blob/stable/slides/template.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
+<div class="toc-actions"><ul><li><a href="https://github.com/d-morrison/ISLP_labs/edit/stable/slides/ch02-statistical-learning.qmd" class="toc-action"><i class="bi bi-github"></i>Edit this page</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/issues/new" class="toc-action"><i class="bi empty"></i>Report an issue</a></li><li><a href="https://github.com/d-morrison/ISLP_labs/blob/stable/slides/ch02-statistical-learning.qmd" class="toc-action"><i class="bi empty"></i>View source</a></li></ul></div></div>
     <div class="nav-footer-right">
       &nbsp;
     </div>
