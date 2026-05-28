@@ -21,6 +21,7 @@ in either language.
 | Chapter | Title | Formats |
 |---------|-------|---------|
 | 2 | Statistical Learning | [HTML](ch02-statistical-learning.qmd) · [Slides](ch02-statistical-learning-slides.html) |
+| 3 | Linear Regression | [HTML](ch03-linear-regression.qmd) · [Slides](ch03-linear-regression-slides.html) |
 
 *More chapters to follow.*
 
