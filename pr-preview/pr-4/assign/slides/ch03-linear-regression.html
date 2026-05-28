@@ -390,10 +390,10 @@ window.Quarto = {
 </section>
 <section id="matrix-form" class="level2">
 <h2 class="anchored" data-anchor-id="matrix-form">Matrix form</h2>
-<p>Stack the <span class="math inline">\(p + 1\)</span> coefficients into <span class="math inline">\(\bm\beta\)</span>, the design matrix into <span class="math inline">\(\mathbf X\)</span> (with a column of ones for the intercept), and the responses into <span class="math inline">\(\mathbf y\)</span>:</p>
-<p><span class="math display">\[\mathbf y = \mathbf X \bm\beta + \bm\varepsilon\]</span></p>
-<p>The OLS estimator solves the normal equations <span class="math inline">\(\mathbf X^\top \mathbf X \, \hat{\bm\beta} = \mathbf X^\top \mathbf y\)</span>:</p>
-<p><span class="math display">\[\hat{\bm\beta} = (\mathbf X^\top \mathbf X)^{-1}\mathbf X^\top \mathbf y\]</span></p>
+<p>Stack the <span class="math inline">\(p + 1\)</span> coefficients into <span class="math inline">\(\boldsymbol{\beta}\)</span>, the design matrix into <span class="math inline">\(\mathbf X\)</span> (with a column of ones for the intercept), and the responses into <span class="math inline">\(\mathbf y\)</span>:</p>
+<p><span class="math display">\[\mathbf y = \mathbf X \boldsymbol{\beta} + \boldsymbol{\varepsilon}\]</span></p>
+<p>The OLS estimator solves the normal equations <span class="math inline">\(\mathbf X^\top \mathbf X \, \hat{\boldsymbol{\beta}} = \mathbf X^\top \mathbf y\)</span>:</p>
+<p><span class="math display">\[\hat{\boldsymbol{\beta}} = (\mathbf X^\top \mathbf X)^{-1}\mathbf X^\top \mathbf y\]</span></p>
 <p>assuming <span class="math inline">\(\mathbf X^\top \mathbf X\)</span> is invertible (no perfect collinearity).</p>
 </section>
 <section id="is-any-predictor-useful" class="level2">
@@ -439,10 +439,9 @@ window.Quarto = {
 <ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-6-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-1" role="tab" aria-controls="tabset-6-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-6-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-6-2" role="tab" aria-controls="tabset-6-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-6-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-6-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>credit <span class="op">=</span> pd.read_csv(<span class="st">"https://www.statlearning.com/s/Credit.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fit_eth <span class="op">=</span> smf.ols(<span class="st">"Balance ~ C(Ethnicity)"</span>, data<span class="op">=</span>credit).fit()</span>
-<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>fit_eth.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>credit <span class="op">=</span> pd.read_csv(<span class="st">"https://www.statlearning.com/s/Credit.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>fit_eth <span class="op">=</span> smf.ols(<span class="st">"Balance ~ C(Ethnicity)"</span>, data<span class="op">=</span>credit).fit()</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>fit_eth.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div id="tabset-6-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-6-2-tab">
 <div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>credit <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://www.statlearning.com/s/Credit.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
@@ -483,6 +482,19 @@ window.Quarto = {
 <p>A simple way to fit a non-linear function of one predictor is to add powers of it:</p>
 <p><span class="math display">\[Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \cdots + \beta_d X^d + \varepsilon\]</span></p>
 <p>This is still <em>linear in the parameters</em>, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)</p>
+<div class="tabset-margin-container"></div><div class="panel-tabset">
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit_poly <span class="op">=</span> smf.ols(<span class="st">"sales ~ TV + I(TV**2)"</span>, data<span class="op">=</span>ad).fit()</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>fit_poly.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>fit_poly <span class="ot">&lt;-</span> <span class="fu">lm</span>(sales <span class="sc">~</span> TV <span class="sc">+</span> <span class="fu">I</span>(TV<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> ad)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coef</span>(fit_poly)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
 </section>
 </section>
 <section id="diagnosing-problems" class="level1">
@@ -491,16 +503,16 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="non-linearity-of-the-responsepredictor-relationship">1. Non-linearity of the response–predictor relationship</h2>
 <p>The straight-line assumption is wrong when a residuals-vs-fitted plot shows a systematic curve. Fixes: transform a predictor (log, square root), add a polynomial term, or move to a non-linear method.</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-8-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-1" role="tab" aria-controls="tabset-8-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-8-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-8-2" role="tab" aria-controls="tabset-8-2" aria-selected="false" href="">R</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
-<div id="tabset-8-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-8-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(fit_full.fittedvalues, fit_full.resid, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
-<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, ls<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Fitted value"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Residual"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.scatter(fit_full.fittedvalues, fit_full.resid, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>plt.axhline(<span class="dv">0</span>, ls<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">"Fitted value"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Residual"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="tabset-8-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-8-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit_full, <span class="at">which =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit_full, <span class="at">which =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>
@@ -531,17 +543,18 @@ window.Quarto = {
 <p><span class="math display">\[\text{VIF}(\hat\beta_j) = \frac{1}{1 - R^2_{X_j \mid X_{-j}}}\]</span></p>
 <p>flags it; rule of thumb is to be wary of <span class="math inline">\(\text{VIF} &gt; 5\)</span> (or <span class="math inline">\(&gt; 10\)</span>).</p>
 <div class="tabset-margin-container"></div><div class="panel-tabset">
-<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-9-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-1" role="tab" aria-controls="tabset-9-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-9-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-9-2" role="tab" aria-controls="tabset-9-2" aria-selected="false" href="">R</a></li></ul>
+<ul class="nav nav-tabs" role="tablist"><li class="nav-item" role="presentation"><a class="nav-link active" id="tabset-10-1-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-1" role="tab" aria-controls="tabset-10-1" aria-selected="true" href="">Python</a></li><li class="nav-item" role="presentation"><a class="nav-link" id="tabset-10-2-tab" data-bs-toggle="tab" data-bs-target="#tabset-10-2" role="tab" aria-controls="tabset-10-2" aria-selected="false" href="">R</a></li></ul>
 <div class="tab-content">
-<div id="tabset-9-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-9-1-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(credit[[<span class="st">"Limit"</span>, <span class="st">"Rating"</span>, <span class="st">"Age"</span>]])</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>[variance_inflation_factor(X.values, i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, X.shape[<span class="dv">1</span>])]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-10-1" class="tab-pane active" role="tabpanel" aria-labelledby="tabset-10-1-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>X <span class="op">=</span> sm.add_constant(credit[[<span class="st">"Limit"</span>, <span class="st">"Rating"</span>, <span class="st">"Age"</span>]])</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>[variance_inflation_factor(X.values, i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, X.shape[<span class="dv">1</span>])]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
-<div id="tabset-9-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-9-2-tab">
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fit_credit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Balance <span class="sc">~</span> Limit <span class="sc">+</span> Rating <span class="sc">+</span> Age, <span class="at">data =</span> credit)</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(fit_credit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div id="tabset-10-2" class="tab-pane" role="tabpanel" aria-labelledby="tabset-10-2-tab">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(car)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>fit_credit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Balance <span class="sc">~</span> Limit <span class="sc">+</span> Rating <span class="sc">+</span> Age, <span class="at">data =</span> credit)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">vif</span>(fit_credit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </div>
 </div>

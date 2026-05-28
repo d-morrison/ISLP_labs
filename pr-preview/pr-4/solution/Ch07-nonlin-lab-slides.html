@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js" integrity="sha384-ZvpUoO/+PpLXR1lu4jmpXWu80pZlYUAfxl5NsBMWOEPSjUn/6Z/hRTt8+pR6L4N2" crossorigin="anonymous"></script><script src="site_libs/clipboard/clipboard.min.js"></script>
 <script src="site_libs/quarto-html/tabby.min.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -32,6 +32,72 @@
       margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
       vertical-align: middle;
     }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
   </style>
   <link rel="stylesheet" href="site_libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
   <link href="site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
@@ -126,6 +192,9 @@
       margin-right: 0; 
     }
   </style>
+  <script src="https://cdn.jsdelivr.net/npm/requirejs@2.3.6/require.min.js" integrity="sha384-c9c+LnTbwQ3aujuU7ULEPVvgLs+Fn6fJUvIGTsuu1ZcCf11fiEubah0ttpca4ntM sha384-6V1/AdqZRWk1KAlWbKBlGhN7VG4iE/yAZcO6NZPMF8od0vukrvr0tg4qY6NSrItx" crossorigin="anonymous"></script>
+  
+  <script type="application/javascript">define('jquery', [],function() {return window.jQuery;})</script>
 </head>
 <body class="quarto-light">
   <div class="reveal">
@@ -155,7 +224,32 @@
 <section id="setup" class="slide level2">
 <h2>Setup</h2>
 <p>As usual, we start with some of our standard imports.</p>
+<div id="7e09d239" class="cell" data-execution_count="1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> numpy <span class="im">as</span> np, pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a></a><span class="im">from</span> matplotlib.pyplot <span class="im">import</span> subplots</span>
+<span id="cb1-3"><a></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb1-4"><a></a><span class="im">from</span> ISLP <span class="im">import</span> load_data</span>
+<span id="cb1-5"><a></a><span class="im">from</span> ISLP.models <span class="im">import</span> (summarize,</span>
+<span id="cb1-6"><a></a>                         poly,</span>
+<span id="cb1-7"><a></a>                         ModelSpec <span class="im">as</span> MS)</span>
+<span id="cb1-8"><a></a><span class="im">from</span> statsmodels.stats.anova <span class="im">import</span> anova_lm</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>We again collect the new imports needed for this lab. Many of these are developed specifically for the <code>ISLP</code> package.</p>
+<div id="eb6e9ea4" class="cell" data-execution_count="2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> (s <span class="im">as</span> s_gam,</span>
+<span id="cb2-2"><a></a>                   l <span class="im">as</span> l_gam,</span>
+<span id="cb2-3"><a></a>                   f <span class="im">as</span> f_gam,</span>
+<span id="cb2-4"><a></a>                   LinearGAM,</span>
+<span id="cb2-5"><a></a>                   LogisticGAM)</span>
+<span id="cb2-6"><a></a></span>
+<span id="cb2-7"><a></a><span class="im">from</span> ISLP.transforms <span class="im">import</span> (BSpline,</span>
+<span id="cb2-8"><a></a>                             NaturalSpline)</span>
+<span id="cb2-9"><a></a><span class="im">from</span> ISLP.models <span class="im">import</span> bs, ns</span>
+<span id="cb2-10"><a></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> (approx_lam,</span>
+<span id="cb2-11"><a></a>                        degrees_of_freedom,</span>
+<span id="cb2-12"><a></a>                        plot <span class="im">as</span> plot_gam,</span>
+<span id="cb2-13"><a></a>                        anova <span class="im">as</span> anova_gam)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </section>
 <section id="polynomial-regression-and-step-functions" class="slide level2">
 <h2>Polynomial Regression and Step Functions</h2>
@@ -166,6 +260,11 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="171baa20" class="cell" data-execution_count="3">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a>Wage <span class="op">=</span> load_data(<span class="st">'Wage'</span>)</span>
+<span id="cb3-2"><a></a>y <span class="op">=</span> Wage[<span class="st">'wage'</span>]</span>
+<span id="cb3-3"><a></a>age <span class="op">=</span> Wage[<span class="st">'age'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>Throughout most of this lab, our response is <code>Wage['wage']</code>, which we have stored as <code>y</code> above.</p>
 </div>
 </div>
@@ -177,6 +276,78 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="ca2c262c" class="cell" data-execution_count="4">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a></a>poly_age <span class="op">=</span> MS([poly(<span class="st">'age'</span>, degree<span class="op">=</span><span class="dv">4</span>)]).fit(Wage)</span>
+<span id="cb4-2"><a></a>M <span class="op">=</span> sm.OLS(y, poly_age.transform(Wage)).fit()</span>
+<span id="cb4-3"><a></a>summarize(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="4">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">intercept</th>
+<td>111.7036</td>
+<td>0.729</td>
+<td>153.283</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">poly(age, degree=4)[0]</th>
+<td>447.0679</td>
+<td>39.915</td>
+<td>11.201</td>
+<td>0.000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">poly(age, degree=4)[1]</th>
+<td>-478.3158</td>
+<td>39.915</td>
+<td>-11.983</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">poly(age, degree=4)[2]</th>
+<td>125.5217</td>
+<td>39.915</td>
+<td>3.145</td>
+<td>0.002</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">poly(age, degree=4)[3]</th>
+<td>-77.9112</td>
+<td>39.915</td>
+<td>-1.952</td>
+<td>0.051</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p><code>poly()</code> is a <em>helper</em> that sets up the transformation; <code>Poly()</code> is the workhorse that computes it. The first line above runs the <code>fit()</code> method on <code>Wage</code>, which stores any parameters needed by <code>Poly()</code> on the training data so that subsequent <code>transform()</code> calls (on new data, or inside the plotting function below) use the same basis.</p>
 </div>
 </div>
@@ -188,7 +359,12 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-
+<div id="40772ca0" class="cell" data-execution_count="5">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a>age_grid <span class="op">=</span> np.linspace(age.<span class="bu">min</span>(),</span>
+<span id="cb5-2"><a></a>                       age.<span class="bu">max</span>(),</span>
+<span id="cb5-3"><a></a>                       <span class="dv">100</span>)</span>
+<span id="cb5-4"><a></a>age_df <span class="op">=</span> pd.DataFrame({<span class="st">'age'</span>: age_grid})</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </div>
 </div>
 </div>
@@ -199,6 +375,31 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="e2405d2f" class="cell" data-execution_count="6">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a></a><span class="kw">def</span> plot_wage_fit(age_df,</span>
+<span id="cb6-2"><a></a>                  basis,</span>
+<span id="cb6-3"><a></a>                  title):</span>
+<span id="cb6-4"><a></a></span>
+<span id="cb6-5"><a></a>    X <span class="op">=</span> basis.transform(Wage)</span>
+<span id="cb6-6"><a></a>    Xnew <span class="op">=</span> basis.transform(age_df)</span>
+<span id="cb6-7"><a></a>    M <span class="op">=</span> sm.OLS(y, X).fit()</span>
+<span id="cb6-8"><a></a>    preds <span class="op">=</span> M.get_prediction(Xnew)</span>
+<span id="cb6-9"><a></a>    bands <span class="op">=</span> preds.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb6-10"><a></a>    fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb6-11"><a></a>    ax.scatter(age,</span>
+<span id="cb6-12"><a></a>               y,</span>
+<span id="cb6-13"><a></a>               facecolor<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="cb6-14"><a></a>               alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb6-15"><a></a>    <span class="cf">for</span> val, ls <span class="kw">in</span> <span class="bu">zip</span>([preds.predicted_mean,</span>
+<span id="cb6-16"><a></a>                        bands[:, <span class="dv">0</span>],</span>
+<span id="cb6-17"><a></a>                        bands[:, <span class="dv">1</span>]],</span>
+<span id="cb6-18"><a></a>                       [<span class="st">'b'</span>, <span class="st">'r--'</span>, <span class="st">'r--'</span>]):</span>
+<span id="cb6-19"><a></a>        ax.plot(age_df.values, val, ls, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb6-20"><a></a>    ax.set_title(title, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb6-21"><a></a>    ax.set_xlabel(<span class="st">'Age'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb6-22"><a></a>    ax.set_ylabel(<span class="st">'Wage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb6-23"><a></a>    <span class="cf">return</span> ax</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>The <code>alpha</code> argument to <code>ax.scatter()</code> adds transparency that gives a visual indication of density. <code>zip()</code> bundles the three lines (fitted mean and two confidence bands) with their colours and line types for the <code>for</code> loop.</p>
 </div>
 </div>
@@ -210,7 +411,18 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-
+<div id="ca61ceae" class="cell" data-execution_count="7">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>plot_wage_fit(age_df,</span>
+<span id="cb7-2"><a></a>              poly_age,</span>
+<span id="cb7-3"><a></a>              <span class="st">'Degree-4 Polynomial'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-8-output-1.png" width="681" height="693"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -221,6 +433,92 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="d3a3f30c" class="cell" data-execution_count="8">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a>models <span class="op">=</span> [MS([poly(<span class="st">'age'</span>, degree<span class="op">=</span>d)])</span>
+<span id="cb8-2"><a></a>          <span class="cf">for</span> d <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">6</span>)]</span>
+<span id="cb8-3"><a></a>Xs <span class="op">=</span> [model.fit_transform(Wage) <span class="cf">for</span> model <span class="kw">in</span> models]</span>
+<span id="cb8-4"><a></a>anova_lm(<span class="op">*</span>[sm.OLS(y, X_).fit()</span>
+<span id="cb8-5"><a></a>           <span class="cf">for</span> X_ <span class="kw">in</span> Xs])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">df_resid</th>
+<th data-quarto-table-cell-role="th">ssr</th>
+<th data-quarto-table-cell-role="th">df_diff</th>
+<th data-quarto-table-cell-role="th">ss_diff</th>
+<th data-quarto-table-cell-role="th">F</th>
+<th data-quarto-table-cell-role="th">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2998.0</td>
+<td>5.022216e+06</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2997.0</td>
+<td>4.793430e+06</td>
+<td>1.0</td>
+<td>228786.010128</td>
+<td>143.593107</td>
+<td>2.363850e-32</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>2996.0</td>
+<td>4.777674e+06</td>
+<td>1.0</td>
+<td>15755.693664</td>
+<td>9.888756</td>
+<td>1.679202e-03</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">3</th>
+<td>2995.0</td>
+<td>4.771604e+06</td>
+<td>1.0</td>
+<td>6070.152124</td>
+<td>3.809813</td>
+<td>5.104620e-02</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">4</th>
+<td>2994.0</td>
+<td>4.770322e+06</td>
+<td>1.0</td>
+<td>1282.563017</td>
+<td>0.804976</td>
+<td>3.696820e-01</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>The <code>*</code> unpacks the list of fitted models for <code>anova_lm()</code>’s variable argument list. The p-value comparing linear <code>models[0]</code> to quadratic <code>models[1]</code> is essentially zero, and the cubic-vs-quartic comparison is roughly 5%, while degree 5 is unnecessary (p = 0.37). Either a cubic or a quartic polynomial gives a reasonable fit.</p>
 </div>
 </div>
@@ -232,6 +530,74 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="59dc10ee" class="cell" data-execution_count="9">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a>models <span class="op">=</span> [MS([<span class="st">'education'</span>, poly(<span class="st">'age'</span>, degree<span class="op">=</span>d)])</span>
+<span id="cb9-2"><a></a>          <span class="cf">for</span> d <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">4</span>)]</span>
+<span id="cb9-3"><a></a>XEs <span class="op">=</span> [model.fit_transform(Wage)</span>
+<span id="cb9-4"><a></a>       <span class="cf">for</span> model <span class="kw">in</span> models]</span>
+<span id="cb9-5"><a></a>anova_lm(<span class="op">*</span>[sm.OLS(y, X_).fit() <span class="cf">for</span> X_ <span class="kw">in</span> XEs])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="9">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">df_resid</th>
+<th data-quarto-table-cell-role="th">ssr</th>
+<th data-quarto-table-cell-role="th">df_diff</th>
+<th data-quarto-table-cell-role="th">ss_diff</th>
+<th data-quarto-table-cell-role="th">F</th>
+<th data-quarto-table-cell-role="th">Pr(&gt;F)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>2997.0</td>
+<td>3.902335e+06</td>
+<td>0.0</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>2996.0</td>
+<td>3.759472e+06</td>
+<td>1.0</td>
+<td>142862.701185</td>
+<td>113.991883</td>
+<td>3.838075e-26</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>2995.0</td>
+<td>3.753546e+06</td>
+<td>1.0</td>
+<td>5926.207070</td>
+<td>4.728593</td>
+<td>2.974318e-02</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>The ANOVA approach works whether or not the polynomials are orthogonal, provided the models are <em>nested</em>. As an alternative, we could choose the polynomial degree by cross-validation (Chapter 5).</p>
 </div>
 </div>
@@ -243,7 +609,112 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="9425e203" class="cell" data-execution_count="10">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a></a>X <span class="op">=</span> poly_age.transform(Wage)</span>
+<span id="cb10-2"><a></a>high_earn <span class="op">=</span> Wage[<span class="st">'high_earn'</span>] <span class="op">=</span> y <span class="op">&gt;</span> <span class="dv">250</span>  <span class="co"># shorthand</span></span>
+<span id="cb10-3"><a></a>glm <span class="op">=</span> sm.GLM(y <span class="op">&gt;</span> <span class="dv">250</span>,</span>
+<span id="cb10-4"><a></a>             X,</span>
+<span id="cb10-5"><a></a>             family<span class="op">=</span>sm.families.Binomial())</span>
+<span id="cb10-6"><a></a>B <span class="op">=</span> glm.fit()</span>
+<span id="cb10-7"><a></a>summarize(B)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="10">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">z</th>
+<th data-quarto-table-cell-role="th">P&gt;|z|</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">intercept</th>
+<td>-4.3012</td>
+<td>0.345</td>
+<td>-12.457</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">poly(age, degree=4)[0]</th>
+<td>71.9642</td>
+<td>26.133</td>
+<td>2.754</td>
+<td>0.006</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">poly(age, degree=4)[1]</th>
+<td>-85.7729</td>
+<td>35.929</td>
+<td>-2.387</td>
+<td>0.017</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">poly(age, degree=4)[2]</th>
+<td>34.1626</td>
+<td>19.697</td>
+<td>1.734</td>
+<td>0.083</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">poly(age, degree=4)[3]</th>
+<td>-47.4008</td>
+<td>24.105</td>
+<td>-1.966</td>
+<td>0.049</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>(The double assignment <code>high_earn = Wage['high_earn'] = y &gt; 250</code> both binds the local variable <code>high_earn</code> and stores the indicator as a new column on the <code>Wage</code> DataFrame. We’ll re-use that column in Exercises 29 and 30.)</p>
+<div id="5f0aaa6a" class="cell" data-execution_count="11">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>newX <span class="op">=</span> poly_age.transform(age_df)</span>
+<span id="cb11-2"><a></a>preds <span class="op">=</span> B.get_prediction(newX)</span>
+<span id="cb11-3"><a></a>bands <span class="op">=</span> preds.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb11-4"><a></a></span>
+<span id="cb11-5"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb11-6"><a></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">0</span>)</span>
+<span id="cb11-7"><a></a>ax.scatter(age <span class="op">+</span></span>
+<span id="cb11-8"><a></a>           <span class="fl">0.2</span> <span class="op">*</span> rng.uniform(size<span class="op">=</span>y.shape[<span class="dv">0</span>]),</span>
+<span id="cb11-9"><a></a>           np.where(high_earn, <span class="fl">0.198</span>, <span class="fl">0.002</span>),</span>
+<span id="cb11-10"><a></a>           fc<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="cb11-11"><a></a>           marker<span class="op">=</span><span class="st">'|'</span>)</span>
+<span id="cb11-12"><a></a><span class="cf">for</span> val, ls <span class="kw">in</span> <span class="bu">zip</span>([preds.predicted_mean,</span>
+<span id="cb11-13"><a></a>                    bands[:, <span class="dv">0</span>],</span>
+<span id="cb11-14"><a></a>                    bands[:, <span class="dv">1</span>]],</span>
+<span id="cb11-15"><a></a>                   [<span class="st">'b'</span>, <span class="st">'r--'</span>, <span class="st">'r--'</span>]):</span>
+<span id="cb11-16"><a></a>    ax.plot(age_df.values, val, ls, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb11-17"><a></a>ax.set_title(<span class="st">'Degree-4 Polynomial'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb11-18"><a></a>ax.set_xlabel(<span class="st">'Age'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb11-19"><a></a>ax.set_ylim([<span class="dv">0</span>, <span class="fl">0.2</span>])</span>
+<span id="cb11-20"><a></a>ax.set_ylabel(<span class="st">'P(Wage &gt; 250)'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-12-output-1.png" width="693" height="693"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>The <code>age</code> values above 250 are shown as gray marks at the top of the plot; those below 250 at the bottom. A small amount of jitter prevents identical-age points from overlapping. This is called a <em>rug plot</em>.</p>
 </div>
 </div>
@@ -255,6 +726,70 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="79931767" class="cell" data-execution_count="12">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a></a>cut_age <span class="op">=</span> pd.qcut(age, <span class="dv">4</span>)</span>
+<span id="cb12-2"><a></a>summarize(sm.OLS(y, pd.get_dummies(cut_age)).fit())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="12">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">(17.999, 33.75]</th>
+<td>94.1584</td>
+<td>1.478</td>
+<td>63.692</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">(33.75, 42.0]</th>
+<td>116.6608</td>
+<td>1.470</td>
+<td>79.385</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">(42.0, 51.0]</th>
+<td>119.1887</td>
+<td>1.416</td>
+<td>84.147</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">(51.0, 80.0]</th>
+<td>116.5717</td>
+<td>1.559</td>
+<td>74.751</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p><code>pd.qcut()</code> chose cutpoints at the 25%, 50% and 75% quantiles, so we get four bins. <code>pd.get_dummies()</code> (unlike the usual model-matrix convention) keeps <em>all</em> category levels; combined with no intercept, each coefficient is the average wage in its bin. For non-quantile cutpoints, use <code>pd.cut()</code> instead.</p>
 </div>
 </div>
@@ -269,6 +804,14 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="4761f0be" class="cell" data-execution_count="13">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>bs_ <span class="op">=</span> BSpline(internal_knots<span class="op">=</span>[<span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">60</span>], intercept<span class="op">=</span><span class="va">True</span>).fit(age)</span>
+<span id="cb13-2"><a></a>bs_age <span class="op">=</span> bs_.transform(age)</span>
+<span id="cb13-3"><a></a>bs_age.shape</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="13">
+<pre><code>(3000, 7)</code></pre>
+</div>
+</div>
 <p>A cubic B-spline with 3 interior knots yields a 7-column matrix (<code>3 + degree + 1</code> with <code>intercept=True</code>).</p>
 </div>
 </div>
@@ -280,6 +823,95 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="45e77e37" class="cell" data-execution_count="14">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>bs_age <span class="op">=</span> MS([bs(<span class="st">'age'</span>,</span>
+<span id="cb15-2"><a></a>                internal_knots<span class="op">=</span>[<span class="dv">25</span>, <span class="dv">40</span>, <span class="dv">60</span>],</span>
+<span id="cb15-3"><a></a>                name<span class="op">=</span><span class="st">'bs(age)'</span>)])</span>
+<span id="cb15-4"><a></a>Xbs <span class="op">=</span> bs_age.fit_transform(Wage)</span>
+<span id="cb15-5"><a></a>M <span class="op">=</span> sm.OLS(y, Xbs).fit()</span>
+<span id="cb15-6"><a></a>summarize(M)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="14">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">intercept</th>
+<td>60.4937</td>
+<td>9.460</td>
+<td>6.394</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">bs(age)[0]</th>
+<td>3.9805</td>
+<td>12.538</td>
+<td>0.317</td>
+<td>0.751</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">bs(age)[1]</th>
+<td>44.6310</td>
+<td>9.626</td>
+<td>4.636</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">bs(age)[2]</th>
+<td>62.8388</td>
+<td>10.755</td>
+<td>5.843</td>
+<td>0.000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">bs(age)[3]</th>
+<td>55.9908</td>
+<td>10.706</td>
+<td>5.230</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">bs(age)[4]</th>
+<td>50.6881</td>
+<td>14.402</td>
+<td>3.520</td>
+<td>0.000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">bs(age)[5]</th>
+<td>16.6061</td>
+<td>19.126</td>
+<td>0.868</td>
+<td>0.385</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>Note there are 6 spline coefficients rather than 7 because <code>bs()</code> defaults to <code>intercept=False</code> — the basis would normally be 7 columns, but one is dropped to accommodate the model’s overall intercept.</p>
 </div>
 </div>
@@ -291,6 +923,12 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="60e4f40c" class="cell" data-execution_count="15">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a>BSpline(df<span class="op">=</span><span class="dv">6</span>).fit(age).internal_knots_</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="15">
+<pre><code>array([33.75, 42.  , 51.  ])</code></pre>
+</div>
+</div>
 <p>With <code>df=6</code> and cubic splines, three knots are placed at the 25%, 50% and 75% quantiles of <code>age</code> — ages 33.75, 42.0, and 51.0.</p>
 </div>
 </div>
@@ -302,6 +940,73 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="413c6859" class="cell" data-execution_count="16">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a></a>bs_age0 <span class="op">=</span> MS([bs(<span class="st">'age'</span>,</span>
+<span id="cb18-2"><a></a>                 df<span class="op">=</span><span class="dv">3</span>,</span>
+<span id="cb18-3"><a></a>                 degree<span class="op">=</span><span class="dv">0</span>)]).fit(Wage)</span>
+<span id="cb18-4"><a></a>Xbs0 <span class="op">=</span> bs_age0.transform(Wage)</span>
+<span id="cb18-5"><a></a>summarize(sm.OLS(y, Xbs0).fit())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="16">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">intercept</th>
+<td>94.1584</td>
+<td>1.478</td>
+<td>63.687</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">bs(age, df=3, degree=0)[0]</th>
+<td>22.3490</td>
+<td>2.152</td>
+<td>10.388</td>
+<td>0.0</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">bs(age, df=3, degree=0)[1]</th>
+<td>24.8076</td>
+<td>2.044</td>
+<td>12.137</td>
+<td>0.0</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">bs(age, df=3, degree=0)[2]</th>
+<td>22.7814</td>
+<td>2.087</td>
+<td>10.917</td>
+<td>0.0</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>Degree-0 B-splines are piecewise constant — equivalent to the step function from Exercise 9. With <code>df=3</code> (degree 0), the knots are again at the same three quantiles. The coefficients look different because of the coding: here the intercept is a column of ones and the remaining three coefficients are <em>increments</em> relative to the first bin. The sums approximately recover the per-bin means (slight differences are because <code>qcut()</code> uses <code>≤</code> while <code>bs()</code> uses <code>&lt;</code> at the boundaries).</p>
 </div>
 </div>
@@ -313,7 +1018,97 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="14fa9336" class="cell" data-execution_count="17">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a>ns_age <span class="op">=</span> MS([ns(<span class="st">'age'</span>, df<span class="op">=</span><span class="dv">5</span>)]).fit(Wage)</span>
+<span id="cb19-2"><a></a>M_ns <span class="op">=</span> sm.OLS(y, ns_age.transform(Wage)).fit()</span>
+<span id="cb19-3"><a></a>summarize(M_ns)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="17">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
 
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">coef</th>
+<th data-quarto-table-cell-role="th">std err</th>
+<th data-quarto-table-cell-role="th">t</th>
+<th data-quarto-table-cell-role="th">P&gt;|t|</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">intercept</th>
+<td>60.4752</td>
+<td>4.708</td>
+<td>12.844</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">ns(age, df=5)[0]</th>
+<td>61.5267</td>
+<td>4.709</td>
+<td>13.065</td>
+<td>0.000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">ns(age, df=5)[1]</th>
+<td>55.6912</td>
+<td>5.717</td>
+<td>9.741</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">ns(age, df=5)[2]</th>
+<td>46.8184</td>
+<td>4.948</td>
+<td>9.463</td>
+<td>0.000</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">ns(age, df=5)[3]</th>
+<td>83.2036</td>
+<td>11.918</td>
+<td>6.982</td>
+<td>0.000</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">ns(age, df=5)[4]</th>
+<td>6.8770</td>
+<td>9.484</td>
+<td>0.725</td>
+<td>0.468</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
+<div id="3ba239b3" class="cell" data-execution_count="18">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a></a>plot_wage_fit(age_df,</span>
+<span id="cb20-2"><a></a>              ns_age,</span>
+<span id="cb20-3"><a></a>              <span class="st">'Natural spline, df=5'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-19-output-1.png" width="681" height="693"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -327,6 +1122,16 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="9f23c7e5" class="cell" data-execution_count="19">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a>X_age <span class="op">=</span> np.asarray(age).reshape((<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>))</span>
+<span id="cb21-2"><a></a>gam <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>, lam<span class="op">=</span><span class="fl">0.6</span>))</span>
+<span id="cb21-3"><a></a>gam.fit(X_age, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="19">
+<pre><code>LinearGAM(callbacks=[Deviance(), Diffs()], fit_intercept=True, 
+   max_iter=100, scale=None, terms=s(0) + intercept, tol=0.0001, 
+   verbose=False)</code></pre>
+</div>
+</div>
 <p><code>s_gam(0, ...)</code> says “apply a smoothing spline to column 0 of the feature matrix”. <code>lam</code> is the penalty parameter <span class="math inline">\(\lambda\)</span>. The <code>-1</code> inside <code>.reshape((-1, 1))</code> tells NumPy to infer that dimension’s size.</p>
 </div>
 </div>
@@ -338,7 +1143,26 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-
+<div id="3d0d460a" class="cell" data-execution_count="20">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb23-2"><a></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb23-3"><a></a><span class="cf">for</span> lam <span class="kw">in</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>):</span>
+<span id="cb23-4"><a></a>    gam <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>, lam<span class="op">=</span>lam)).fit(X_age, y)</span>
+<span id="cb23-5"><a></a>    ax.plot(age_grid,</span>
+<span id="cb23-6"><a></a>            gam.predict(age_grid),</span>
+<span id="cb23-7"><a></a>            label<span class="op">=</span><span class="st">'</span><span class="sc">{:.1e}</span><span class="st">'</span>.<span class="bu">format</span>(lam),</span>
+<span id="cb23-8"><a></a>            linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb23-9"><a></a>ax.set_xlabel(<span class="st">'Age'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb23-10"><a></a>ax.set_ylabel(<span class="st">'Wage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb23-11"><a></a>ax.legend(title<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">lambda</span><span class="dv">$</span><span class="vs">'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-21-output-1.png" width="681" height="664"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -349,7 +1173,39 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-
+<div id="cc78d7be" class="cell" data-execution_count="21">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb24-2"><a></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb24-3"><a></a><span class="cf">for</span> lam <span class="kw">in</span> np.logspace(<span class="op">-</span><span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">5</span>):</span>
+<span id="cb24-4"><a></a>    gam <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>, lam<span class="op">=</span>lam)).fit(X_age, y)</span>
+<span id="cb24-5"><a></a>    ax.plot(age_grid,</span>
+<span id="cb24-6"><a></a>            gam.predict(age_grid),</span>
+<span id="cb24-7"><a></a>            label<span class="op">=</span><span class="st">'</span><span class="sc">{:.1e}</span><span class="st">'</span>.<span class="bu">format</span>(lam),</span>
+<span id="cb24-8"><a></a>            linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb24-9"><a></a>gam_opt <span class="op">=</span> gam.gridsearch(X_age, y)</span>
+<span id="cb24-10"><a></a>ax.plot(age_grid,</span>
+<span id="cb24-11"><a></a>        gam_opt.predict(age_grid),</span>
+<span id="cb24-12"><a></a>        label<span class="op">=</span><span class="st">'Grid search'</span>,</span>
+<span id="cb24-13"><a></a>        linewidth<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb24-14"><a></a>ax.set_xlabel(<span class="st">'Age'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb24-15"><a></a>ax.set_ylabel(<span class="st">'Wage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb24-16"><a></a>ax.legend(title<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">lambda</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb24-17"><a></a>fig</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="21">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-22-output-1.png" width="681" height="664"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-22-output-2.png" width="681" height="664"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -360,6 +1216,15 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="62336f0a" class="cell" data-execution_count="22">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a></a>age_term <span class="op">=</span> gam.terms[<span class="dv">0</span>]</span>
+<span id="cb25-2"><a></a>lam_4 <span class="op">=</span> approx_lam(X_age, age_term, <span class="dv">4</span>)</span>
+<span id="cb25-3"><a></a>age_term.lam <span class="op">=</span> lam_4</span>
+<span id="cb25-4"><a></a>degrees_of_freedom(X_age, age_term)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="22">
+<pre><code>np.float64(4.000000100003406)</code></pre>
+</div>
+</div>
 <p>These degrees of freedom include the unpenalized intercept and linear term of the smoothing spline — so there are at least 2 df.</p>
 </div>
 </div>
@@ -371,6 +1236,31 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="713c0fcc" class="cell" data-execution_count="23">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb27-2"><a></a>ax.scatter(X_age,</span>
+<span id="cb27-3"><a></a>           y,</span>
+<span id="cb27-4"><a></a>           facecolor<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="cb27-5"><a></a>           alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb27-6"><a></a><span class="cf">for</span> df <span class="kw">in</span> [<span class="dv">1</span>, <span class="dv">3</span>, <span class="dv">4</span>, <span class="dv">8</span>, <span class="dv">15</span>]:</span>
+<span id="cb27-7"><a></a>    lam <span class="op">=</span> approx_lam(X_age, age_term, df <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb27-8"><a></a>    age_term.lam <span class="op">=</span> lam</span>
+<span id="cb27-9"><a></a>    gam.fit(X_age, y)</span>
+<span id="cb27-10"><a></a>    ax.plot(age_grid,</span>
+<span id="cb27-11"><a></a>            gam.predict(age_grid),</span>
+<span id="cb27-12"><a></a>            label<span class="op">=</span><span class="st">'</span><span class="sc">{:d}</span><span class="st">'</span>.<span class="bu">format</span>(df),</span>
+<span id="cb27-13"><a></a>            linewidth<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb27-14"><a></a>ax.set_xlabel(<span class="st">'Age'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb27-15"><a></a>ax.set_ylabel(<span class="st">'Wage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb27-16"><a></a>ax.legend(title<span class="op">=</span><span class="st">'Degrees of freedom'</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-24-output-1.png" width="681" height="664"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>A value of <code>df=1</code> corresponds to a straight-line fit.</p>
 </div>
 </div>
@@ -383,6 +1273,15 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="2746069b" class="cell" data-execution_count="24">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb28-1"><a></a>ns_age <span class="op">=</span> NaturalSpline(df<span class="op">=</span><span class="dv">4</span>).fit(age)</span>
+<span id="cb28-2"><a></a>ns_year <span class="op">=</span> NaturalSpline(df<span class="op">=</span><span class="dv">5</span>).fit(Wage[<span class="st">'year'</span>])</span>
+<span id="cb28-3"><a></a>Xs <span class="op">=</span> [ns_age.transform(age),</span>
+<span id="cb28-4"><a></a>      ns_year.transform(Wage[<span class="st">'year'</span>]),</span>
+<span id="cb28-5"><a></a>      pd.get_dummies(Wage[<span class="st">'education'</span>]).values]</span>
+<span id="cb28-6"><a></a>X_bh <span class="op">=</span> np.hstack(Xs)</span>
+<span id="cb28-7"><a></a>gam_bh <span class="op">=</span> sm.OLS(y, X_bh).fit()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>We use all columns of the indicator matrix for <code>education</code> (no intercept), and stack the three component matrices horizontally to form <code>X_bh</code>.</p>
 </div>
 </div>
@@ -394,6 +1293,34 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="fd5e7541" class="cell" data-execution_count="25">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a></a>age_grid <span class="op">=</span> np.linspace(age.<span class="bu">min</span>(),</span>
+<span id="cb29-2"><a></a>                       age.<span class="bu">max</span>(),</span>
+<span id="cb29-3"><a></a>                       <span class="dv">100</span>)</span>
+<span id="cb29-4"><a></a>X_age_bh <span class="op">=</span> X_bh.copy()[:<span class="dv">100</span>]</span>
+<span id="cb29-5"><a></a>X_age_bh[:] <span class="op">=</span> X_bh.mean(<span class="dv">0</span>)[<span class="va">None</span>, :]</span>
+<span id="cb29-6"><a></a>X_age_bh[:, :<span class="dv">4</span>] <span class="op">=</span> ns_age.transform(age_grid)</span>
+<span id="cb29-7"><a></a>preds <span class="op">=</span> gam_bh.get_prediction(X_age_bh)</span>
+<span id="cb29-8"><a></a>bounds_age <span class="op">=</span> preds.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb29-9"><a></a>partial_age <span class="op">=</span> preds.predicted_mean</span>
+<span id="cb29-10"><a></a>center <span class="op">=</span> partial_age.mean()</span>
+<span id="cb29-11"><a></a>partial_age <span class="op">-=</span> center</span>
+<span id="cb29-12"><a></a>bounds_age <span class="op">-=</span> center</span>
+<span id="cb29-13"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb29-14"><a></a>ax.plot(age_grid, partial_age, <span class="st">'b'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb29-15"><a></a>ax.plot(age_grid, bounds_age[:, <span class="dv">0</span>], <span class="st">'r--'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb29-16"><a></a>ax.plot(age_grid, bounds_age[:, <span class="dv">1</span>], <span class="st">'r--'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb29-17"><a></a>ax.set_xlabel(<span class="st">'Age'</span>)</span>
+<span id="cb29-18"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb29-19"><a></a>ax.set_title(<span class="st">'Partial dependence of age on wage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-26-output-1.png" width="670" height="680"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>The idea is to create a new prediction matrix in which all but the columns for <code>age</code> are held constant at the training-data means; the four <code>age</code> columns are filled with the natural spline basis evaluated at the 100 values in <code>age_grid</code>.</p>
 </div>
 </div>
@@ -405,7 +1332,34 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-
+<div id="87eb5283" class="cell" data-execution_count="26">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb30-1"><a></a>year_grid <span class="op">=</span> np.linspace(Wage[<span class="st">'year'</span>].<span class="bu">min</span>(),</span>
+<span id="cb30-2"><a></a>                        Wage[<span class="st">'year'</span>].<span class="bu">max</span>(),</span>
+<span id="cb30-3"><a></a>                        <span class="dv">100</span>)</span>
+<span id="cb30-4"><a></a>X_year_bh <span class="op">=</span> X_bh.copy()[:<span class="dv">100</span>]</span>
+<span id="cb30-5"><a></a>X_year_bh[:] <span class="op">=</span> X_bh.mean(<span class="dv">0</span>)[<span class="va">None</span>, :]</span>
+<span id="cb30-6"><a></a>X_year_bh[:, <span class="dv">4</span>:<span class="dv">9</span>] <span class="op">=</span> ns_year.transform(year_grid)</span>
+<span id="cb30-7"><a></a>preds <span class="op">=</span> gam_bh.get_prediction(X_year_bh)</span>
+<span id="cb30-8"><a></a>bounds_year <span class="op">=</span> preds.conf_int(alpha<span class="op">=</span><span class="fl">0.05</span>)</span>
+<span id="cb30-9"><a></a>partial_year <span class="op">=</span> preds.predicted_mean</span>
+<span id="cb30-10"><a></a>center <span class="op">=</span> partial_year.mean()</span>
+<span id="cb30-11"><a></a>partial_year <span class="op">-=</span> center</span>
+<span id="cb30-12"><a></a>bounds_year <span class="op">-=</span> center</span>
+<span id="cb30-13"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb30-14"><a></a>ax.plot(year_grid, partial_year, <span class="st">'b'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb30-15"><a></a>ax.plot(year_grid, bounds_year[:, <span class="dv">0</span>], <span class="st">'r--'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb30-16"><a></a>ax.plot(year_grid, bounds_year[:, <span class="dv">1</span>], <span class="st">'r--'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb30-17"><a></a>ax.set_xlabel(<span class="st">'Year'</span>)</span>
+<span id="cb30-18"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb30-19"><a></a>ax.set_title(<span class="st">'Partial dependence of year on wage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-27-output-1.png" width="662" height="680"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -416,6 +1370,29 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="4a07e476" class="cell" data-execution_count="27">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a></a>gam_full <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb31-2"><a></a>                     s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span></span>
+<span id="cb31-3"><a></a>                     f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb31-4"><a></a>Xgam <span class="op">=</span> np.column_stack([age,</span>
+<span id="cb31-5"><a></a>                        Wage[<span class="st">'year'</span>],</span>
+<span id="cb31-6"><a></a>                        Wage[<span class="st">'education'</span>].cat.codes])</span>
+<span id="cb31-7"><a></a>gam_full <span class="op">=</span> gam_full.fit(Xgam, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="c4c5fcfc" class="cell" data-execution_count="28">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb32-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb32-2"><a></a>plot_gam(gam_full, <span class="dv">0</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb32-3"><a></a>ax.set_xlabel(<span class="st">'Age'</span>)</span>
+<span id="cb32-4"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb32-5"><a></a>ax.set_title(<span class="st">'Partial dependence of age on wage - default lam=0.6'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-29-output-1.png" width="735" height="680"></p>
+</figure>
+</div>
+</div>
+</div>
 <p><code>year</code> has only 7 unique values, so we use 7 basis functions. <code>lam=0</code> on the factor term avoids any shrinkage. The default <code>lam=0.6</code> for <code>age</code> produces a noticeably wiggly fit.</p>
 </div>
 </div>
@@ -427,7 +1404,33 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="dd2f51ff" class="cell" data-execution_count="29">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a></a>age_term <span class="op">=</span> gam_full.terms[<span class="dv">0</span>]</span>
+<span id="cb33-2"><a></a>age_term.lam <span class="op">=</span> approx_lam(Xgam, age_term, df<span class="op">=</span><span class="dv">4</span> <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb33-3"><a></a>year_term <span class="op">=</span> gam_full.terms[<span class="dv">1</span>]</span>
+<span id="cb33-4"><a></a>year_term.lam <span class="op">=</span> approx_lam(Xgam, year_term, df<span class="op">=</span><span class="dv">4</span> <span class="op">+</span> <span class="dv">1</span>)</span>
+<span id="cb33-5"><a></a>gam_full <span class="op">=</span> gam_full.fit(Xgam, y)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>Note that updating <code>age_term.lam</code> updates <code>gam_full.terms[0]</code> in place.</p>
+<div id="d1e4f6b9" class="cell" data-execution_count="30">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb34-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb34-2"><a></a>plot_gam(gam_full,</span>
+<span id="cb34-3"><a></a>         <span class="dv">1</span>,</span>
+<span id="cb34-4"><a></a>         ax<span class="op">=</span>ax)</span>
+<span id="cb34-5"><a></a>ax.set_xlabel(<span class="st">'Year'</span>)</span>
+<span id="cb34-6"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb34-7"><a></a>ax.set_title(<span class="st">'Partial dependence of year on wage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="30">
+<pre><code>Text(0.5, 1.0, 'Partial dependence of year on wage')</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-31-output-2.png" width="659" height="680"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -438,7 +1441,22 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
-
+<div id="1f037819" class="cell" data-execution_count="31">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb36-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb36-2"><a></a>ax <span class="op">=</span> plot_gam(gam_full, <span class="dv">2</span>)</span>
+<span id="cb36-3"><a></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
+<span id="cb36-4"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb36-5"><a></a>ax.set_title(<span class="st">'Partial dependence of wage on education'</span>,</span>
+<span id="cb36-6"><a></a>             fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb36-7"><a></a>ax.set_xticklabels(Wage[<span class="st">'education'</span>].cat.categories, fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-32-output-1.png" width="670" height="677"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -450,6 +1468,77 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="0ff81fa0" class="cell" data-execution_count="32">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb37"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a></a>gam_0 <span class="op">=</span> LinearGAM(age_term <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb37-2"><a></a>gam_0.fit(Xgam, y)</span>
+<span id="cb37-3"><a></a>gam_linear <span class="op">=</span> LinearGAM(age_term <span class="op">+</span></span>
+<span id="cb37-4"><a></a>                       l_gam(<span class="dv">1</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb37-5"><a></a>                       f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb37-6"><a></a>gam_linear.fit(Xgam, y)</span>
+<span id="cb37-7"><a></a></span>
+<span id="cb37-8"><a></a>anova_gam(gam_0, gam_linear, gam_full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="32">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">deviance</th>
+<th data-quarto-table-cell-role="th">df</th>
+<th data-quarto-table-cell-role="th">deviance_diff</th>
+<th data-quarto-table-cell-role="th">df_diff</th>
+<th data-quarto-table-cell-role="th">F</th>
+<th data-quarto-table-cell-role="th">pvalue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>105402.432206</td>
+<td>2991.004005</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>105134.624170</td>
+<td>2990.005190</td>
+<td>267.808037</td>
+<td>0.998815</td>
+<td>7.625329</td>
+<td>0.016210</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>105030.684668</td>
+<td>2987.007254</td>
+<td>103.939502</td>
+<td>2.997936</td>
+<td>0.986003</td>
+<td>0.429637</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>Note the reuse of <code>age_term</code> — that term already has its <code>lam</code> set to yield 4 df, and we want to keep that across all three models.</p>
 <p>There is compelling evidence that a GAM with a linear <code>year</code> term is better than one that omits <code>year</code> (p ≈ 0.002). However, there is no evidence that a nonlinear function of <code>year</code> is needed (p ≈ 0.435). So <span class="math inline">\(\mathcal{M}_2\)</span> is preferred.</p>
 </div>
@@ -462,6 +1551,77 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="2b325970" class="cell" data-execution_count="33">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb38"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb38-1"><a></a>gam_0 <span class="op">=</span> LinearGAM(year_term <span class="op">+</span></span>
+<span id="cb38-2"><a></a>                  f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb38-3"><a></a>gam_linear <span class="op">=</span> LinearGAM(l_gam(<span class="dv">0</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb38-4"><a></a>                       year_term <span class="op">+</span></span>
+<span id="cb38-5"><a></a>                       f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb38-6"><a></a>gam_0.fit(Xgam, y)</span>
+<span id="cb38-7"><a></a>gam_linear.fit(Xgam, y)</span>
+<span id="cb38-8"><a></a>anova_gam(gam_0, gam_linear, gam_full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="33">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th">deviance</th>
+<th data-quarto-table-cell-role="th">df</th>
+<th data-quarto-table-cell-role="th">deviance_diff</th>
+<th data-quarto-table-cell-role="th">df_diff</th>
+<th data-quarto-table-cell-role="th">F</th>
+<th data-quarto-table-cell-role="th">pvalue</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">0</th>
+<td>109043.809955</td>
+<td>2991.000589</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+<td>NaN</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">1</th>
+<td>107295.111571</td>
+<td>2990.000704</td>
+<td>1748.698385</td>
+<td>0.999884</td>
+<td>49.737638</td>
+<td>0.000009</td>
+</tr>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">2</th>
+<td>105030.684668</td>
+<td>2987.007254</td>
+<td>2264.426903</td>
+<td>2.993450</td>
+<td>21.513266</td>
+<td>0.000026</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>Very strong evidence that a nonlinear term is required for <code>age</code>.</p>
 </div>
 </div>
@@ -473,7 +1633,39 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="4d171cd2" class="cell" data-execution_count="34">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb39"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a></a>gam_full.summary()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>LinearGAM                                                                                                 
+=============================================== ==========================================================
+Distribution:                        NormalDist Effective DoF:                                     12.9927
+Link Function:                     IdentityLink Log Likelihood:                                 -14930.261
+Number of Samples:                         3000 AIC:                                            29888.5074
+                                                AICc:                                            29888.648
+                                                GCV:                                             1246.1129
+                                                Scale:                                             35.1625
+                                                Pseudo R-Squared:                                   0.2928
+==========================================================================================================
+Feature Function                  Lambda               Rank         EDoF         P &gt; x        Sig. Code   
+================================= ==================== ============ ============ ============ ============
+s(0)                              [465.0491]           20           5.1          1.11e-16     ***         
+s(1)                              [2.1564]             7            4.0          8.10e-03     **          
+f(2)                              [0]                  5            4.0          1.11e-16     ***         
+intercept                                              1            0.0          1.11e-16     ***         
+==========================================================================================================
+Significance codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
 
+WARNING: Fitting splines and a linear function to a feature introduces a model identifiability problem
+         which can cause p-values to appear significant when they are not.
+
+WARNING: p-values calculated in this manner behave correctly for un-penalized models or models with
+         known smoothing parameters, but when smoothing parameters have been estimated, the p-values
+         are typically lower than they should be, meaning that the tests reject the null too readily.</code></pre>
+</div>
+</div>
+<div id="d2294435" class="cell" data-execution_count="35">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb41"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a></a>Yhat <span class="op">=</span> gam_full.predict(Xgam)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 </div>
 </div>
 </div>
@@ -484,6 +1676,33 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="1f219a45" class="cell" data-execution_count="36">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb42"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb42-1"><a></a>gam_logit <span class="op">=</span> LogisticGAM(age_term <span class="op">+</span></span>
+<span id="cb42-2"><a></a>                        l_gam(<span class="dv">1</span>, lam<span class="op">=</span><span class="dv">0</span>) <span class="op">+</span></span>
+<span id="cb42-3"><a></a>                        f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb42-4"><a></a>gam_logit.fit(Xgam, high_earn)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="36">
+<pre><code>LogisticGAM(callbacks=[Deviance(), Diffs(), Accuracy()], 
+   fit_intercept=True, max_iter=100, 
+   terms=s(0) + l(1) + f(2) + intercept, tol=0.0001, verbose=False)</code></pre>
+</div>
+</div>
+<div id="93df2f56" class="cell" data-execution_count="37">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb44"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb44-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb44-2"><a></a>ax <span class="op">=</span> plot_gam(gam_logit, <span class="dv">2</span>)</span>
+<span id="cb44-3"><a></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
+<span id="cb44-4"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb44-5"><a></a>ax.set_title(<span class="st">'Partial dependence of wage on education'</span>,</span>
+<span id="cb44-6"><a></a>             fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb44-7"><a></a>ax.set_xticklabels(Wage[<span class="st">'education'</span>].cat.categories, fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-38-output-1.png" width="687" height="677"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>The fit looks flat with very wide error bars on the first category.</p>
 </div>
 </div>
@@ -495,6 +1714,66 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="3c4c8e94" class="cell" data-execution_count="38">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb45"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a></a>pd.crosstab(Wage[<span class="st">'high_earn'</span>], Wage[<span class="st">'education'</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="38">
+<div>
+<style scoped="">
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+    .dataframe tbody tr th {
+        vertical-align: top;
+    }
+
+    .dataframe thead th {
+        text-align: right;
+    }
+</style>
+
+<table class="dataframe caption-top" data-border="1">
+<thead>
+<tr class="header" style="text-align: right;">
+<th data-quarto-table-cell-role="th">education</th>
+<th data-quarto-table-cell-role="th">1. &lt; HS Grad</th>
+<th data-quarto-table-cell-role="th">2. HS Grad</th>
+<th data-quarto-table-cell-role="th">3. Some College</th>
+<th data-quarto-table-cell-role="th">4. College Grad</th>
+<th data-quarto-table-cell-role="th">5. Advanced Degree</th>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">high_earn</th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+<th data-quarto-table-cell-role="th"></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<th data-quarto-table-cell-role="th">False</th>
+<td>268</td>
+<td>966</td>
+<td>643</td>
+<td>663</td>
+<td>381</td>
+</tr>
+<tr class="even">
+<th data-quarto-table-cell-role="th">True</th>
+<td>0</td>
+<td>5</td>
+<td>7</td>
+<td>22</td>
+<td>45</td>
+</tr>
+</tbody>
+</table>
+
+</div>
+</div>
+</div>
 <p>There are <em>no</em> high earners in the lowest education category, so the logistic GAM has nothing to estimate there.</p>
 </div>
 </div>
@@ -506,7 +1785,71 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="4f69ebba" class="cell" data-execution_count="39">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb46"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb46-1"><a></a>only_hs <span class="op">=</span> Wage[<span class="st">'education'</span>] <span class="op">==</span> <span class="st">'1. &lt; HS Grad'</span></span>
+<span id="cb46-2"><a></a>Wage_ <span class="op">=</span> Wage.loc[<span class="op">~</span>only_hs]</span>
+<span id="cb46-3"><a></a>Xgam_ <span class="op">=</span> np.column_stack([Wage_[<span class="st">'age'</span>],</span>
+<span id="cb46-4"><a></a>                         Wage_[<span class="st">'year'</span>],</span>
+<span id="cb46-5"><a></a>                         Wage_[<span class="st">'education'</span>].cat.codes <span class="op">-</span> <span class="dv">1</span>])</span>
+<span id="cb46-6"><a></a>high_earn_ <span class="op">=</span> Wage_[<span class="st">'high_earn'</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
 <p>We subtract 1 from <code>cat.codes</code> to work around a <code>pygam</code> bug — the relabeling has no effect on the fit.</p>
+<div id="ae5578d0" class="cell" data-execution_count="40">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb47"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a></a>gam_logit_ <span class="op">=</span> LogisticGAM(age_term <span class="op">+</span></span>
+<span id="cb47-2"><a></a>                         year_term <span class="op">+</span></span>
+<span id="cb47-3"><a></a>                         f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
+<span id="cb47-4"><a></a>gam_logit_.fit(Xgam_, high_earn_)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display" data-execution_count="40">
+<pre><code>LogisticGAM(callbacks=[Deviance(), Diffs(), Accuracy()], 
+   fit_intercept=True, max_iter=100, 
+   terms=s(0) + s(1) + f(2) + intercept, tol=0.0001, verbose=False)</code></pre>
+</div>
+</div>
+<div id="18f73bf1" class="cell" data-execution_count="41">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb49"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb49-2"><a></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">2</span>)</span>
+<span id="cb49-3"><a></a>ax.set_xlabel(<span class="st">'Education'</span>)</span>
+<span id="cb49-4"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb49-5"><a></a>ax.set_title(<span class="st">'Partial dependence of high earner status on education'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb49-6"><a></a>ax.set_xticklabels(Wage[<span class="st">'education'</span>].cat.categories[<span class="dv">1</span>:],</span>
+<span id="cb49-7"><a></a>                   fontsize<span class="op">=</span><span class="dv">8</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-42-output-1.png" width="747" height="677"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="135246ec" class="cell" data-execution_count="42">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb50"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb50-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb50-2"><a></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">1</span>)</span>
+<span id="cb50-3"><a></a>ax.set_xlabel(<span class="st">'Year'</span>)</span>
+<span id="cb50-4"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb50-5"><a></a>ax.set_title(<span class="st">'Partial dependence of high earner status on year'</span>,</span>
+<span id="cb50-6"><a></a>             fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-43-output-1.png" width="704" height="680"></p>
+</figure>
+</div>
+</div>
+</div>
+<div id="33ae1ebc" class="cell" data-execution_count="43">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb51"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb51-2"><a></a>ax <span class="op">=</span> plot_gam(gam_logit_, <span class="dv">0</span>)</span>
+<span id="cb51-3"><a></a>ax.set_xlabel(<span class="st">'Age'</span>)</span>
+<span id="cb51-4"><a></a>ax.set_ylabel(<span class="st">'Effect on wage'</span>)</span>
+<span id="cb51-5"><a></a>ax.set_title(<span class="st">'Partial dependence of high earner status on age'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-44-output-1.png" width="700" height="680"></p>
+</figure>
+</div>
+</div>
+</div>
 </div>
 </div>
 </div>
@@ -520,6 +1863,30 @@
 <p><strong>Solution</strong></p>
 </div>
 <div class="callout-content">
+<div id="4afad332" class="cell" data-execution_count="44">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb52"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb52-1"><a></a>lowess <span class="op">=</span> sm.nonparametric.lowess</span>
+<span id="cb52-2"><a></a>fig, ax <span class="op">=</span> subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">8</span>))</span>
+<span id="cb52-3"><a></a>ax.scatter(age, y, facecolor<span class="op">=</span><span class="st">'gray'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb52-4"><a></a><span class="cf">for</span> span <span class="kw">in</span> [<span class="fl">0.2</span>, <span class="fl">0.5</span>]:</span>
+<span id="cb52-5"><a></a>    fitted <span class="op">=</span> lowess(y,</span>
+<span id="cb52-6"><a></a>                    age,</span>
+<span id="cb52-7"><a></a>                    frac<span class="op">=</span>span,</span>
+<span id="cb52-8"><a></a>                    xvals<span class="op">=</span>age_grid)</span>
+<span id="cb52-9"><a></a>    ax.plot(age_grid,</span>
+<span id="cb52-10"><a></a>            fitted,</span>
+<span id="cb52-11"><a></a>            label<span class="op">=</span><span class="st">'</span><span class="sc">{:.1f}</span><span class="st">'</span>.<span class="bu">format</span>(span),</span>
+<span id="cb52-12"><a></a>            linewidth<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb52-13"><a></a>ax.set_xlabel(<span class="st">'Age'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)</span>
+<span id="cb52-14"><a></a>ax.set_ylabel(<span class="st">'Wage'</span>, fontsize<span class="op">=</span><span class="dv">20</span>)<span class="op">;</span></span>
+<span id="cb52-15"><a></a>ax.legend(title<span class="op">=</span><span class="st">'span'</span>, fontsize<span class="op">=</span><span class="dv">15</span>)<span class="op">;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-display">
+<div>
+<figure>
+<p><img data-src="Ch07-nonlin-lab_files/figure-html/cell-45-output-1.png" width="681" height="664"></p>
+</figure>
+</div>
+</div>
+</div>
 <p>As expected, a span of 0.5 produces a smoother fit than 0.2.</p>
 </div>
 </div>

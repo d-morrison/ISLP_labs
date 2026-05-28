@@ -144,7 +144,7 @@
     "href": "slides/ch03-linear-regression.html#matrix-form",
     "title": "Chapter 3 — Linear Regression",
     "section": "Matrix form",
-    "text": "Matrix form\nStack the \\(p + 1\\) coefficients into \\(\\bm\\beta\\), the design matrix into \\(\\mathbf X\\) (with a column of ones for the intercept), and the responses into \\(\\mathbf y\\):\n\\[\\mathbf y = \\mathbf X \\bm\\beta + \\bm\\varepsilon\\]\nThe OLS estimator solves the normal equations \\(\\mathbf X^\\top \\mathbf X \\, \\hat{\\bm\\beta} = \\mathbf X^\\top \\mathbf y\\):\n\\[\\hat{\\bm\\beta} = (\\mathbf X^\\top \\mathbf X)^{-1}\\mathbf X^\\top \\mathbf y\\]\nassuming \\(\\mathbf X^\\top \\mathbf X\\) is invertible (no perfect collinearity)."
+    "text": "Matrix form\nStack the \\(p + 1\\) coefficients into \\(\\boldsymbol{\\beta}\\), the design matrix into \\(\\mathbf X\\) (with a column of ones for the intercept), and the responses into \\(\\mathbf y\\):\n\\[\\mathbf y = \\mathbf X \\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\\]\nThe OLS estimator solves the normal equations \\(\\mathbf X^\\top \\mathbf X \\, \\hat{\\boldsymbol{\\beta}} = \\mathbf X^\\top \\mathbf y\\):\n\\[\\hat{\\boldsymbol{\\beta}} = (\\mathbf X^\\top \\mathbf X)^{-1}\\mathbf X^\\top \\mathbf y\\]\nassuming \\(\\mathbf X^\\top \\mathbf X\\) is invertible (no perfect collinearity)."
   },
   {
     "objectID": "slides/ch03-linear-regression.html#is-any-predictor-useful",
@@ -172,7 +172,7 @@
     "href": "slides/ch03-linear-regression.html#three-or-more-level-factor",
     "title": "Chapter 3 — Linear Regression",
     "section": "Three-or-more-level factor",
-    "text": "Three-or-more-level factor\nFor a factor with \\(k\\) levels create \\(k - 1\\) dummies, leaving one as the reference. Each coefficient is the contrast against that baseline.\n\nPythonR\n\n\nimport statsmodels.api as sm\ncredit = pd.read_csv(\"https://www.statlearning.com/s/Credit.csv\", index_col=0)\nfit_eth = smf.ols(\"Balance ~ C(Ethnicity)\", data=credit).fit()\nfit_eth.params\n\n\ncredit &lt;- read.csv(\"https://www.statlearning.com/s/Credit.csv\")[, -1]\nfit_eth &lt;- lm(Balance ~ Ethnicity, data = credit)\ncoef(fit_eth)"
+    "text": "Three-or-more-level factor\nFor a factor with \\(k\\) levels create \\(k - 1\\) dummies, leaving one as the reference. Each coefficient is the contrast against that baseline.\n\nPythonR\n\n\ncredit = pd.read_csv(\"https://www.statlearning.com/s/Credit.csv\", index_col=0)\nfit_eth = smf.ols(\"Balance ~ C(Ethnicity)\", data=credit).fit()\nfit_eth.params\n\n\ncredit &lt;- read.csv(\"https://www.statlearning.com/s/Credit.csv\")[, -1]\nfit_eth &lt;- lm(Balance ~ Ethnicity, data = credit)\ncoef(fit_eth)"
   },
   {
     "objectID": "slides/ch03-linear-regression.html#interactions",
@@ -193,7 +193,7 @@
     "href": "slides/ch03-linear-regression.html#polynomial-regression",
     "title": "Chapter 3 — Linear Regression",
     "section": "Polynomial regression",
-    "text": "Polynomial regression\nA simple way to fit a non-linear function of one predictor is to add powers of it:\n\\[Y = \\beta_0 + \\beta_1 X + \\beta_2 X^2 + \\cdots + \\beta_d X^d + \\varepsilon\\]\nThis is still linear in the parameters, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)"
+    "text": "Polynomial regression\nA simple way to fit a non-linear function of one predictor is to add powers of it:\n\\[Y = \\beta_0 + \\beta_1 X + \\beta_2 X^2 + \\cdots + \\beta_d X^d + \\varepsilon\\]\nThis is still linear in the parameters, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)\n\nPythonR\n\n\nfit_poly = smf.ols(\"sales ~ TV + I(TV**2)\", data=ad).fit()\nfit_poly.params\n\n\nfit_poly &lt;- lm(sales ~ TV + I(TV^2), data = ad)\ncoef(fit_poly)"
   },
   {
     "objectID": "slides/ch03-linear-regression.html#non-linearity-of-the-responsepredictor-relationship",
@@ -235,7 +235,7 @@
     "href": "slides/ch03-linear-regression.html#collinearity",
     "title": "Chapter 3 — Linear Regression",
     "section": "6. Collinearity",
-    "text": "6. Collinearity\nWhen two (or more) predictors carry nearly the same information, \\(\\mathbf X^\\top \\mathbf X\\) becomes ill-conditioned: coefficients flip sign, standard errors explode, and individual \\(t\\)-tests become uninformative.\nThe variance inflation factor\n\\[\\text{VIF}(\\hat\\beta_j) = \\frac{1}{1 - R^2_{X_j \\mid X_{-j}}}\\]\nflags it; rule of thumb is to be wary of \\(\\text{VIF} &gt; 5\\) (or \\(&gt; 10\\)).\n\nPythonR\n\n\nfrom statsmodels.stats.outliers_influence import variance_inflation_factor\nX = sm.add_constant(credit[[\"Limit\", \"Rating\", \"Age\"]])\n[variance_inflation_factor(X.values, i) for i in range(1, X.shape[1])]\n\n\nlibrary(car)\nfit_credit &lt;- lm(Balance ~ Limit + Rating + Age, data = credit)\nvif(fit_credit)"
+    "text": "6. Collinearity\nWhen two (or more) predictors carry nearly the same information, \\(\\mathbf X^\\top \\mathbf X\\) becomes ill-conditioned: coefficients flip sign, standard errors explode, and individual \\(t\\)-tests become uninformative.\nThe variance inflation factor\n\\[\\text{VIF}(\\hat\\beta_j) = \\frac{1}{1 - R^2_{X_j \\mid X_{-j}}}\\]\nflags it; rule of thumb is to be wary of \\(\\text{VIF} &gt; 5\\) (or \\(&gt; 10\\)).\n\nPythonR\n\n\nimport statsmodels.api as sm\nfrom statsmodels.stats.outliers_influence import variance_inflation_factor\nX = sm.add_constant(credit[[\"Limit\", \"Rating\", \"Age\"]])\n[variance_inflation_factor(X.values, i) for i in range(1, X.shape[1])]\n\n\nlibrary(car)\nfit_credit &lt;- lm(Balance ~ Limit + Rating + Age, data = credit)\nvif(fit_credit)"
   },
   {
     "objectID": "slides/ch03-linear-regression.html#knn-regression-in-a-nutshell",
@@ -340,7 +340,7 @@
     "href": "slides/ch03-linear-regression-slides.html#matrix-form",
     "title": "Chapter 3 — Linear Regression",
     "section": "Matrix form",
-    "text": "Matrix form\nStack the \\(p + 1\\) coefficients into \\(\\bm\\beta\\), the design matrix into \\(\\mathbf X\\) (with a column of ones for the intercept), and the responses into \\(\\mathbf y\\):\n\\[\\mathbf y = \\mathbf X \\bm\\beta + \\bm\\varepsilon\\]\nThe OLS estimator solves the normal equations \\(\\mathbf X^\\top \\mathbf X \\, \\hat{\\bm\\beta} = \\mathbf X^\\top \\mathbf y\\):\n\\[\\hat{\\bm\\beta} = (\\mathbf X^\\top \\mathbf X)^{-1}\\mathbf X^\\top \\mathbf y\\]\nassuming \\(\\mathbf X^\\top \\mathbf X\\) is invertible (no perfect collinearity)."
+    "text": "Matrix form\nStack the \\(p + 1\\) coefficients into \\(\\boldsymbol{\\beta}\\), the design matrix into \\(\\mathbf X\\) (with a column of ones for the intercept), and the responses into \\(\\mathbf y\\):\n\\[\\mathbf y = \\mathbf X \\boldsymbol{\\beta} + \\boldsymbol{\\varepsilon}\\]\nThe OLS estimator solves the normal equations \\(\\mathbf X^\\top \\mathbf X \\, \\hat{\\boldsymbol{\\beta}} = \\mathbf X^\\top \\mathbf y\\):\n\\[\\hat{\\boldsymbol{\\beta}} = (\\mathbf X^\\top \\mathbf X)^{-1}\\mathbf X^\\top \\mathbf y\\]\nassuming \\(\\mathbf X^\\top \\mathbf X\\) is invertible (no perfect collinearity)."
   },
   {
     "objectID": "slides/ch03-linear-regression-slides.html#is-any-predictor-useful",
@@ -368,7 +368,7 @@
     "href": "slides/ch03-linear-regression-slides.html#three-or-more-level-factor",
     "title": "Chapter 3 — Linear Regression",
     "section": "Three-or-more-level factor",
-    "text": "Three-or-more-level factor\nFor a factor with \\(k\\) levels create \\(k - 1\\) dummies, leaving one as the reference. Each coefficient is the contrast against that baseline.\n\nPythonR\n\n\nimport statsmodels.api as sm\ncredit = pd.read_csv(\"https://www.statlearning.com/s/Credit.csv\", index_col=0)\nfit_eth = smf.ols(\"Balance ~ C(Ethnicity)\", data=credit).fit()\nfit_eth.params\n\n\ncredit &lt;- read.csv(\"https://www.statlearning.com/s/Credit.csv\")[, -1]\nfit_eth &lt;- lm(Balance ~ Ethnicity, data = credit)\ncoef(fit_eth)"
+    "text": "Three-or-more-level factor\nFor a factor with \\(k\\) levels create \\(k - 1\\) dummies, leaving one as the reference. Each coefficient is the contrast against that baseline.\n\nPythonR\n\n\ncredit = pd.read_csv(\"https://www.statlearning.com/s/Credit.csv\", index_col=0)\nfit_eth = smf.ols(\"Balance ~ C(Ethnicity)\", data=credit).fit()\nfit_eth.params\n\n\ncredit &lt;- read.csv(\"https://www.statlearning.com/s/Credit.csv\")[, -1]\nfit_eth &lt;- lm(Balance ~ Ethnicity, data = credit)\ncoef(fit_eth)"
   },
   {
     "objectID": "slides/ch03-linear-regression-slides.html#interactions",
@@ -389,7 +389,7 @@
     "href": "slides/ch03-linear-regression-slides.html#polynomial-regression",
     "title": "Chapter 3 — Linear Regression",
     "section": "Polynomial regression",
-    "text": "Polynomial regression\nA simple way to fit a non-linear function of one predictor is to add powers of it:\n\\[Y = \\beta_0 + \\beta_1 X + \\beta_2 X^2 + \\cdots + \\beta_d X^d + \\varepsilon\\]\nThis is still linear in the parameters, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)"
+    "text": "Polynomial regression\nA simple way to fit a non-linear function of one predictor is to add powers of it:\n\\[Y = \\beta_0 + \\beta_1 X + \\beta_2 X^2 + \\cdots + \\beta_d X^d + \\varepsilon\\]\nThis is still linear in the parameters, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)\n\nPythonR\n\n\nfit_poly = smf.ols(\"sales ~ TV + I(TV**2)\", data=ad).fit()\nfit_poly.params\n\n\nfit_poly &lt;- lm(sales ~ TV + I(TV^2), data = ad)\ncoef(fit_poly)"
   },
   {
     "objectID": "slides/ch03-linear-regression-slides.html#non-linearity-of-the-responsepredictor-relationship",
@@ -431,7 +431,7 @@
     "href": "slides/ch03-linear-regression-slides.html#collinearity",
     "title": "Chapter 3 — Linear Regression",
     "section": "6. Collinearity",
-    "text": "6. Collinearity\nWhen two (or more) predictors carry nearly the same information, \\(\\mathbf X^\\top \\mathbf X\\) becomes ill-conditioned: coefficients flip sign, standard errors explode, and individual \\(t\\)-tests become uninformative.\nThe variance inflation factor\n\\[\\text{VIF}(\\hat\\beta_j) = \\frac{1}{1 - R^2_{X_j \\mid X_{-j}}}\\]\nflags it; rule of thumb is to be wary of \\(\\text{VIF} &gt; 5\\) (or \\(&gt; 10\\)).\n\nPythonR\n\n\nfrom statsmodels.stats.outliers_influence import variance_inflation_factor\nX = sm.add_constant(credit[[\"Limit\", \"Rating\", \"Age\"]])\n[variance_inflation_factor(X.values, i) for i in range(1, X.shape[1])]\n\n\nlibrary(car)\nfit_credit &lt;- lm(Balance ~ Limit + Rating + Age, data = credit)\nvif(fit_credit)"
+    "text": "6. Collinearity\nWhen two (or more) predictors carry nearly the same information, \\(\\mathbf X^\\top \\mathbf X\\) becomes ill-conditioned: coefficients flip sign, standard errors explode, and individual \\(t\\)-tests become uninformative.\nThe variance inflation factor\n\\[\\text{VIF}(\\hat\\beta_j) = \\frac{1}{1 - R^2_{X_j \\mid X_{-j}}}\\]\nflags it; rule of thumb is to be wary of \\(\\text{VIF} &gt; 5\\) (or \\(&gt; 10\\)).\n\nPythonR\n\n\nimport statsmodels.api as sm\nfrom statsmodels.stats.outliers_influence import variance_inflation_factor\nX = sm.add_constant(credit[[\"Limit\", \"Rating\", \"Age\"]])\n[variance_inflation_factor(X.values, i) for i in range(1, X.shape[1])]\n\n\nlibrary(car)\nfit_credit &lt;- lm(Balance ~ Limit + Rating + Age, data = credit)\nvif(fit_credit)"
   },
   {
     "objectID": "slides/ch03-linear-regression-slides.html#knn-regression-in-a-nutshell",
@@ -508,7 +508,7 @@
     "href": "Ch07-nonlin-lab-slides.html#setup",
     "title": "Non-Linear Modeling",
     "section": "Setup",
-    "text": "Setup\nAs usual, we start with some of our standard imports.\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package."
+    "text": "Setup\nAs usual, we start with some of our standard imports.\n\nimport numpy as np, pandas as pd\nfrom matplotlib.pyplot import subplots\nimport statsmodels.api as sm\nfrom ISLP import load_data\nfrom ISLP.models import (summarize,\n                         poly,\n                         ModelSpec as MS)\nfrom statsmodels.stats.anova import anova_lm\n\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package.\n\nfrom pygam import (s as s_gam,\n                   l as l_gam,\n                   f as f_gam,\n                   LinearGAM,\n                   LogisticGAM)\n\nfrom ISLP.transforms import (BSpline,\n                             NaturalSpline)\nfrom ISLP.models import bs, ns\nfrom ISLP.pygam import (approx_lam,\n                        degrees_of_freedom,\n                        plot as plot_gam,\n                        anova as anova_gam)"
   },
   {
     "objectID": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
