@@ -1,0 +1,84 @@
+---
+title: "Chapter N — Topic"
+subtitle: "Template slide deck (Python ↔ R)"
+format:
+  revealjs:
+    output-file: template-slides.html
+    theme: simple
+    slide-number: true
+    incremental: false
+    smaller: true
+    scrollable: true
+  html: default
+---
+
+# Section heading {.section}
+
+A section divider slide. Replace with the section title for the chapter
+this deck covers.
+
+## A regular slide
+
+Regular content slides start at H2.
+
+- Bullet
+- Bullet
+- Bullet
+
+## Python ↔ R code, side-by-side
+
+::: {.panel-tabset}
+
+### Python
+
+```{python}
+#| eval: false
+# Replace this with the example for the chapter the deck covers.
+import numpy as np
+x = np.arange(1, 6)
+x.mean()
+```
+
+### R
+
+```{r}
+#| eval: false
+# Replace this with the R equivalent.
+x <- 1:5
+mean(x)
+```
+
+:::
+
+`{.panel-tabset}` is Quarto's standard tab block. Anything inside `:::`
+becomes one tab; the H3 headings (`### Python`, `### R`) are the tab
+labels. Switch the active tab without re-rendering the slide.
+
+## A second tabset slide
+
+::: {.panel-tabset}
+
+### Python
+
+```{python}
+#| eval: false
+# Example 2
+```
+
+### R
+
+```{r}
+#| eval: false
+# Example 2
+```
+
+:::
+
+## How to add a new chapter deck
+
+1. Copy `template.qmd` to `slides/ChNN-<topic>.qmd`.
+2. Update the YAML `title`, `subtitle`, and
+   `revealjs.output-file: ChNN-<topic>-slides.html`.
+3. Replace the template slides with chapter content (subject to the IP
+   discussion in `slides/index.qmd`).
+4. Add the deck to the navbar in the project root `_quarto.yml`.

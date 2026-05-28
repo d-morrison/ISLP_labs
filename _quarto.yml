@@ -4,6 +4,7 @@ project:
   render:
     - "index.qmd"
     - "Ch07-nonlin-lab.qmd"
+    - "slides/*.qmd"
 
 profile:
   default: solution
@@ -45,6 +46,12 @@ website:
         menu:
           - text: "Ch. 7 — Non-Linear Modeling"
             href: Ch07-nonlin-lab.qmd
+      - text: "Slides"
+        menu:
+          - text: "Slide-deck section (scaffold)"
+            href: slides/index.qmd
+          - text: "Template (Python ↔ R)"
+            href: slides/template.qmd
       - text: "Original labs"
         href: https://github.com/intro-stat-learning/ISLP_labs
     right:

@@ -1,0 +1,30 @@
+---
+title: "ISL slide decks"
+format:
+  html: default
+---
+
+This section is a **placeholder** for Quarto-revealjs slide decks that
+mirror the official PDF slide decks at
+[statlearning.com → resources for Python](https://www.statlearning.com/resources-python).
+The plan is one Quarto deck per ISL chapter with each code example shown
+side-by-side in Python and R via Quarto `panel-tabset` blocks.
+
+**No deck content has been authored yet.** The official slides are
+copyrighted by their authors (James, Witten, Hastie, Tibshirani), so
+the slide *text and figures* will not be reproduced here. Each chapter
+deck in this section will be either:
+
+- a **course-companion** that links to the official PDF for a given
+  chapter and adds only original framing, exercises, and the Python/R
+  tabset code listings authored by us, or
+- (with explicit permission from the authors / with content the user
+  authors themselves) a fuller deck.
+
+That decision is pending — see the PR description / discussion for
+prior-art research and the open IP question.
+
+## Template
+
+See [template.qmd](template.qmd) for the Python/R tabset pattern and
+revealjs front matter the chapter decks will follow.
