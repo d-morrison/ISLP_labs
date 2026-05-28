@@ -3,8 +3,8 @@ title: "ISLP Labs"
 format:
   html: default
   pdf: default
-  revealjs:
-    output-file: index-slides.html
+# index.qmd is a prose landing page — no revealjs override; rendering
+# a one-paragraph welcome as a presentation has no student utility.
 ---
 
 A Quarto website that hosts handouts for the labs in
