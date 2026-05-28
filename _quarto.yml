@@ -58,6 +58,8 @@ website:
             href: slides/ch02-statistical-learning.qmd
           - text: "Ch. 3 — Linear Regression"
             href: slides/ch03-linear-regression.qmd
+          - text: "Ch. 7 — Moving Beyond Linearity"
+            href: slides/ch07-moving-beyond-linearity.qmd
           - text: "Template (Python ↔ R)"
             href: slides/template.qmd
       - text: "Original labs"
