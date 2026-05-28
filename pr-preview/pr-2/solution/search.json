@@ -77,34 +77,6 @@
     "text": "Local Regression\nExercise 32. Finally, use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5, and plot them together. Some implementations of GAMs allow local-regression terms; pygam does not.\nSolution.\nAs expected, a span of 0.5 produces a smoother fit than 0.2."
   },
   {
-    "objectID": "index-slides.html#available-handouts",
-    "href": "index-slides.html#available-handouts",
-    "title": "ISLP Labs",
-    "section": "Available handouts",
-    "text": "Available handouts\n\nChapter 7 — Non-Linear Modeling"
-  },
-  {
-    "objectID": "index-slides.html#r-alternative",
-    "href": "index-slides.html#r-alternative",
-    "title": "ISLP Labs",
-    "section": "R alternative",
-    "text": "R alternative\nStudents who prefer to work in R may follow the corresponding chapter of Emil Hvitfeldt’s ISLR tidymodels labs."
-  },
-  {
-    "objectID": "index-slides.html#original-labs",
-    "href": "index-slides.html#original-labs",
-    "title": "ISLP Labs",
-    "section": "Original labs",
-    "text": "Original labs\nThe full set of original ISLP labs (Chapters 2–13) is available as Jupyter notebooks in the intro-stat-learning/ISLP_labs repository."
-  },
-  {
-    "objectID": "index-slides.html#building-the-handouts",
-    "href": "index-slides.html#building-the-handouts",
-    "title": "ISLP Labs",
-    "section": "Building the handouts",
-    "text": "Building the handouts\nTwo parallel renders of the website are produced — a student worksheet (prompts only) and a solution key (solutions only) — each written to its own subdirectory of _site/. The exercise/solution toggling is provided by the coatless-quarto/assign Quarto extension.\nRender the solution key (the default profile):\nquarto render\nRender the student worksheet:\nquarto render --profile assign\nThe published GitHub Pages site combines both — its top-level index.html links to assign/ and solution/."
-  },
-  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "ISLP Labs",
