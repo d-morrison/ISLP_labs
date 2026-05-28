@@ -26,14 +26,14 @@ jobs:
       - name: Render (solution)
         if: github.event.action != 'closed'
         uses: quarto-dev/quarto-actions/render@8a96df13519ee81fd526f2dfca5962811136661b  # v2
-        with:
-          args: --profile solution
+        env:
+          QUARTO_PROFILE: solution
 
       - name: Render (assign)
         if: github.event.action != 'closed'
         uses: quarto-dev/quarto-actions/render@8a96df13519ee81fd526f2dfca5962811136661b  # v2
-        with:
-          args: --profile assign
+        env:
+          QUARTO_PROFILE: assign
 
       - name: Create landing page
         if: github.event.action != 'closed'
