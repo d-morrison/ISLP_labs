@@ -18,9 +18,9 @@ in either language.
 
 ## Available decks
 
-| Chapter | Title | Slides |
-|---------|-------|--------|
-| 2 | Statistical Learning | [HTML](ch02-statistical-learning.qmd) |
+| Chapter | Title | Formats |
+|---------|-------|---------|
+| 2 | Statistical Learning | [HTML](ch02-statistical-learning.qmd) · [Slides](ch02-statistical-learning-slides.html) |
 
 *More chapters to follow.*
 
