@@ -7,10 +7,11 @@ format:
     output-file: template-slides.html
 ---
 
-# Section heading {.section}
+# Section heading
 
-A section divider slide. Replace with the section title for the chapter
-this deck covers.
+A section divider slide. (Quarto's revealjs writer treats every `#`
+heading as a section automatically, so no `{.section}` class is needed.)
+Replace with the section title for the chapter this deck covers.
 
 ## A regular slide
 
