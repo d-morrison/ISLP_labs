@@ -3,3 +3,8 @@ project:
 
 website:
   title: "ISLP Labs — Student Worksheet"
+
+# Student worksheet is HTML-only — the PDF and revealjs versions
+# are scoped to the solution-key profile to halve CI render work.
+format:
+  html: default
