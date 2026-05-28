@@ -1,10 +1,6 @@
 ---
 title: "Non-Linear Modeling"
 subtitle: "Chapter 7 lab handout"
-filters:
-  - assign
-execute:
-  enabled: false
 ---
 
 ::: {.callout-note appearance="minimal"}
@@ -224,6 +220,11 @@ B = glm.fit()
 summarize(B)
 ```
 
+(The double assignment `high_earn = Wage['high_earn'] = y > 250` both
+binds the local variable `high_earn` and stores the indicator as a new
+column on the `Wage` DataFrame. We'll re-use that column in
+Exercises 29 and 30.)
+
 ```{python}
 newX = poly_age.transform(age_df)
 preds = B.get_prediction(newX)
@@ -413,17 +414,28 @@ ax.legend(title=r'$\lambda$');
 
 :::{.direction}
 **Exercise 17.** `pygam` can search for an optimal smoothing parameter.
-Call `.gridsearch(X_age, y)` and add the resulting fit to your plot.
+Reproduce the plot from Exercise 16, call `.gridsearch(X_age, y)`,
+and add the resulting fit on top.
 :::
 
 :::{.sol}
 ```{python}
+fig, ax = subplots(figsize=(8, 8))
+ax.scatter(age, y, facecolor='gray', alpha=0.5)
+for lam in np.logspace(-2, 6, 5):
+    gam = LinearGAM(s_gam(0, lam=lam)).fit(X_age, y)
+    ax.plot(age_grid,
+            gam.predict(age_grid),
+            label='{:.1e}'.format(lam),
+            linewidth=3)
 gam_opt = gam.gridsearch(X_age, y)
 ax.plot(age_grid,
         gam_opt.predict(age_grid),
         label='Grid search',
         linewidth=4)
-ax.legend()
+ax.set_xlabel('Age', fontsize=20)
+ax.set_ylabel('Wage', fontsize=20)
+ax.legend(title=r'$\lambda$')
 fig
 ```
 :::
@@ -513,7 +525,7 @@ age_grid = np.linspace(age.min(),
                        age.max(),
                        100)
 X_age_bh = X_bh.copy()[:100]
-X_age_bh[:] = X_bh[:].mean(0)[None, :]
+X_age_bh[:] = X_bh.mean(0)[None, :]
 X_age_bh[:, :4] = ns_age.transform(age_grid)
 preds = gam_bh.get_prediction(X_age_bh)
 bounds_age = preds.conf_int(alpha=0.05)
@@ -546,7 +558,7 @@ year_grid = np.linspace(Wage['year'].min(),
                         Wage['year'].max(),
                         100)
 X_year_bh = X_bh.copy()[:100]
-X_year_bh[:] = X_bh[:].mean(0)[None, :]
+X_year_bh[:] = X_bh.mean(0)[None, :]
 X_year_bh[:, 4:9] = ns_year.transform(year_grid)
 preds = gam_bh.get_prediction(X_year_bh)
 bounds_year = preds.conf_int(alpha=0.05)

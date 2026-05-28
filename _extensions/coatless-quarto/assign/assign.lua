@@ -28,12 +28,12 @@ function Div(div)
     table.insert(condition, {"when-profile", "rubric"})
   end
 
-  if div.classes:includes("sol") then 
-    -- Create a new Emph (italicized) element
-    local new_emph = pandoc.Emph{pandoc.Str("Solution.")}
-    
-    -- Add the new Emph element to the beginning of the Div's content
-    table.insert(div.content, 1, new_emph)
+  if div.classes:includes("sol") then
+    -- Insert "Solution." label as its own Para. div.content holds Block
+    -- elements, so an Inline (Emph) must be wrapped in a Para to be valid
+    -- Pandoc AST; some Pandoc versions error otherwise.
+    local sol_label = pandoc.Para{pandoc.Emph{pandoc.Str("Solution.")}}
+    table.insert(div.content, 1, sol_label)
   end
 
   -- Return the modified ConditionalBlock
