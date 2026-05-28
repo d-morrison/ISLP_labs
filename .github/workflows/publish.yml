@@ -15,20 +15,22 @@ jobs:
       TZ: America/Los_Angeles
     steps:
       - name: Check out repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5  # v4
 
       - name: Set up Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+        uses: quarto-dev/quarto-actions/setup@8a96df13519ee81fd526f2dfca5962811136661b  # v2
+        with:
+          tinytex: true
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Render (solution)
-        uses: quarto-dev/quarto-actions/render@v2
+        uses: quarto-dev/quarto-actions/render@8a96df13519ee81fd526f2dfca5962811136661b  # v2
         with:
           args: --profile solution
 
       - name: Render (assign)
-        uses: quarto-dev/quarto-actions/render@v2
+        uses: quarto-dev/quarto-actions/render@8a96df13519ee81fd526f2dfca5962811136661b  # v2
         with:
           args: --profile assign
 
@@ -36,7 +38,7 @@ jobs:
         run: bash .github/scripts/create-landing-page.sh
 
       - name: Deploy to GitHub Pages
-        uses: JamesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@d92aa235d04922e8f08b40ce78cc5442fcfbfa2f  # v4
         with:
           folder: _site
           branch: gh-pages

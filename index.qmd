@@ -1,5 +1,10 @@
 ---
 title: "ISLP Labs"
+format:
+  html: default
+  pdf: default
+  revealjs:
+    output-file: index-slides.html
 ---
 
 A Quarto website that hosts handouts for the labs in

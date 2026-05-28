@@ -1,6 +1,11 @@
 ---
 title: "Non-Linear Modeling"
 subtitle: "Chapter 7 lab handout"
+format:
+  html: default
+  pdf: default
+  revealjs:
+    output-file: Ch07-nonlin-lab-slides.html
 ---
 
 ::: {.callout-note appearance="minimal"}
@@ -57,10 +62,8 @@ from ISLP.pygam import (approx_lam,
 
 ## Polynomial Regression and Step Functions
 
-:::{.direction}
 **Exercise 1.** Load the `Wage` data with `load_data('Wage')`. Store the
 response (`wage`) as `y` and the predictor (`age`) as `age`.
-:::
 
 :::{.sol}
 ```{python}
@@ -73,11 +76,9 @@ Throughout most of this lab, our response is `Wage['wage']`, which we
 have stored as `y` above.
 :::
 
-:::{.direction}
 **Exercise 2.** Use `poly()` inside `MS()` to build a 4th-degree
 polynomial in `age`, fit an OLS model of `y` on this basis, and print
 the coefficient summary.
-:::
 
 :::{.sol}
 ```{python}
@@ -93,11 +94,9 @@ training data so that subsequent `transform()` calls (on new data, or
 inside the plotting function below) use the same basis.
 :::
 
-:::{.direction}
 **Exercise 3.** Build a grid `age_grid` of 100 evenly spaced values
 spanning the observed range of `age`, and wrap it in a single-column
 `DataFrame` named `age_df`.
-:::
 
 :::{.sol}
 ```{python}
@@ -108,11 +107,9 @@ age_df = pd.DataFrame({'age': age_grid})
 ```
 :::
 
-:::{.direction}
 **Exercise 4.** Write a function `plot_wage_fit(age_df, basis, title)`
 that fits OLS on the supplied `basis`, evaluates it on `age_df`, and
 plots the raw data with the fitted curve and its 95% confidence bands.
-:::
 
 :::{.sol}
 ```{python}
@@ -147,9 +144,7 @@ mean and two confidence bands) with their colours and line types for
 the `for` loop.
 :::
 
-:::{.direction}
 **Exercise 5.** Use your helper to plot the degree-4 polynomial fit.
-:::
 
 :::{.sol}
 ```{python}
@@ -159,11 +154,9 @@ plot_wage_fit(age_df,
 ```
 :::
 
-:::{.direction}
 **Exercise 6.** With polynomial regression we must decide on the degree
 of the polynomial to use. Fit polynomial models in `age` of degrees 1
 through 5, and use `anova_lm()` to test which degree is sufficient.
-:::
 
 :::{.sol}
 ```{python}
@@ -181,11 +174,9 @@ roughly 5%, while degree 5 is unnecessary (p = 0.37). Either a cubic or
 a quartic polynomial gives a reasonable fit.
 :::
 
-:::{.direction}
 **Exercise 7.** Repeat the ANOVA, but with a linear term in `education`
 included in each model alongside a polynomial in `age` of degrees 1, 2,
 3.
-:::
 
 :::{.sol}
 ```{python}
@@ -201,13 +192,11 @@ provided the models are *nested*. As an alternative, we could choose
 the polynomial degree by cross-validation (Chapter 5).
 :::
 
-:::{.direction}
 **Exercise 8.** Now consider predicting whether someone earns more than
 \$250,000 per year. Fit a logistic regression (use `sm.GLM` with a
 `Binomial` family) of `wage > 250` on the same 4th-degree polynomial
 basis in `age`, and produce a plot of the predicted probability vs.
 age (with confidence bands and a rug plot).
-:::
 
 :::{.sol}
 ```{python}
@@ -253,11 +242,9 @@ plot; those below 250 at the bottom. A small amount of jitter prevents
 identical-age points from overlapping. This is called a *rug plot*.
 :::
 
-:::{.direction}
 **Exercise 9.** Fit a step-function regression: discretise `age` into 4
 quantile-based bins with `pd.qcut()`, build dummy columns with
 `pd.get_dummies()`, and fit OLS.
-:::
 
 :::{.sol}
 ```{python}
@@ -274,11 +261,9 @@ cutpoints, use `pd.cut()` instead.
 
 ## Splines
 
-:::{.direction}
 **Exercise 10.** Use `BSpline()` from `ISLP.transforms` with
 `internal_knots=[25, 40, 60]` and `intercept=True` to build a cubic
 B-spline basis for `age`. What shape is the resulting design matrix?
-:::
 
 :::{.sol}
 ```{python}
@@ -291,11 +276,9 @@ A cubic B-spline with 3 interior knots yields a 7-column matrix
 (`3 + degree + 1` with `intercept=True`).
 :::
 
-:::{.direction}
 **Exercise 11.** Now fit a cubic spline regression of `wage` on `age`
 using the helper `bs()` inside `MS()`. Pass `name='bs(age)'` to clean
 up the column labels in the summary.
-:::
 
 :::{.sol}
 ```{python}
@@ -312,10 +295,8 @@ defaults to `intercept=False` — the basis would normally be 7 columns,
 but one is dropped to accommodate the model's overall intercept.
 :::
 
-:::{.direction}
 **Exercise 12.** Instead of specifying knots, ask `BSpline` for `df=6`.
 Inspect `internal_knots_` to see where the knots ended up.
-:::
 
 :::{.sol}
 ```{python}
@@ -326,11 +307,9 @@ With `df=6` and cubic splines, three knots are placed at the 25%, 50%
 and 75% quantiles of `age` — ages 33.75, 42.0, and 51.0.
 :::
 
-:::{.direction}
 **Exercise 13.** B-splines need not be cubic. Fit a degree-0 spline with
 `df=3` and compare the coefficients to your earlier `qcut()` step-function
 fit.
-:::
 
 :::{.sol}
 ```{python}
@@ -350,10 +329,8 @@ sums approximately recover the per-bin means (slight differences are
 because `qcut()` uses `≤` while `bs()` uses `<` at the boundaries).
 :::
 
-:::{.direction}
 **Exercise 14.** Fit a natural cubic spline with 5 degrees of freedom
 using `ns()`, and plot the fit with `plot_wage_fit()`.
-:::
 
 :::{.sol}
 ```{python}
@@ -371,12 +348,10 @@ plot_wage_fit(age_df,
 
 ## Smoothing Splines and GAMs
 
-:::{.direction}
 **Exercise 15.** A smoothing spline is a special case of a GAM with
 squared-error loss and a single feature. Fit `LinearGAM(s_gam(0, lam=0.6))`
 to predict `wage` from `age`. (Remember `pygam` expects a 2-D feature
 matrix.)
-:::
 
 :::{.sol}
 ```{python}
@@ -390,11 +365,9 @@ feature matrix". `lam` is the penalty parameter $\lambda$. The `-1`
 inside `.reshape((-1, 1))` tells NumPy to infer that dimension's size.
 :::
 
-:::{.direction}
 **Exercise 16.** Investigate how the fit changes with the smoothing
 parameter. Loop `lam` over `np.logspace(-2, 6, 5)` and plot each
 resulting fit.
-:::
 
 :::{.sol}
 ```{python}
@@ -412,11 +385,9 @@ ax.legend(title=r'$\lambda$');
 ```
 :::
 
-:::{.direction}
 **Exercise 17.** `pygam` can search for an optimal smoothing parameter.
 Reproduce the plot from Exercise 16, call `.gridsearch(X_age, y)`,
 and add the resulting fit on top.
-:::
 
 :::{.sol}
 ```{python}
@@ -440,12 +411,10 @@ fig
 ```
 :::
 
-:::{.direction}
 **Exercise 18.** It's often more interpretable to specify the
 *effective degrees of freedom* than `lam`. Use `approx_lam()` from
 `ISLP.pygam` to find a `lam` giving roughly 4 degrees of freedom for
 the age term, and verify with `degrees_of_freedom()`.
-:::
 
 :::{.sol}
 ```{python}
@@ -459,11 +428,9 @@ These degrees of freedom include the unpenalized intercept and linear
 term of the smoothing spline — so there are at least 2 df.
 :::
 
-:::{.direction}
 **Exercise 19.** Now loop over `df` values `[1, 3, 4, 8, 15]` (passing
 `df + 1` to `approx_lam()` to account for the intercept), refit, and
 plot each.
-:::
 
 :::{.sol}
 ```{python}
@@ -490,11 +457,9 @@ A value of `df=1` corresponds to a straight-line fit.
 
 ### Additive Models with Several Terms
 
-:::{.direction}
 **Exercise 20.** Build a GAM "by hand": use natural splines (`NaturalSpline`)
 with `df=4` for `age` and `df=5` for `year`, get dummies for
 `education`, stack them all into a model matrix `X_bh`, and fit OLS.
-:::
 
 :::{.sol}
 ```{python}
@@ -512,12 +477,10 @@ intercept), and stack the three component matrices horizontally to
 form `X_bh`.
 :::
 
-:::{.direction}
 **Exercise 21.** Construct a partial-dependence plot for `age` from the
 by-hand GAM: predict on a matrix where all columns except those for
 `age` are held at their column means, and the `age` columns are
 swept across `age_grid`.
-:::
 
 :::{.sol}
 ```{python}
@@ -548,9 +511,7 @@ four `age` columns are filled with the natural spline basis evaluated
 at the 100 values in `age_grid`.
 :::
 
-:::{.direction}
 **Exercise 22.** Do the same for `year`.
-:::
 
 :::{.sol}
 ```{python}
@@ -576,13 +537,11 @@ ax.set_title('Partial dependence of year on wage', fontsize=20);
 ```
 :::
 
-:::{.direction}
 **Exercise 23.** Now fit the same GAM using *smoothing* splines via
 `pygam`. Build `LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0))`,
 where `f_gam` is a factor term for `education`. (Convert `education`
 to numeric codes with `.cat.codes`.) Then plot the partial dependence
 for `age` using `plot_gam()` from `ISLP.pygam`.
-:::
 
 :::{.sol}
 ```{python}
@@ -608,11 +567,9 @@ on the factor term avoids any shrinkage. The default `lam=0.6` for
 `age` produces a noticeably wiggly fit.
 :::
 
-:::{.direction}
 **Exercise 24.** Re-tune `gam_full` so that the `age` and `year` smoothers
 each have ~4 degrees of freedom (use `approx_lam()` with `df=4+1`), then
 re-plot the partial dependence for `age` and for `year`.
-:::
 
 :::{.sol}
 ```{python}
@@ -636,11 +593,9 @@ ax.set_title('Partial dependence of year on wage', fontsize=20)
 ```
 :::
 
-:::{.direction}
 **Exercise 25.** Plot the partial dependence for `education` — a
 categorical term gets a different style of plot, suited to a set of
 fitted constants per level.
-:::
 
 :::{.sol}
 ```{python}
@@ -656,13 +611,11 @@ ax.set_xticklabels(Wage['education'].cat.categories, fontsize=8);
 
 ### ANOVA Tests for Additive Models
 
-:::{.direction}
 **Exercise 26.** In all our models, the function of `year` looks fairly
 linear. Compare three models by ANOVA: a GAM that *excludes* `year`
 ($\mathcal{M}_1$), a GAM that uses a *linear* term in `year`
 ($\mathcal{M}_2$), and the full GAM with a smoothing spline in `year`
 ($\mathcal{M}_3$). What do you conclude?
-:::
 
 :::{.sol}
 ```{python}
@@ -685,9 +638,7 @@ evidence that a nonlinear function of `year` is needed (p ≈ 0.435). So
 $\mathcal{M}_2$ is preferred.
 :::
 
-:::{.direction}
 **Exercise 27.** Repeat the test for `age`.
-:::
 
 :::{.sol}
 ```{python}
@@ -704,10 +655,8 @@ anova_gam(gam_0, gam_linear, gam_full)
 Very strong evidence that a nonlinear term is required for `age`.
 :::
 
-:::{.direction}
 **Exercise 28.** Print `gam_full.summary()` and use `gam_full.predict()`
 to generate fitted values on the training set.
-:::
 
 :::{.sol}
 ```{python}
@@ -719,11 +668,9 @@ Yhat = gam_full.predict(Xgam)
 ```
 :::
 
-:::{.direction}
 **Exercise 29.** Fit a logistic GAM for `high_earn` (i.e. `wage > 250`)
 using `LogisticGAM(age_term + l_gam(1, lam=0) + f_gam(2, lam=0))`. Plot
 the partial dependence for `education`.
-:::
 
 :::{.sol}
 ```{python}
@@ -746,10 +693,8 @@ ax.set_xticklabels(Wage['education'].cat.categories, fontsize=8);
 The fit looks flat with very wide error bars on the first category.
 :::
 
-:::{.direction}
 **Exercise 30.** Cross-tabulate `high_earn` against `education`. What
 do you see?
-:::
 
 :::{.sol}
 ```{python}
@@ -760,11 +705,9 @@ There are *no* high earners in the lowest education category, so the
 logistic GAM has nothing to estimate there.
 :::
 
-:::{.direction}
 **Exercise 31.** Refit the logistic GAM excluding observations in the
 "1. < HS Grad" category, then plot the partial dependence for
 `education`, `year`, and `age`.
-:::
 
 :::{.sol}
 ```{python}
@@ -816,12 +759,10 @@ ax.set_title('Partial dependence of high earner status on age', fontsize=20);
 
 ## Local Regression
 
-:::{.direction}
 **Exercise 32.** Finally, use `sm.nonparametric.lowess` to fit local
 linear regression models with spans of 0.2 and 0.5, and plot them
 together. Some implementations of GAMs allow local-regression terms;
 `pygam` does not.
-:::
 
 :::{.sol}
 ```{python}

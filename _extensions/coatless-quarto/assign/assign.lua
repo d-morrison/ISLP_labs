@@ -1,4 +1,3 @@
-
 -- Reformat all Div content
 function Div(div)
 
@@ -10,13 +9,13 @@ function Div(div)
 
   -- Directly translate shortcode class to the full profile
   local value_condition = {}
-  if div.classes:includes("sol") then 
+  if div.classes:includes("sol") then
     value_condition = {"when-profile", "solution"}
-  elseif div.classes:includes("rubric") then 
+  elseif div.classes:includes("rubric") then
     value_condition = {"when-profile", "rubric"}
-  elseif div.classes:includes("direction") then 
+  elseif div.classes:includes("direction") then
     value_condition = {"when-profile", "assign"}
-  end 
+  end
 
   -- Register the condition
   local condition = {
@@ -24,7 +23,7 @@ function Div(div)
   }
 
   -- Add additional condition related to a project profile.
-  if div.classes:includes("sol") and quarto.project.profile:includes("rubric") then 
+  if div.classes:includes("sol") and quarto.project.profile:includes("rubric") then
     table.insert(condition, {"when-profile", "rubric"})
   end
 
@@ -43,5 +42,3 @@ function Div(div)
     condition = condition
   })
 end
-
-

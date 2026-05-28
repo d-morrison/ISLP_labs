@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 # Creates a landing page at _site/index.html with side-by-side buttons
 # linking to the student worksheet (_site/assign/) and the solution key
 # (_site/solution/) — the two Quarto profile renders produced by
