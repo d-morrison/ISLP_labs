@@ -25,6 +25,9 @@ execute:
 
 filters:
   - assign
+  - coatless-quarto/custom-callout
+  - d-morrison/div-anchors
+  - d-morrison/equation-anchors
 
 website:
   title: "ISLP Labs"
@@ -50,8 +53,10 @@ website:
             href: Ch07-nonlin-lab.qmd
       - text: "Slides"
         menu:
-          - text: "Slide-deck section (scaffold)"
+          - text: "Slide-deck section"
             href: slides/index.qmd
+          - text: "Ch. 2 — Statistical Learning"
+            href: slides/ch02-statistical-learning.qmd
           - text: "Template (Python ↔ R)"
             href: slides/template.qmd
       - text: "Original labs"

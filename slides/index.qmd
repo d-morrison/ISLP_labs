@@ -4,27 +4,27 @@ format:
   html: default
 ---
 
-This section is a **placeholder** for Quarto-revealjs slide decks that
-mirror the official PDF slide decks at
-[statlearning.com → resources for Python](https://www.statlearning.com/resources-python).
-The plan is one Quarto deck per ISL chapter with each code example shown
-side-by-side in Python and R via Quarto `panel-tabset` blocks.
+This section contains Quarto-revealjs slide decks adapted from the official PDF
+slide decks at
+[statlearning.com → resources for Python](https://www.statlearning.com/resources-python),
+reproduced here with permission from the authors (James, Witten, Hastie,
+Tibshirani).
 
-**No deck content has been authored yet.** The official slides are
-copyrighted by their authors (James, Witten, Hastie, Tibshirani), so
-the slide *text and figures* will not be reproduced here. Each chapter
-deck in this section will be either:
+Each chapter deck follows the **Python ↔ R tabset** pattern: every code example
+appears side-by-side in Python (using the
+[ISLP](https://islp.readthedocs.io/en/latest/) package) and R (using
+[ISLR2](https://cran.r-project.org/package=ISLR2)), so readers can follow along
+in either language.
 
-- a **course-companion** that links to the official PDF for a given
-  chapter and adds only original framing, exercises, and the Python/R
-  tabset code listings authored by us, or
-- (with explicit permission from the authors / with content the user
-  authors themselves) a fuller deck.
+## Available decks
 
-That decision is pending — see the PR description / discussion for
-prior-art research and the open IP question.
+| Chapter | Title | Slides |
+|---------|-------|--------|
+| 2 | Statistical Learning | [HTML](ch02-statistical-learning.qmd) |
+
+*More chapters to follow.*
 
 ## Template
 
 See [template.qmd](template.qmd) for the Python/R tabset pattern and
-revealjs front matter the chapter decks will follow.
+revealjs front matter that chapter decks follow.
