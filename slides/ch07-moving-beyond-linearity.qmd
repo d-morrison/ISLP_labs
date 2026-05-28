@@ -154,8 +154,11 @@ coef(fit_step)
 roughly equal-sized bins. R's `cut(x, 4)` instead divides the *range*
 of `x` into four equal-width intervals (which usually leaves the
 extreme bins much sparser); so the R panel above passes
-quantile-based breaks explicitly to match Python's behaviour. Each
-coefficient is then the average wage in its bin.
+quantile-based breaks explicitly to match Python's behaviour. In the
+Python fit each coefficient is the average wage in its bin (no
+intercept; cell-means parameterisation). The R fit uses the default
+treatment coding instead — the intercept is the mean of the first bin
+and the other three coefficients are *differences* from it.
 
 ## Try it yourself — Exercise 9
 
@@ -464,7 +467,10 @@ GAMs can be compared by nested ANOVA, just like OLS:
 ```{python}
 from pygam import l as l_gam
 from ISLP.pygam import anova as anova_gam
-gam_no_year = LinearGAM(s_gam(0) + f_gam(2, lam=0)).fit(X, Wage['wage'])
+# gam_no_year: drop year from the feature matrix entirely so the term
+# index in the model spec lines up with the column index in X_no_yr.
+X_no_yr = np.column_stack([Wage['age'], Wage['education'].cat.codes])
+gam_no_year = LinearGAM(s_gam(0) + f_gam(1, lam=0)).fit(X_no_yr, Wage['wage'])
 gam_lin_yr  = LinearGAM(s_gam(0) + l_gam(1, lam=0) + f_gam(2, lam=0)).fit(X, Wage['wage'])
 anova_gam(gam_no_year, gam_lin_yr, gam)
 ```
