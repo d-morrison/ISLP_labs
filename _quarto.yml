@@ -27,9 +27,8 @@ filters:
   - assign
   - d-morrison/div-anchors
   - d-morrison/equation-anchors
+  - d-morrison/callouty-theorem
   - coatless-quarto/custom-callout
-  # Uncomment once callouty-theorem is installed (quarto add sun123zxy/callouty-theorem):
-  # - sun123zxy/callouty-theorem
 
 website:
   title: "ISLP Labs"

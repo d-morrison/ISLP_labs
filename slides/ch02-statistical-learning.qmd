@@ -64,7 +64,7 @@ Wage.plot.scatter('year', 'wage', alpha=0.3, ax=axes[1])
 edu_levels = Wage['education'].cat.categories
 axes[2].boxplot(
     [Wage.loc[Wage['education'] == e, 'wage'] for e in edu_levels],
-    labels=edu_levels,
+    tick_labels=edu_levels,  # matplotlib ≥3.9; was `labels=` before
 )
 axes[2].set_xlabel('Education'); axes[2].set_ylabel('Wage')
 axes[2].tick_params(axis='x', rotation=45)
