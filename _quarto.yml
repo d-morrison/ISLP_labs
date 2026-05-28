@@ -1,0 +1,12 @@
+profile:
+  default: [website, assign, solution]
+
+execute:
+  warning: false
+  message: false
+  cache: false
+  freeze: auto
+  enabled: false
+
+filters:
+  - assign

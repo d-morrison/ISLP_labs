@@ -1,0 +1,12 @@
+project:
+  type: default
+  output-dir: _solution
+
+format:
+  html:
+    theme: cosmo
+    toc: true
+    toc-location: right
+    code-tools: true
+    highlight-style: pygments
+    html-math-method: mathjax
