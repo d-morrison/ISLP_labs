@@ -9,6 +9,11 @@ name: Publish website
 on:
   workflow_dispatch:
   push:
+    # `'**'` matches every branch but no tags — keeps the default-branch
+    # gate in `jobs.build-deploy.if` doing the real filtering while
+    # avoiding extra skipped runs for tag pushes (which would never
+    # satisfy `refs/heads/{default}` anyway).
+    branches: ['**']
 
 jobs:
   build-deploy:
