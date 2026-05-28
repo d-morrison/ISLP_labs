@@ -236,7 +236,7 @@
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Python</a></li><li><a href="#tabset-1-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<div id="ccb0fefa" class="cell" data-execution_count="1">
+<div id="ff605329" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> ISLP <span class="im">import</span> load_data</span>
 <span id="cb1-2"><a></a>Wage <span class="op">=</span> load_data(<span class="st">'Wage'</span>)</span>
 <span id="cb1-3"><a></a>Wage[[<span class="st">'age'</span>, <span class="st">'year'</span>, <span class="st">'education'</span>, <span class="st">'wage'</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -341,7 +341,7 @@
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Python</a></li><li><a href="#tabset-2-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1">
-<div id="a45a54e4" class="cell" data-execution_count="2">
+<div id="000761a8" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb3-2"><a></a><span class="im">from</span> ISLP.models <span class="im">import</span> poly, ModelSpec <span class="im">as</span> MS</span>
 <span id="cb3-3"><a></a></span>
@@ -450,7 +450,7 @@
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Python</a></li><li><a href="#tabset-3-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1">
-<div id="6836d3b4" class="cell" data-execution_count="3">
+<div id="eea98cd2" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb5-2"><a></a>cut_age <span class="op">=</span> pd.qcut(Wage[<span class="st">'age'</span>], <span class="dv">4</span>)</span>
 <span id="cb5-3"><a></a>sm.OLS(Wage[<span class="st">'wage'</span>], pd.get_dummies(cut_age, dtype<span class="op">=</span><span class="bu">float</span>)).fit().params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -527,7 +527,7 @@ b_K(X)\)</span> and fit OLS in the new design matrix:</p>
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Python</a></li><li><a href="#tabset-4-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-4-1">
-<div id="50dce373" class="cell" data-execution_count="4">
+<div id="8bbc2c69" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">from</span> ISLP.models <span class="im">import</span> bs, ns</span>
 <span id="cb8-2"><a></a></span>
 <span id="cb8-3"><a></a>bs_age <span class="op">=</span> MS([bs(<span class="st">'age'</span>, df<span class="op">=</span><span class="dv">6</span>, name<span class="op">=</span><span class="st">'bs(age)'</span>)])</span>
@@ -592,7 +592,7 @@ dtype: float64</code></pre>
 <ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Python</a></li><li><a href="#tabset-5-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-5-1">
-<div id="cfa6e6ee" class="cell" data-execution_count="5">
+<div id="00d93205" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> LinearGAM, s <span class="im">as</span> s_gam</span>
 <span id="cb11-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb11-3"><a></a>X_age <span class="op">=</span> np.asarray(Wage[<span class="st">'age'</span>]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
@@ -648,7 +648,7 @@ dtype: float64</code></pre>
 <ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Python</a></li><li><a href="#tabset-6-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-6-1">
-<div id="6ef30090" class="cell" data-execution_count="6">
+<div id="0b3a422d" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>lowess <span class="op">=</span> sm.nonparametric.lowess</span>
 <span id="cb13-2"><a></a>age_grid <span class="op">=</span> np.linspace(Wage[<span class="st">'age'</span>].<span class="bu">min</span>(), Wage[<span class="st">'age'</span>].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
 <span id="cb13-3"><a></a>fitted <span class="op">=</span> lowess(Wage[<span class="st">'wage'</span>], Wage[<span class="st">'age'</span>], frac<span class="op">=</span><span class="fl">0.3</span>, xvals<span class="op">=</span>age_grid)</span>
@@ -707,7 +707,7 @@ dtype: float64</code></pre>
 <ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Python</a></li><li><a href="#tabset-7-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-7-1">
-<div id="f282a953" class="cell" data-execution_count="7">
+<div id="487b5a4b" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam, LinearGAM</span>
 <span id="cb16-2"><a></a>X <span class="op">=</span> np.column_stack([</span>
 <span id="cb16-3"><a></a>    Wage[<span class="st">'age'</span>],</span>
@@ -741,7 +741,7 @@ dtype: float64</code></pre>
 <ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">Python</a></li><li><a href="#tabset-8-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-8-1">
-<div id="ed088442" class="cell" data-execution_count="8">
+<div id="31bcc33e" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> plot <span class="im">as</span> plot_gam</span>
 <span id="cb19-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb19-3"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
@@ -771,7 +771,7 @@ dtype: float64</code></pre>
 <ul id="tabset-9" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-9-1">Python</a></li><li><a href="#tabset-9-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-9-1">
-<div id="2b29166e" class="cell" data-execution_count="9">
+<div id="a05da510" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> l <span class="im">as</span> l_gam</span>
 <span id="cb21-2"><a></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> anova <span class="im">as</span> anova_gam</span>
 <span id="cb21-3"><a></a><span class="co"># gam_no_year: drop year from the feature matrix entirely so the term</span></span>
@@ -859,7 +859,7 @@ dtype: float64</code></pre>
 <ul id="tabset-10" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-10-1">Python</a></li><li><a href="#tabset-10-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-10-1">
-<div id="df83e00c" class="cell" data-execution_count="10">
+<div id="c27804bf" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> LogisticGAM, s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam</span>
 <span id="cb23-2"><a></a>high_earn <span class="op">=</span> (Wage[<span class="st">'wage'</span>] <span class="op">&gt;</span> <span class="dv">250</span>).astype(<span class="bu">int</span>)</span>
 <span id="cb23-3"><a></a>gam_logit <span class="op">=</span> LogisticGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
