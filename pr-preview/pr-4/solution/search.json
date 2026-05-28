@@ -112,6 +112,13 @@
     "text": "Code\n\nPythonR\n\n\n\nimport statsmodels.api as sm\nfrom ISLP.models import poly, ModelSpec as MS\n\npoly_age = MS([poly('age', degree=4)]).fit(Wage)\nfit_poly = sm.OLS(Wage['wage'], poly_age.transform(Wage)).fit()\nfit_poly.summary().tables[1]\n\n\n\n\n\ncoef\nstd err\nt\nP&gt;|t|\n[0.025\n0.975]\n\n\nintercept\n111.7036\n0.729\n153.283\n0.000\n110.275\n113.132\n\n\npoly(age, degree=4)[0]\n447.0679\n39.915\n11.201\n0.000\n368.805\n525.331\n\n\npoly(age, degree=4)[1]\n-478.3158\n39.915\n-11.983\n0.000\n-556.579\n-400.053\n\n\npoly(age, degree=4)[2]\n125.5217\n39.915\n3.145\n0.002\n47.259\n203.785\n\n\npoly(age, degree=4)[3]\n-77.9112\n39.915\n-1.952\n0.051\n-156.174\n0.352\n\n\n\n\n\n\n\nfit_poly &lt;- lm(wage ~ poly(age, 4), data = Wage)\nsummary(fit_poly)$coefficients\n\n\n\nIn both languages poly(..., 4) produces a 4-column design matrix using orthogonal polynomials, so individual t-statistics are independent — convenient for choosing the degree."
   },
   {
+    "objectID": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercises-18",
+    "href": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercises-18",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercises 1–8",
+    "text": "Try it yourself — Exercises 1–8\nFrom the Ch07 handout:\n\nExercise 1. Load the Wage data with load_data('Wage'); store the response as y and the predictor as age.\nExercise 2. Use poly() inside MS() to build a 4th-degree polynomial in age, fit OLS, print the coefficient summary.\nExercise 3. Build a grid age_grid of 100 evenly spaced values spanning observed age; wrap in a one-column DataFrame age_df.\nExercise 4. Write a helper plot_wage_fit(age_df, basis, title) that fits OLS on basis, evaluates it on age_df, and plots data + curve + 95 % bands.\nExercise 5. Use the helper to plot the degree-4 polynomial fit.\nExercise 6. Fit polynomial models of degrees 1–5 in age; pick a degree with anova_lm.\nExercise 7. Repeat the ANOVA with a linear education term alongside the polynomial in age.\nExercise 8. Fit a logistic GLM of wage &gt; 250 on the 4th-degree polynomial basis; plot \\(P(Y=1)\\) vs. age with a rug plot."
+  },
+  {
     "objectID": "slides/ch07-moving-beyond-linearity.html#the-model-1",
     "href": "slides/ch07-moving-beyond-linearity.html#the-model-1",
     "title": "Chapter 7 — Moving Beyond Linearity",
@@ -124,6 +131,13 @@
     "title": "Chapter 7 — Moving Beyond Linearity",
     "section": "Code",
     "text": "Code\n\nPythonR\n\n\n\nimport pandas as pd\ncut_age = pd.qcut(Wage['age'], 4)\nsm.OLS(Wage['wage'], pd.get_dummies(cut_age, dtype=float)).fit().params\n\n(17.999, 33.75]     94.158392\n(33.75, 42.0]      116.660810\n(42.0, 51.0]       119.188665\n(51.0, 80.0]       116.571716\ndtype: float64\n\n\n\n\nfit_step &lt;- lm(wage ~ cut(age, 4), data = Wage)\ncoef(fit_step)\n\n\n\nqcut(x, 4) (and cut(x, 4) in R) splits at the 25 / 50 / 75 % quantiles, giving four bins. Each coefficient is the per-bin mean."
+  },
+  {
+    "objectID": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercise-9",
+    "href": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercise-9",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercise 9",
+    "text": "Try it yourself — Exercise 9\nFrom the Ch07 handout:\n\nExercise 9. Fit a step-function regression: discretise age into 4 quantile-based bins with pd.qcut(), build dummy columns with pd.get_dummies(), and fit OLS."
   },
   {
     "objectID": "slides/ch07-moving-beyond-linearity.html#the-pattern",
@@ -161,6 +175,13 @@
     "text": "Code\n\nPythonR\n\n\n\nfrom ISLP.models import bs, ns\n\nbs_age = MS([bs('age', df=6, name='bs(age)')])\nsm.OLS(Wage['wage'], bs_age.fit_transform(Wage)).fit().params\n\nintercept     56.313841\nbs(age)[0]    27.824002\nbs(age)[1]    54.062546\nbs(age)[2]    65.828391\nbs(age)[3]    55.812734\nbs(age)[4]    72.131473\nbs(age)[5]    14.750876\ndtype: float64\n\n\n\n\nlibrary(splines)\nfit_bs &lt;- lm(wage ~ bs(age, df = 6), data = Wage)\ncoef(fit_bs)\n\n\n\nFor a natural spline replace bs(...) with ns(...) in either language — the rest of the workflow is identical."
   },
   {
+    "objectID": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercises-1014",
+    "href": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercises-1014",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercises 10–14",
+    "text": "Try it yourself — Exercises 10–14\nFrom the Ch07 handout:\n\nExercise 10. Use BSpline() with internal_knots=[25, 40, 60] and intercept=True; check the shape of the design matrix.\nExercise 11. Fit a cubic spline regression with bs() inside MS(); pass name='bs(age)' for cleaner column labels.\nExercise 12. Ask BSpline for df=6; inspect internal_knots_ to see where knots ended up.\nExercise 13. Fit a degree-0 spline with df=3; compare its coefficients to the earlier qcut step function.\nExercise 14. Fit a natural cubic spline with df=5 via ns(); plot the fit with plot_wage_fit()."
+  },
+  {
     "objectID": "slides/ch07-moving-beyond-linearity.html#the-motivation",
     "href": "slides/ch07-moving-beyond-linearity.html#the-motivation",
     "title": "Chapter 7 — Moving Beyond Linearity",
@@ -182,6 +203,13 @@
     "text": "Code\n\nPythonR\n\n\n\nfrom pygam import LinearGAM, s as s_gam\nimport numpy as np\nX_age = np.asarray(Wage['age']).reshape(-1, 1)\ngam_age = LinearGAM(s_gam(0, lam=0.6)).fit(X_age, Wage['wage'])\n\n\n\nfit_ss &lt;- smooth.spline(Wage$age, Wage$wage, df = 4)\nfit_ss$lambda\n\n\n\nsmooth.spline in R finds \\(\\lambda\\) for the requested df directly. In pygam you set \\(\\lambda\\) (lam) explicitly or use ISLP.pygam.approx_lam to translate a desired df into a \\(\\lambda\\)."
   },
   {
+    "objectID": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercises-1519",
+    "href": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercises-1519",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercises 15–19",
+    "text": "Try it yourself — Exercises 15–19\nFrom the Ch07 handout:\n\nExercise 15. Fit LinearGAM(s_gam(0, lam=0.6)) on age → wage (reshape age to a 2-D feature matrix).\nExercise 16. Loop lam over np.logspace(-2, 6, 5) and plot each resulting fit.\nExercise 17. Reproduce the loop and add a grid-search-optimal fit via .gridsearch(X_age, y) on top.\nExercise 18. Use approx_lam() to find a lam giving ≈ 4 effective degrees of freedom; verify with degrees_of_freedom().\nExercise 19. Loop df ∈ {1, 3, 4, 8, 15} (passing df + 1 to approx_lam for the intercept), refit, plot."
+  },
+  {
     "objectID": "slides/ch07-moving-beyond-linearity.html#the-idea",
     "href": "slides/ch07-moving-beyond-linearity.html#the-idea",
     "title": "Chapter 7 — Moving Beyond Linearity",
@@ -201,6 +229,13 @@
     "title": "Chapter 7 — Moving Beyond Linearity",
     "section": "Code",
     "text": "Code\n\nPythonR\n\n\n\nlowess = sm.nonparametric.lowess\nage_grid = np.linspace(Wage['age'].min(), Wage['age'].max(), 100)\nfitted = lowess(Wage['wage'], Wage['age'], frac=0.3, xvals=age_grid)\nfitted[:5]\n\narray([60.37604029, 62.63015234, 64.87517017, 67.10922623, 69.33172967])\n\n\n\n\nfit_loess &lt;- loess(wage ~ age, data = Wage, span = 0.3)\npredict(fit_loess, data.frame(age = seq(20, 80, length.out = 5)))\n\n\n\nstatsmodels.lowess and R’s loess use slightly different defaults (degree, weighting, robustness) but produce qualitatively similar fits."
+  },
+  {
+    "objectID": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercise-32",
+    "href": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercise-32",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercise 32",
+    "text": "Try it yourself — Exercise 32\nFrom the Ch07 handout:\n\nExercise 32. Use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5; plot them together. Note pygam does not support local-regression terms inside a GAM."
   },
   {
     "objectID": "slides/ch07-moving-beyond-linearity.html#the-model-2",
@@ -243,6 +278,13 @@
     "title": "Chapter 7 — Moving Beyond Linearity",
     "section": "GAMs for classification",
     "text": "GAMs for classification\nFor a binary outcome (\\(Y \\in \\{0, 1\\}\\)) extend the additive model to a logistic link:\n\\[\\log\\frac{\\Pr(Y = 1 \\mid X)}{\\Pr(Y = 0 \\mid X)} = \\alpha + \\sum_{j=1}^p f_j(X_j)\\]\n\nPythonR\n\n\n\nfrom pygam import LogisticGAM, s as s_gam, f as f_gam\nhigh_earn = (Wage['wage'] &gt; 250).astype(int)\ngam_logit = LogisticGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0))\ngam_logit.fit(X, high_earn)\n\nLogisticGAM(callbacks=[Deviance(), Diffs(), Accuracy()], \n   fit_intercept=True, max_iter=100, \n   terms=s(0) + s(1) + f(2) + intercept, tol=0.0001, verbose=False)\n\n\n\n\ngam_logit &lt;- gam(\n  I(wage &gt; 250) ~ s(age, df = 4) + s(year, df = 5) + education,\n  family = binomial,\n  data = Wage\n)"
+  },
+  {
+    "objectID": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercises-2031",
+    "href": "slides/ch07-moving-beyond-linearity.html#try-it-yourself-exercises-2031",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercises 20–31",
+    "text": "Try it yourself — Exercises 20–31\nFrom the Ch07 handout:\n\nExercise 20. Build a GAM “by hand”: NaturalSpline(df=4) for age, df=5 for year, dummies for education; stack and fit OLS.\nExercise 21. Construct a partial-dependence plot for age from the by-hand GAM.\nExercise 22. Do the same for year.\nExercise 23. Fit the same model with smoothing splines via pygam: LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)); plot the age partial dependence.\nExercise 24. Re-tune gam_full so age and year each have ≈ 4 df via approx_lam(..., df=4+1); re-plot.\nExercise 25. Plot the partial dependence for education (categorical term).\nExercise 26. ANOVA across three GAMs in year: excluded vs. linear vs. smooth. What do you conclude?\nExercise 27. Repeat the ANOVA for age.\nExercise 28. Print gam_full.summary() and call gam_full.predict() on the training set.\nExercise 29. Fit a logistic GAM for high_earn (i.e. wage &gt; 250); plot the education partial dependence.\nExercise 30. Crosstab high_earn against education — what do you see?\nExercise 31. Refit the logistic GAM excluding the “&lt; HS Grad” category; plot partial dependence for education, year, age."
   },
   {
     "objectID": "slides/ch07-moving-beyond-linearity.html#comparing-the-tools",
@@ -308,6 +350,13 @@
     "text": "Code\n\nPythonR\n\n\n\nimport statsmodels.api as sm\nfrom ISLP.models import poly, ModelSpec as MS\n\npoly_age = MS([poly('age', degree=4)]).fit(Wage)\nfit_poly = sm.OLS(Wage['wage'], poly_age.transform(Wage)).fit()\nfit_poly.summary().tables[1]\n\n\n\n\n\ncoef\nstd err\nt\nP&gt;|t|\n[0.025\n0.975]\n\n\nintercept\n111.7036\n0.729\n153.283\n0.000\n110.275\n113.132\n\n\npoly(age, degree=4)[0]\n447.0679\n39.915\n11.201\n0.000\n368.805\n525.331\n\n\npoly(age, degree=4)[1]\n-478.3158\n39.915\n-11.983\n0.000\n-556.579\n-400.053\n\n\npoly(age, degree=4)[2]\n125.5217\n39.915\n3.145\n0.002\n47.259\n203.785\n\n\npoly(age, degree=4)[3]\n-77.9112\n39.915\n-1.952\n0.051\n-156.174\n0.352\n\n\n\n\n\n\n\nfit_poly &lt;- lm(wage ~ poly(age, 4), data = Wage)\nsummary(fit_poly)$coefficients\n\n\n\nIn both languages poly(..., 4) produces a 4-column design matrix using orthogonal polynomials, so individual t-statistics are independent — convenient for choosing the degree."
   },
   {
+    "objectID": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercises-18",
+    "href": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercises-18",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercises 1–8",
+    "text": "Try it yourself — Exercises 1–8\nFrom the Ch07 handout:\n\nExercise 1. Load the Wage data with load_data('Wage'); store the response as y and the predictor as age.\nExercise 2. Use poly() inside MS() to build a 4th-degree polynomial in age, fit OLS, print the coefficient summary.\nExercise 3. Build a grid age_grid of 100 evenly spaced values spanning observed age; wrap in a one-column DataFrame age_df.\nExercise 4. Write a helper plot_wage_fit(age_df, basis, title) that fits OLS on basis, evaluates it on age_df, and plots data + curve + 95 % bands.\nExercise 5. Use the helper to plot the degree-4 polynomial fit.\nExercise 6. Fit polynomial models of degrees 1–5 in age; pick a degree with anova_lm.\nExercise 7. Repeat the ANOVA with a linear education term alongside the polynomial in age.\nExercise 8. Fit a logistic GLM of wage &gt; 250 on the 4th-degree polynomial basis; plot \\(P(Y=1)\\) vs. age with a rug plot."
+  },
+  {
     "objectID": "slides/ch07-moving-beyond-linearity-slides.html#the-model-1",
     "href": "slides/ch07-moving-beyond-linearity-slides.html#the-model-1",
     "title": "Chapter 7 — Moving Beyond Linearity",
@@ -320,6 +369,13 @@
     "title": "Chapter 7 — Moving Beyond Linearity",
     "section": "Code",
     "text": "Code\n\nPythonR\n\n\n\nimport pandas as pd\ncut_age = pd.qcut(Wage['age'], 4)\nsm.OLS(Wage['wage'], pd.get_dummies(cut_age, dtype=float)).fit().params\n\n(17.999, 33.75]     94.158392\n(33.75, 42.0]      116.660810\n(42.0, 51.0]       119.188665\n(51.0, 80.0]       116.571716\ndtype: float64\n\n\n\n\nfit_step &lt;- lm(wage ~ cut(age, 4), data = Wage)\ncoef(fit_step)\n\n\n\nqcut(x, 4) (and cut(x, 4) in R) splits at the 25 / 50 / 75 % quantiles, giving four bins. Each coefficient is the per-bin mean."
+  },
+  {
+    "objectID": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercise-9",
+    "href": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercise-9",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercise 9",
+    "text": "Try it yourself — Exercise 9\nFrom the Ch07 handout:\n\nExercise 9. Fit a step-function regression: discretise age into 4 quantile-based bins with pd.qcut(), build dummy columns with pd.get_dummies(), and fit OLS."
   },
   {
     "objectID": "slides/ch07-moving-beyond-linearity-slides.html#the-pattern",
@@ -357,6 +413,13 @@
     "text": "Code\n\nPythonR\n\n\n\nfrom ISLP.models import bs, ns\n\nbs_age = MS([bs('age', df=6, name='bs(age)')])\nsm.OLS(Wage['wage'], bs_age.fit_transform(Wage)).fit().params\n\nintercept     56.313841\nbs(age)[0]    27.824002\nbs(age)[1]    54.062546\nbs(age)[2]    65.828391\nbs(age)[3]    55.812734\nbs(age)[4]    72.131473\nbs(age)[5]    14.750876\ndtype: float64\n\n\n\n\nlibrary(splines)\nfit_bs &lt;- lm(wage ~ bs(age, df = 6), data = Wage)\ncoef(fit_bs)\n\n\n\nFor a natural spline replace bs(...) with ns(...) in either language — the rest of the workflow is identical."
   },
   {
+    "objectID": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercises-1014",
+    "href": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercises-1014",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercises 10–14",
+    "text": "Try it yourself — Exercises 10–14\nFrom the Ch07 handout:\n\nExercise 10. Use BSpline() with internal_knots=[25, 40, 60] and intercept=True; check the shape of the design matrix.\nExercise 11. Fit a cubic spline regression with bs() inside MS(); pass name='bs(age)' for cleaner column labels.\nExercise 12. Ask BSpline for df=6; inspect internal_knots_ to see where knots ended up.\nExercise 13. Fit a degree-0 spline with df=3; compare its coefficients to the earlier qcut step function.\nExercise 14. Fit a natural cubic spline with df=5 via ns(); plot the fit with plot_wage_fit()."
+  },
+  {
     "objectID": "slides/ch07-moving-beyond-linearity-slides.html#the-motivation",
     "href": "slides/ch07-moving-beyond-linearity-slides.html#the-motivation",
     "title": "Chapter 7 — Moving Beyond Linearity",
@@ -378,6 +441,13 @@
     "text": "Code\n\nPythonR\n\n\n\nfrom pygam import LinearGAM, s as s_gam\nimport numpy as np\nX_age = np.asarray(Wage['age']).reshape(-1, 1)\ngam_age = LinearGAM(s_gam(0, lam=0.6)).fit(X_age, Wage['wage'])\n\n\n\nfit_ss &lt;- smooth.spline(Wage$age, Wage$wage, df = 4)\nfit_ss$lambda\n\n\n\nsmooth.spline in R finds \\(\\lambda\\) for the requested df directly. In pygam you set \\(\\lambda\\) (lam) explicitly or use ISLP.pygam.approx_lam to translate a desired df into a \\(\\lambda\\)."
   },
   {
+    "objectID": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercises-1519",
+    "href": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercises-1519",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercises 15–19",
+    "text": "Try it yourself — Exercises 15–19\nFrom the Ch07 handout:\n\nExercise 15. Fit LinearGAM(s_gam(0, lam=0.6)) on age → wage (reshape age to a 2-D feature matrix).\nExercise 16. Loop lam over np.logspace(-2, 6, 5) and plot each resulting fit.\nExercise 17. Reproduce the loop and add a grid-search-optimal fit via .gridsearch(X_age, y) on top.\nExercise 18. Use approx_lam() to find a lam giving ≈ 4 effective degrees of freedom; verify with degrees_of_freedom().\nExercise 19. Loop df ∈ {1, 3, 4, 8, 15} (passing df + 1 to approx_lam for the intercept), refit, plot."
+  },
+  {
     "objectID": "slides/ch07-moving-beyond-linearity-slides.html#the-idea",
     "href": "slides/ch07-moving-beyond-linearity-slides.html#the-idea",
     "title": "Chapter 7 — Moving Beyond Linearity",
@@ -397,6 +467,13 @@
     "title": "Chapter 7 — Moving Beyond Linearity",
     "section": "Code",
     "text": "Code\n\nPythonR\n\n\n\nlowess = sm.nonparametric.lowess\nage_grid = np.linspace(Wage['age'].min(), Wage['age'].max(), 100)\nfitted = lowess(Wage['wage'], Wage['age'], frac=0.3, xvals=age_grid)\nfitted[:5]\n\narray([60.37604029, 62.63015234, 64.87517017, 67.10922623, 69.33172967])\n\n\n\n\nfit_loess &lt;- loess(wage ~ age, data = Wage, span = 0.3)\npredict(fit_loess, data.frame(age = seq(20, 80, length.out = 5)))\n\n\n\nstatsmodels.lowess and R’s loess use slightly different defaults (degree, weighting, robustness) but produce qualitatively similar fits."
+  },
+  {
+    "objectID": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercise-32",
+    "href": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercise-32",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercise 32",
+    "text": "Try it yourself — Exercise 32\nFrom the Ch07 handout:\n\nExercise 32. Use sm.nonparametric.lowess to fit local linear regression models with spans of 0.2 and 0.5; plot them together. Note pygam does not support local-regression terms inside a GAM."
   },
   {
     "objectID": "slides/ch07-moving-beyond-linearity-slides.html#the-model-2",
@@ -439,6 +516,13 @@
     "title": "Chapter 7 — Moving Beyond Linearity",
     "section": "GAMs for classification",
     "text": "GAMs for classification\nFor a binary outcome (\\(Y \\in \\{0, 1\\}\\)) extend the additive model to a logistic link:\n\\[\\log\\frac{\\Pr(Y = 1 \\mid X)}{\\Pr(Y = 0 \\mid X)} = \\alpha + \\sum_{j=1}^p f_j(X_j)\\]\n\nPythonR\n\n\n\nfrom pygam import LogisticGAM, s as s_gam, f as f_gam\nhigh_earn = (Wage['wage'] &gt; 250).astype(int)\ngam_logit = LogisticGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0))\ngam_logit.fit(X, high_earn)\n\nLogisticGAM(callbacks=[Deviance(), Diffs(), Accuracy()], \n   fit_intercept=True, max_iter=100, \n   terms=s(0) + s(1) + f(2) + intercept, tol=0.0001, verbose=False)\n\n\n\n\ngam_logit &lt;- gam(\n  I(wage &gt; 250) ~ s(age, df = 4) + s(year, df = 5) + education,\n  family = binomial,\n  data = Wage\n)"
+  },
+  {
+    "objectID": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercises-2031",
+    "href": "slides/ch07-moving-beyond-linearity-slides.html#try-it-yourself-exercises-2031",
+    "title": "Chapter 7 — Moving Beyond Linearity",
+    "section": "Try it yourself — Exercises 20–31",
+    "text": "Try it yourself — Exercises 20–31\nFrom the Ch07 handout:\n\nExercise 20. Build a GAM “by hand”: NaturalSpline(df=4) for age, df=5 for year, dummies for education; stack and fit OLS.\nExercise 21. Construct a partial-dependence plot for age from the by-hand GAM.\nExercise 22. Do the same for year.\nExercise 23. Fit the same model with smoothing splines via pygam: LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0)); plot the age partial dependence.\nExercise 24. Re-tune gam_full so age and year each have ≈ 4 df via approx_lam(..., df=4+1); re-plot.\nExercise 25. Plot the partial dependence for education (categorical term).\nExercise 26. ANOVA across three GAMs in year: excluded vs. linear vs. smooth. What do you conclude?\nExercise 27. Repeat the ANOVA for age.\nExercise 28. Print gam_full.summary() and call gam_full.predict() on the training set.\nExercise 29. Fit a logistic GAM for high_earn (i.e. wage &gt; 250); plot the education partial dependence.\nExercise 30. Crosstab high_earn against education — what do you see?\nExercise 31. Refit the logistic GAM excluding the “&lt; HS Grad” category; plot partial dependence for education, year, age."
   },
   {
     "objectID": "slides/ch07-moving-beyond-linearity-slides.html#comparing-the-tools",

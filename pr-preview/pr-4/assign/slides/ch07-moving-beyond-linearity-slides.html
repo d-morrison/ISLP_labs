@@ -236,7 +236,7 @@
 <ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Python</a></li><li><a href="#tabset-1-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-1-1">
-<div id="c573f072" class="cell" data-execution_count="1">
+<div id="e7772f5a" class="cell" data-execution_count="1">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">from</span> ISLP <span class="im">import</span> load_data</span>
 <span id="cb1-2"><a></a>Wage <span class="op">=</span> load_data(<span class="st">'Wage'</span>)</span>
 <span id="cb1-3"><a></a>Wage[[<span class="st">'age'</span>, <span class="st">'year'</span>, <span class="st">'education'</span>, <span class="st">'wage'</span>]].head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -341,7 +341,7 @@
 <ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Python</a></li><li><a href="#tabset-2-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-2-1">
-<div id="07fdd73c" class="cell" data-execution_count="2">
+<div id="6278422b" class="cell" data-execution_count="2">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
 <span id="cb3-2"><a></a><span class="im">from</span> ISLP.models <span class="im">import</span> poly, ModelSpec <span class="im">as</span> MS</span>
 <span id="cb3-3"><a></a></span>
@@ -417,6 +417,20 @@
 </div>
 </div>
 <p>In both languages <code>poly(..., 4)</code> produces a 4-column design matrix using <em>orthogonal</em> polynomials, so individual t-statistics are independent — convenient for choosing the degree.</p>
+</section>
+<section id="try-it-yourself-exercises-18" class="slide level2 smaller">
+<h2>Try it yourself — Exercises 1–8</h2>
+<p>From the <a href="../Ch07-nonlin-lab.html">Ch07 handout</a>:</p>
+<ul>
+<li><strong>Exercise 1.</strong> Load the <code>Wage</code> data with <code>load_data('Wage')</code>; store the response as <code>y</code> and the predictor as <code>age</code>.</li>
+<li><strong>Exercise 2.</strong> Use <code>poly()</code> inside <code>MS()</code> to build a 4th-degree polynomial in <code>age</code>, fit OLS, print the coefficient summary.</li>
+<li><strong>Exercise 3.</strong> Build a grid <code>age_grid</code> of 100 evenly spaced values spanning observed <code>age</code>; wrap in a one-column DataFrame <code>age_df</code>.</li>
+<li><strong>Exercise 4.</strong> Write a helper <code>plot_wage_fit(age_df, basis, title)</code> that fits OLS on <code>basis</code>, evaluates it on <code>age_df</code>, and plots data + curve + 95 % bands.</li>
+<li><strong>Exercise 5.</strong> Use the helper to plot the degree-4 polynomial fit.</li>
+<li><strong>Exercise 6.</strong> Fit polynomial models of degrees 1–5 in <code>age</code>; pick a degree with <code>anova_lm</code>.</li>
+<li><strong>Exercise 7.</strong> Repeat the ANOVA with a linear <code>education</code> term alongside the polynomial in <code>age</code>.</li>
+<li><strong>Exercise 8.</strong> Fit a logistic GLM of <code>wage &gt; 250</code> on the 4th-degree polynomial basis; plot <span class="math inline">\(P(Y=1)\)</span> vs.&nbsp;age with a rug plot.</li>
+</ul>
 </section></section>
 <section>
 <section id="step-functions" class="title-slide slide level1 center">
@@ -436,7 +450,7 @@
 <ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Python</a></li><li><a href="#tabset-3-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-3-1">
-<div id="d5f4bca4" class="cell" data-execution_count="3">
+<div id="b859e846" class="cell" data-execution_count="3">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb5-2"><a></a>cut_age <span class="op">=</span> pd.qcut(Wage[<span class="st">'age'</span>], <span class="dv">4</span>)</span>
 <span id="cb5-3"><a></a>sm.OLS(Wage[<span class="st">'wage'</span>], pd.get_dummies(cut_age, dtype<span class="op">=</span><span class="bu">float</span>)).fit().params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
@@ -456,6 +470,13 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p><code>qcut(x, 4)</code> (and <code>cut(x, 4)</code> in R) splits at the 25 / 50 / 75 % quantiles, giving four bins. Each coefficient is the per-bin mean.</p>
+</section>
+<section id="try-it-yourself-exercise-9" class="slide level2">
+<h2>Try it yourself — Exercise 9</h2>
+<p>From the <a href="../Ch07-nonlin-lab.html">Ch07 handout</a>:</p>
+<ul>
+<li><strong>Exercise 9.</strong> Fit a step-function regression: discretise <code>age</code> into 4 quantile-based bins with <code>pd.qcut()</code>, build dummy columns with <code>pd.get_dummies()</code>, and fit OLS.</li>
+</ul>
 </section></section>
 <section>
 <section id="basis-functions-a-common-framework" class="title-slide slide level1 center">
@@ -502,7 +523,7 @@ b_K(X)\)</span> and fit OLS in the new design matrix:</p>
 <ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Python</a></li><li><a href="#tabset-4-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-4-1">
-<div id="de524ec0" class="cell" data-execution_count="4">
+<div id="4fe7b3e7" class="cell" data-execution_count="4">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a></a><span class="im">from</span> ISLP.models <span class="im">import</span> bs, ns</span>
 <span id="cb8-2"><a></a></span>
 <span id="cb8-3"><a></a>bs_age <span class="op">=</span> MS([bs(<span class="st">'age'</span>, df<span class="op">=</span><span class="dv">6</span>, name<span class="op">=</span><span class="st">'bs(age)'</span>)])</span>
@@ -527,6 +548,17 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p>For a natural spline replace <code>bs(...)</code> with <code>ns(...)</code> in either language — the rest of the workflow is identical.</p>
+</section>
+<section id="try-it-yourself-exercises-1014" class="slide level2 smaller">
+<h2>Try it yourself — Exercises 10–14</h2>
+<p>From the <a href="../Ch07-nonlin-lab.html">Ch07 handout</a>:</p>
+<ul>
+<li><strong>Exercise 10.</strong> Use <code>BSpline()</code> with <code>internal_knots=[25, 40, 60]</code> and <code>intercept=True</code>; check the shape of the design matrix.</li>
+<li><strong>Exercise 11.</strong> Fit a cubic spline regression with <code>bs()</code> inside <code>MS()</code>; pass <code>name='bs(age)'</code> for cleaner column labels.</li>
+<li><strong>Exercise 12.</strong> Ask <code>BSpline</code> for <code>df=6</code>; inspect <code>internal_knots_</code> to see where knots ended up.</li>
+<li><strong>Exercise 13.</strong> Fit a degree-0 spline with <code>df=3</code>; compare its coefficients to the earlier <code>qcut</code> step function.</li>
+<li><strong>Exercise 14.</strong> Fit a natural cubic spline with <code>df=5</code> via <code>ns()</code>; plot the fit with <code>plot_wage_fit()</code>.</li>
+</ul>
 </section></section>
 <section>
 <section id="smoothing-splines" class="title-slide slide level1 center">
@@ -556,7 +588,7 @@ dtype: float64</code></pre>
 <ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Python</a></li><li><a href="#tabset-5-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-5-1">
-<div id="6e5352cd" class="cell" data-execution_count="5">
+<div id="308f3ed0" class="cell" data-execution_count="5">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> LinearGAM, s <span class="im">as</span> s_gam</span>
 <span id="cb11-2"><a></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb11-3"><a></a>X_age <span class="op">=</span> np.asarray(Wage[<span class="st">'age'</span>]).reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
@@ -570,6 +602,17 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p><code>smooth.spline</code> in R finds <span class="math inline">\(\lambda\)</span> for the requested df directly. In <code>pygam</code> you set <span class="math inline">\(\lambda\)</span> (<code>lam</code>) explicitly or use <code>ISLP.pygam.approx_lam</code> to translate a desired df into a <span class="math inline">\(\lambda\)</span>.</p>
+</section>
+<section id="try-it-yourself-exercises-1519" class="slide level2 smaller">
+<h2>Try it yourself — Exercises 15–19</h2>
+<p>From the <a href="../Ch07-nonlin-lab.html">Ch07 handout</a>:</p>
+<ul>
+<li><strong>Exercise 15.</strong> Fit <code>LinearGAM(s_gam(0, lam=0.6))</code> on <code>age</code> → <code>wage</code> (reshape <code>age</code> to a 2-D feature matrix).</li>
+<li><strong>Exercise 16.</strong> Loop <code>lam</code> over <code>np.logspace(-2, 6, 5)</code> and plot each resulting fit.</li>
+<li><strong>Exercise 17.</strong> Reproduce the loop and add a grid-search-optimal fit via <code>.gridsearch(X_age, y)</code> on top.</li>
+<li><strong>Exercise 18.</strong> Use <code>approx_lam()</code> to find a <code>lam</code> giving ≈ 4 effective degrees of freedom; verify with <code>degrees_of_freedom()</code>.</li>
+<li><strong>Exercise 19.</strong> Loop <code>df ∈ {1, 3, 4, 8, 15}</code> (passing <code>df + 1</code> to <code>approx_lam</code> for the intercept), refit, plot.</li>
+</ul>
 </section></section>
 <section>
 <section id="local-regression" class="title-slide slide level1 center">
@@ -601,7 +644,7 @@ dtype: float64</code></pre>
 <ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Python</a></li><li><a href="#tabset-6-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-6-1">
-<div id="e978fa68" class="cell" data-execution_count="6">
+<div id="c6fb61ce" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>lowess <span class="op">=</span> sm.nonparametric.lowess</span>
 <span id="cb13-2"><a></a>age_grid <span class="op">=</span> np.linspace(Wage[<span class="st">'age'</span>].<span class="bu">min</span>(), Wage[<span class="st">'age'</span>].<span class="bu">max</span>(), <span class="dv">100</span>)</span>
 <span id="cb13-3"><a></a>fitted <span class="op">=</span> lowess(Wage[<span class="st">'wage'</span>], Wage[<span class="st">'age'</span>], frac<span class="op">=</span><span class="fl">0.3</span>, xvals<span class="op">=</span>age_grid)</span>
@@ -618,6 +661,13 @@ dtype: float64</code></pre>
 </div>
 </div>
 <p><code>statsmodels.lowess</code> and R’s <code>loess</code> use slightly different defaults (degree, weighting, robustness) but produce qualitatively similar fits.</p>
+</section>
+<section id="try-it-yourself-exercise-32" class="slide level2">
+<h2>Try it yourself — Exercise 32</h2>
+<p>From the <a href="../Ch07-nonlin-lab.html">Ch07 handout</a>:</p>
+<ul>
+<li><strong>Exercise 32.</strong> Use <code>sm.nonparametric.lowess</code> to fit local linear regression models with spans of 0.2 and 0.5; plot them together. Note <code>pygam</code> does not support local-regression terms inside a GAM.</li>
+</ul>
 </section></section>
 <section>
 <section id="generalized-additive-models-gams" class="title-slide slide level1 center">
@@ -653,7 +703,7 @@ dtype: float64</code></pre>
 <ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Python</a></li><li><a href="#tabset-7-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-7-1">
-<div id="3987f964" class="cell" data-execution_count="7">
+<div id="a25d00aa" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam, LinearGAM</span>
 <span id="cb16-2"><a></a>X <span class="op">=</span> np.column_stack([</span>
 <span id="cb16-3"><a></a>    Wage[<span class="st">'age'</span>],</span>
@@ -687,7 +737,7 @@ dtype: float64</code></pre>
 <ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">Python</a></li><li><a href="#tabset-8-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-8-1">
-<div id="f614b038" class="cell" data-execution_count="8">
+<div id="00b307cb" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> plot <span class="im">as</span> plot_gam</span>
 <span id="cb19-2"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
 <span id="cb19-3"><a></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">6</span>, <span class="dv">4</span>))</span>
@@ -717,7 +767,7 @@ dtype: float64</code></pre>
 <ul id="tabset-9" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-9-1">Python</a></li><li><a href="#tabset-9-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-9-1">
-<div id="d0bf1e6a" class="cell" data-execution_count="9">
+<div id="4f0d3b41" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a></a><span class="im">from</span> ISLP.pygam <span class="im">import</span> anova <span class="im">as</span> anova_gam</span>
 <span id="cb21-2"><a></a>gam_no_year <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
 <span id="cb21-3"><a></a>gam_lin_yr <span class="op">=</span> LinearGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>)).fit(X, Wage[<span class="st">'wage'</span>])</span>
@@ -801,7 +851,7 @@ dtype: float64</code></pre>
 <ul id="tabset-10" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-10-1">Python</a></li><li><a href="#tabset-10-2">R</a></li></ul>
 <div class="tab-content">
 <div id="tabset-10-1">
-<div id="85432a2c" class="cell" data-execution_count="10">
+<div id="be2fba1e" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a></a><span class="im">from</span> pygam <span class="im">import</span> LogisticGAM, s <span class="im">as</span> s_gam, f <span class="im">as</span> f_gam</span>
 <span id="cb23-2"><a></a>high_earn <span class="op">=</span> (Wage[<span class="st">'wage'</span>] <span class="op">&gt;</span> <span class="dv">250</span>).astype(<span class="bu">int</span>)</span>
 <span id="cb23-3"><a></a>gam_logit <span class="op">=</span> LogisticGAM(s_gam(<span class="dv">0</span>) <span class="op">+</span> s_gam(<span class="dv">1</span>, n_splines<span class="op">=</span><span class="dv">7</span>) <span class="op">+</span> f_gam(<span class="dv">2</span>, lam<span class="op">=</span><span class="dv">0</span>))</span>
@@ -822,6 +872,24 @@ dtype: float64</code></pre>
 </div>
 </div>
 </div>
+</section>
+<section id="try-it-yourself-exercises-2031" class="slide level2 smaller scrollable">
+<h2>Try it yourself — Exercises 20–31</h2>
+<p>From the <a href="../Ch07-nonlin-lab.html">Ch07 handout</a>:</p>
+<ul>
+<li><strong>Exercise 20.</strong> Build a GAM “by hand”: <code>NaturalSpline(df=4)</code> for <code>age</code>, <code>df=5</code> for <code>year</code>, dummies for <code>education</code>; stack and fit OLS.</li>
+<li><strong>Exercise 21.</strong> Construct a partial-dependence plot for <code>age</code> from the by-hand GAM.</li>
+<li><strong>Exercise 22.</strong> Do the same for <code>year</code>.</li>
+<li><strong>Exercise 23.</strong> Fit the same model with smoothing splines via <code>pygam</code>: <code>LinearGAM(s_gam(0) + s_gam(1, n_splines=7) + f_gam(2, lam=0))</code>; plot the age partial dependence.</li>
+<li><strong>Exercise 24.</strong> Re-tune <code>gam_full</code> so <code>age</code> and <code>year</code> each have ≈ 4 df via <code>approx_lam(..., df=4+1)</code>; re-plot.</li>
+<li><strong>Exercise 25.</strong> Plot the partial dependence for <code>education</code> (categorical term).</li>
+<li><strong>Exercise 26.</strong> ANOVA across three GAMs in <code>year</code>: excluded vs.&nbsp;linear vs.&nbsp;smooth. What do you conclude?</li>
+<li><strong>Exercise 27.</strong> Repeat the ANOVA for <code>age</code>.</li>
+<li><strong>Exercise 28.</strong> Print <code>gam_full.summary()</code> and call <code>gam_full.predict()</code> on the training set.</li>
+<li><strong>Exercise 29.</strong> Fit a logistic GAM for <code>high_earn</code> (i.e.&nbsp;<code>wage &gt; 250</code>); plot the <code>education</code> partial dependence.</li>
+<li><strong>Exercise 30.</strong> Crosstab <code>high_earn</code> against <code>education</code> — what do you see?</li>
+<li><strong>Exercise 31.</strong> Refit the logistic GAM excluding the “&lt; HS Grad” category; plot partial dependence for <code>education</code>, <code>year</code>, <code>age</code>.</li>
+</ul>
 </section></section>
 <section>
 <section id="summary" class="title-slide slide level1 center">
