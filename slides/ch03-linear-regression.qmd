@@ -179,16 +179,16 @@ coef(fit_full)
 
 ## Matrix form
 
-Stack the $p + 1$ coefficients into $\bm\beta$, the design matrix into
+Stack the $p + 1$ coefficients into $\boldsymbol{\beta}$, the design matrix into
 $\mathbf X$ (with a column of ones for the intercept), and the responses into
 $\mathbf y$:
 
-$$\mathbf y = \mathbf X \bm\beta + \bm\varepsilon$$
+$$\mathbf y = \mathbf X \boldsymbol{\beta} + \boldsymbol{\varepsilon}$$
 
 The OLS estimator solves the normal equations
-$\mathbf X^\top \mathbf X \, \hat{\bm\beta} = \mathbf X^\top \mathbf y$:
+$\mathbf X^\top \mathbf X \, \hat{\boldsymbol{\beta}} = \mathbf X^\top \mathbf y$:
 
-$$\hat{\bm\beta} = (\mathbf X^\top \mathbf X)^{-1}\mathbf X^\top \mathbf y$$
+$$\hat{\boldsymbol{\beta}} = (\mathbf X^\top \mathbf X)^{-1}\mathbf X^\top \mathbf y$$
 
 assuming $\mathbf X^\top \mathbf X$ is invertible (no perfect collinearity).
 
@@ -251,7 +251,6 @@ reference. Each coefficient is the contrast against that baseline.
 ### Python
 
 ```python
-import statsmodels.api as sm
 credit = pd.read_csv("https://www.statlearning.com/s/Credit.csv", index_col=0)
 fit_eth = smf.ols("Balance ~ C(Ethnicity)", data=credit).fit()
 fit_eth.params
@@ -310,6 +309,24 @@ $$Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \cdots + \beta_d X^d + \varepsilon$$
 
 This is still *linear in the parameters*, so standard OLS theory applies.
 (More flexible non-linear approaches come in Chapter 7.)
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+fit_poly = smf.ols("sales ~ TV + I(TV**2)", data=ad).fit()
+fit_poly.params
+```
+
+### R
+
+```r
+fit_poly <- lm(sales ~ TV + I(TV^2), data = ad)
+coef(fit_poly)
+```
+
+:::
 
 # Diagnosing Problems
 
@@ -384,6 +401,7 @@ flags it; rule of thumb is to be wary of $\text{VIF} > 5$ (or $> 10$).
 ### Python
 
 ```python
+import statsmodels.api as sm
 from statsmodels.stats.outliers_influence import variance_inflation_factor
 X = sm.add_constant(credit[["Limit", "Rating", "Age"]])
 [variance_inflation_factor(X.values, i) for i in range(1, X.shape[1])]
