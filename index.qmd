@@ -1,0 +1,55 @@
+---
+title: "ISLP Labs"
+---
+
+A Quarto website that hosts handouts for the labs in
+*[An Introduction to Statistical Learning with Applications in Python](https://www.statlearning.com)*
+(ISLP), starting with **Chapter 7 — Non-Linear Modeling**. The handouts
+re-organize each lab as a sequence of exercises with hide-able
+solutions, so that students can attempt the steps themselves before
+revealing the worked code.
+
+The lab content is adapted with permission from the source available at
+<https://www.statlearning.com>, and tracks the upstream
+[`intro-stat-learning/ISLP_labs`](https://github.com/intro-stat-learning/ISLP_labs)
+repository.
+
+## Available handouts
+
+- [Chapter 7 — Non-Linear Modeling](Ch07-nonlin-lab.qmd)
+
+## R alternative
+
+Students who prefer to work in R may follow the corresponding chapter of
+Emil Hvitfeldt's [ISLR tidymodels labs](https://emilhvitfeldt.github.io/ISLR-tidymodels-labs/07-moving-beyond-linearity.html).
+
+## Original labs
+
+The full set of original ISLP labs (Chapters 2–13) is available as
+Jupyter notebooks in the
+[`intro-stat-learning/ISLP_labs`](https://github.com/intro-stat-learning/ISLP_labs)
+repository.
+
+## Building the handouts
+
+Two parallel renders of the website are produced — a **student
+worksheet** (prompts only) and a **solution key** (solutions only) —
+each written to its own subdirectory of `_site/`. The exercise/solution
+toggling is provided by the
+[coatless-quarto/assign](https://github.com/coatless-quarto/assign)
+Quarto extension.
+
+Render the solution key (the default profile):
+
+```bash
+quarto render
+```
+
+Render the student worksheet:
+
+```bash
+quarto render --profile assign
+```
+
+The published GitHub Pages site combines both — its top-level
+`index.html` links to `assign/` and `solution/`.

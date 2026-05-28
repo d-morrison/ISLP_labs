@@ -1,0 +1,44 @@
+name: Publish website
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      TZ: America/Los_Angeles
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Render (solution)
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          args: --profile solution
+
+      - name: Render (assign)
+        uses: quarto-dev/quarto-actions/render@v2
+        with:
+          args: --profile assign
+
+      - name: Create landing page
+        run: bash .github/scripts/create-landing-page.sh
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: _site
+          branch: gh-pages
+          clean-exclude: pr-preview/
+          force: false
