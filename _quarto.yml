@@ -24,6 +24,8 @@ execute:
 
 filters:
   - assign
+  - d-morrison/div-anchors
+  - d-morrison/equation-anchors
 
 website:
   title: "ISLP Labs"
@@ -71,6 +73,10 @@ format:
     fig-cap-location: top
     html-math-method: mathjax
     df-print: paged
+    filters:
+      - coatless-quarto/custom-callout
+      # Uncomment once callouty-theorem is installed (quarto add sun123zxy/callouty-theorem):
+      # - sun123zxy/callouty-theorem
   revealjs:
     # Per-document `output-file:` overrides in each .qmd disambiguate the
     # revealjs `.html` from the primary html format (both target `.html`
@@ -87,6 +93,10 @@ format:
     smaller: true
     progress: true
     transition: slide
+    filters:
+      - coatless-quarto/custom-callout
+      # Uncomment once callouty-theorem is installed (quarto add sun123zxy/callouty-theorem):
+      # - sun123zxy/callouty-theorem
   pdf:
     pdf-engine: lualatex
     geometry:

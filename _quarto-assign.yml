@@ -4,7 +4,9 @@ project:
 website:
   title: "ISLP Labs — Student Worksheet"
 
-# Student worksheet is HTML-only — the PDF and revealjs versions
-# are scoped to the solution-key profile to halve CI render work.
+# Expresses intent: assign profile should be HTML-only.
+# Note: per-document format: blocks (e.g. Ch07-nonlin-lab.qmd) take
+# precedence over this profile-level setting in Quarto's deep-merge,
+# so documents with an explicit format: block still render all formats.
 format:
   html: default
