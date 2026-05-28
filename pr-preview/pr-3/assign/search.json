@@ -46,7 +46,7 @@
     "href": "Ch07-nonlin-lab-slides.html#setup",
     "title": "Non-Linear Modeling",
     "section": "Setup",
-    "text": "Setup\nAs usual, we start with some of our standard imports.\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package."
+    "text": "Setup\nAs usual, we start with some of our standard imports.\n\nimport numpy as np, pandas as pd\nfrom matplotlib.pyplot import subplots\nimport statsmodels.api as sm\nfrom ISLP import load_data\nfrom ISLP.models import (summarize,\n                         poly,\n                         ModelSpec as MS)\nfrom statsmodels.stats.anova import anova_lm\n\nWe again collect the new imports needed for this lab. Many of these are developed specifically for the ISLP package.\n\nfrom pygam import (s as s_gam,\n                   l as l_gam,\n                   f as f_gam,\n                   LinearGAM,\n                   LogisticGAM)\n\nfrom ISLP.transforms import (BSpline,\n                             NaturalSpline)\nfrom ISLP.models import bs, ns\nfrom ISLP.pygam import (approx_lam,\n                        degrees_of_freedom,\n                        plot as plot_gam,\n                        anova as anova_gam)"
   },
   {
     "objectID": "Ch07-nonlin-lab-slides.html#polynomial-regression-and-step-functions",
