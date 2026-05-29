@@ -1,0 +1,469 @@
+---
+title: "Chapter 3 — Linear Regression"
+subtitle: "Introduction to Statistical Learning, 2nd ed."
+format:
+  html: default
+  revealjs:
+    output-file: ch03-linear-regression-slides.html
+---
+
+# Overview
+
+## What we will cover
+
+- Simple linear regression: one predictor, point and interval estimates
+- Multiple linear regression: many predictors at once, the F-statistic
+- Qualitative predictors via dummy encoding
+- Two useful extensions: interactions and polynomial terms
+- Diagnosing problems: non-linearity, non-constant variance, collinearity, outliers, leverage
+- Linear regression vs. KNN regression
+
+## A motivating data set
+
+The `Advertising` data set records sales of a single product (units in
+thousands) alongside three media-spend predictors (in thousands of dollars).
+We'll use it to make every concept concrete.
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+import pandas as pd
+ad = pd.read_csv(
+    "https://www.statlearning.com/s/Advertising.csv",
+    index_col=0,
+)
+ad.head()
+```
+
+### R
+
+```r
+ad <- read.csv("https://www.statlearning.com/s/Advertising.csv")[, -1]
+head(ad)
+```
+
+:::
+
+# Simple Linear Regression
+
+## The model
+
+One quantitative predictor $X$, one quantitative response $Y$:
+
+$$Y = \beta_0 + \beta_1 X + \varepsilon$$
+
+- $\beta_0$ — intercept (mean of $Y$ when $X = 0$)
+- $\beta_1$ — slope (expected change in $Y$ per unit change in $X$)
+- $\varepsilon$ — mean-zero error, independent of $X$, often assumed $N(0, \sigma^2)$
+
+Goal: estimate $\beta_0, \beta_1$ from a sample and reason about their
+uncertainty.
+
+## Least squares estimation
+
+Pick $(\hat\beta_0, \hat\beta_1)$ to minimise the residual sum of squares:
+
+$$\text{RSS} = \sum_{i=1}^n \bigl(y_i - \hat\beta_0 - \hat\beta_1 x_i\bigr)^2$$
+
+Closed-form solutions:
+
+$$\hat\beta_1 = \frac{\sum (x_i - \bar x)(y_i - \bar y)}{\sum (x_i - \bar x)^2}, \qquad
+  \hat\beta_0 = \bar y - \hat\beta_1 \bar x$$
+
+## Fitting `sales ~ TV`
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+import statsmodels.formula.api as smf
+fit_tv = smf.ols("sales ~ TV", data=ad).fit()
+fit_tv.params         # coefficient estimates
+fit_tv.bse            # standard errors
+```
+
+### R
+
+```r
+fit_tv <- lm(sales ~ TV, data = ad)
+coef(fit_tv)
+summary(fit_tv)$coefficients[, "Std. Error"]
+```
+
+:::
+
+## Uncertainty in the coefficients
+
+Each $\hat\beta_j$ is a random variable. Its standard error decreases with
+sample size and with predictor spread; it increases with residual variance:
+
+$$\widehat{\text{SE}}(\hat\beta_1) = \sqrt{\dfrac{\hat\sigma^2}{\sum (x_i - \bar x)^2}},\qquad
+  \hat\sigma^2 = \frac{\text{RSS}}{n - 2}$$
+
+The $(1 - \alpha)$ confidence interval is
+
+$$\hat\beta_1 \pm t_{n-2, \, 1 - \alpha/2} \cdot \widehat{\text{SE}}(\hat\beta_1).$$
+
+## Testing for no association
+
+Under $H_0:\beta_1 = 0$, the studentised slope follows a $t_{n-2}$ distribution:
+
+$$t = \frac{\hat\beta_1}{\widehat{\text{SE}}(\hat\beta_1)} \;\sim\; t_{n-2}$$
+
+A small $p$-value is evidence that `TV` spend and `sales` are associated.
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+print(fit_tv.summary().tables[1])
+```
+
+### R
+
+```r
+summary(fit_tv)$coefficients
+```
+
+:::
+
+## Goodness of fit
+
+**Residual standard error** measures typical deviation between $Y$ and $\hat Y$:
+
+$$\text{RSE} = \sqrt{\text{RSS} / (n - 2)}$$
+
+**$R^2$** is the fraction of variability in $Y$ explained by the model:
+
+$$R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}, \qquad
+  \text{TSS} = \sum (y_i - \bar y)^2$$
+
+In simple linear regression $R^2$ equals the squared correlation $\text{Cor}(X, Y)^2$.
+
+# Multiple Linear Regression
+
+## The general model
+
+With $p$ predictors:
+
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p + \varepsilon$$
+
+Coefficient $\beta_j$ is the expected change in $Y$ per unit change in $X_j$,
+**holding all other predictors fixed**. That conditional-on-the-others
+interpretation is the whole reason to use a multiple regression rather than
+fitting each predictor alone.
+
+## Fitting `sales ~ TV + radio + newspaper`
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+fit_full = smf.ols("sales ~ TV + radio + newspaper", data=ad).fit()
+fit_full.params
+```
+
+### R
+
+```r
+fit_full <- lm(sales ~ TV + radio + newspaper, data = ad)
+coef(fit_full)
+```
+
+:::
+
+## Matrix form
+
+Stack the $p + 1$ coefficients into $\boldsymbol{\beta}$, the design matrix into
+$\mathbf X$ (with a column of ones for the intercept), and the responses into
+$\mathbf y$:
+
+$$\mathbf y = \mathbf X \boldsymbol{\beta} + \boldsymbol{\varepsilon}$$
+
+The OLS estimator solves the normal equations
+$\mathbf X^\top \mathbf X \, \hat{\boldsymbol{\beta}} = \mathbf X^\top \mathbf y$:
+
+$$\hat{\boldsymbol{\beta}} = (\mathbf X^\top \mathbf X)^{-1}\mathbf X^\top \mathbf y$$
+
+assuming $\mathbf X^\top \mathbf X$ is invertible (no perfect collinearity).
+
+## Is *any* predictor useful?
+
+Test $H_0:\beta_1 = \cdots = \beta_p = 0$ with the **F-statistic**:
+
+$$F = \frac{(\text{TSS} - \text{RSS})/p}{\text{RSS}/(n - p - 1)} \;\sim\; F_{p, \, n - p - 1}$$
+
+A large $F$ (and small $p$-value) says at least one predictor is associated
+with $Y$. The individual $t$-tests on each $\hat\beta_j$ then ask which ones.
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+print(fit_full.summary().tables[0])    # F-statistic + p-value
+```
+
+### R
+
+```r
+summary(fit_full)$fstatistic
+```
+
+:::
+
+## Selecting which predictors to include
+
+With $p$ candidates there are $2^p$ subsets — too many to try when $p$ grows.
+Practical strategies for small to moderate $p$:
+
+- **Forward selection** — start empty, add the predictor that most reduces RSS, repeat.
+- **Backward selection** — start with all, drop the predictor with the largest $p$-value, repeat.
+- **Mixed / stepwise** — alternate forward and backward steps.
+
+For large $p$, use the shrinkage and dimension-reduction methods of Chapter 6
+(ridge, lasso, PCR, PLS) instead.
+
+# Qualitative Predictors
+
+## Two-level factor
+
+For a binary predictor (e.g., own/rent) use one dummy:
+
+$$x_i = \begin{cases} 1 & \text{own} \\ 0 & \text{rent} \end{cases}$$
+
+so $\beta_0$ is the rent-group mean and $\beta_0 + \beta_1$ is the own-group
+mean. The choice of reference level affects the *sign* of $\hat\beta_1$ but
+not its $p$-value or the fitted values.
+
+## Three-or-more-level factor
+
+For a factor with $k$ levels create $k - 1$ dummies, leaving one as the
+reference. Each coefficient is the contrast against that baseline.
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+credit = pd.read_csv("https://www.statlearning.com/s/Credit.csv", index_col=0)
+fit_eth = smf.ols("Balance ~ C(Ethnicity)", data=credit).fit()
+fit_eth.params
+```
+
+### R
+
+```r
+credit <- read.csv("https://www.statlearning.com/s/Credit.csv")[, -1]
+fit_eth <- lm(Balance ~ Ethnicity, data = credit)
+coef(fit_eth)
+```
+
+:::
+
+# Extensions of the Linear Model
+
+## Interactions
+
+If the effect of $X_1$ on $Y$ depends on the value of $X_2$, add a product term:
+
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2 + \varepsilon$$
+
+The conditional slope of $Y$ in $X_1$ becomes $\beta_1 + \beta_3 X_2$ — it
+shifts with $X_2$. *Hierarchy principle*: keep the main effects whenever an
+interaction is in the model, even if their individual $p$-values are large.
+
+## Fitting an interaction
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+fit_int = smf.ols("sales ~ TV * radio", data=ad).fit()
+fit_int.params
+```
+
+### R
+
+```r
+fit_int <- lm(sales ~ TV * radio, data = ad)
+coef(fit_int)
+```
+
+:::
+
+In both languages `TV * radio` expands to `TV + radio + TV:radio`.
+
+## Polynomial regression
+
+A simple way to fit a non-linear function of one predictor is to add powers of
+it:
+
+$$Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \cdots + \beta_d X^d + \varepsilon$$
+
+This is still *linear in the parameters*, so standard OLS theory applies.
+(More flexible non-linear approaches come in Chapter 7.)
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+fit_poly = smf.ols("sales ~ TV + I(TV**2)", data=ad).fit()
+fit_poly.params
+```
+
+### R
+
+```r
+fit_poly <- lm(sales ~ TV + I(TV^2), data = ad)
+coef(fit_poly)
+```
+
+:::
+
+# Diagnosing Problems
+
+## 1. Non-linearity of the response–predictor relationship
+
+The straight-line assumption is wrong when a residuals-vs-fitted plot shows a
+systematic curve. Fixes: transform a predictor (log, square root), add a
+polynomial term, or move to a non-linear method.
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+import matplotlib.pyplot as plt
+plt.scatter(fit_full.fittedvalues, fit_full.resid, alpha=0.5)
+plt.axhline(0, ls="--", lw=1)
+plt.xlabel("Fitted value"); plt.ylabel("Residual")
+```
+
+### R
+
+```r
+plot(fit_full, which = 1)
+```
+
+:::
+
+## 2. Non-constant variance (heteroscedasticity)
+
+If the residual spread grows or shrinks with the fitted value, OLS standard
+errors are wrong (typically too small). Common remedies: log-transform $Y$,
+use weighted least squares, or use a sandwich (HC) standard-error estimator.
+
+## 3. Correlation of error terms
+
+Time-ordered or clustered data often have correlated residuals (today's error
+predicts tomorrow's). Confidence intervals shrink artificially. Address with
+specific models for autocorrelation (e.g. ARIMA, GLS with an AR(1) structure)
+or with cluster-robust standard errors.
+
+## 4. Outliers
+
+An *outlier* has a large standardised residual — $|r_i| > 3$ is a common
+flag. Outliers inflate the RSE (and hence shrink $R^2$). Investigate before
+deleting: a data-entry error is genuine cleanup, a real observation is data.
+
+## 5. High-leverage observations
+
+A *high-leverage* point has an extreme combination of predictor values
+($X$-space outlier). Influence on the fit grows with the *leverage*
+
+$$h_i = \mathbf x_i^\top (\mathbf X^\top \mathbf X)^{-1} \mathbf x_i,
+  \qquad 0 \le h_i \le 1, \quad \bar h = (p + 1)/n.$$
+
+Values much larger than $\bar h$ deserve a closer look.
+
+## 6. Collinearity
+
+When two (or more) predictors carry nearly the same information,
+$\mathbf X^\top \mathbf X$ becomes ill-conditioned: coefficients flip sign,
+standard errors explode, and individual $t$-tests become uninformative.
+
+The **variance inflation factor**
+
+$$\text{VIF}(\hat\beta_j) = \frac{1}{1 - R^2_{X_j \mid X_{-j}}}$$
+
+flags it; rule of thumb is to be wary of $\text{VIF} > 5$ (or $> 10$).
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+import statsmodels.api as sm
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+X = sm.add_constant(credit[["Limit", "Rating", "Age"]])
+[variance_inflation_factor(X.values, i) for i in range(1, X.shape[1])]
+```
+
+### R
+
+```r
+library(car)
+fit_credit <- lm(Balance ~ Limit + Rating + Age, data = credit)
+vif(fit_credit)
+```
+
+:::
+
+# Linear Regression vs. KNN Regression
+
+## KNN regression in a nutshell
+
+For a test point $x_0$, find the $K$ closest training points and average their
+$Y$ values:
+
+$$\hat f(x_0) = \frac{1}{K} \sum_{i \in \mathcal N_0(x_0)} y_i$$
+
+Parametric (linear) vs. non-parametric (KNN) trade-off:
+
+- If the true $f$ is nearly linear, linear regression wins — lower variance,
+  no curse of dimensionality.
+- If $f$ is strongly non-linear and $n$ is large, KNN can win — at the cost of
+  much-reduced interpretability.
+
+## The curse of dimensionality
+
+KNN's nearest "neighbours" become far away once $p$ is large: in $\mathbb R^p$
+the volume of a ball of radius $r$ shrinks relative to the volume of the
+predictor space, so to get $K$ truly local observations you need a sample size
+that grows exponentially in $p$. Linear regression sidesteps the issue by
+imposing structure.
+
+# Summary
+
+## Key takeaways
+
+1. Linear regression estimates $\beta_0, \ldots, \beta_p$ by minimising RSS,
+   with closed-form solutions and an exact $F$-distribution for the omnibus
+   test under normal errors.
+2. Coefficient interpretation in multiple regression is *conditional on the
+   other predictors* — not the same as the simple-regression slope.
+3. Qualitative predictors enter via $k - 1$ dummies against a reference level.
+4. Interactions and polynomial terms expand the model class while keeping OLS
+   theory intact (linear in the parameters).
+5. Always inspect residual, leverage, and collinearity diagnostics before
+   trusting the fit.
+6. Linear regression and KNN sit at opposite ends of the
+   flexibility-interpretability trade-off; the right choice depends on $n$,
+   $p$, and how non-linear $f$ is.
+
+## What's next
+
+- **Chapter 4** — Classification: logistic regression, LDA, QDA, naïve Bayes.
+- **Chapter 5** — Resampling: cross-validation and the bootstrap, used to
+  honestly estimate test error and standard errors when the parametric
+  formulas are not available.
+- **Chapter 6** — Selecting predictors when $p$ is large: subset selection,
+  ridge, lasso, PCR, and PLS.

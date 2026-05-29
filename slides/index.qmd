@@ -1,0 +1,32 @@
+---
+title: "ISL slide decks"
+format:
+  html: default
+---
+
+This section contains Quarto-revealjs slide decks adapted from the official PDF
+slide decks at
+[statlearning.com → resources for Python](https://www.statlearning.com/resources-python),
+reproduced here with permission from the authors (James, Witten, Hastie,
+Tibshirani).
+
+Each chapter deck follows the **Python ↔ R tabset** pattern: every code example
+appears side-by-side in Python (using the
+[ISLP](https://islp.readthedocs.io/en/latest/) package) and R (using
+[ISLR2](https://cran.r-project.org/package=ISLR2)), so readers can follow along
+in either language.
+
+## Available decks
+
+| Chapter | Title | Formats |
+|---------|-------|---------|
+| 2 | Statistical Learning | [HTML](ch02-statistical-learning.qmd) · [Slides](ch02-statistical-learning-slides.html) |
+| 3 | Linear Regression | [HTML](ch03-linear-regression.qmd) · [Slides](ch03-linear-regression-slides.html) |
+| 7 | Moving Beyond Linearity | [HTML](ch07-moving-beyond-linearity.qmd) · [Slides](ch07-moving-beyond-linearity-slides.html) |
+
+*More chapters to follow.*
+
+## Template
+
+See [template.qmd](template.qmd) for the Python/R tabset pattern and
+revealjs front matter that chapter decks follow.

@@ -1,0 +1,326 @@
+---
+title: "Chapter 2 — Statistical Learning"
+subtitle: "Introduction to Statistical Learning, 2nd ed."
+format:
+  html: default
+  revealjs:
+    output-file: ch02-statistical-learning-slides.html
+---
+
+# Overview
+
+## What we will cover
+
+- What is statistical learning?
+- Why and how do we estimate $f$?
+- Trade-offs: prediction vs. inference, flexibility vs. interpretability
+- Measuring model accuracy: MSE, bias-variance decomposition
+- The classification setting: Bayes classifier, KNN
+
+## Data sets used in this chapter
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+from ISLP import load_data
+Wage = load_data('Wage')
+Smarket = load_data('Smarket')
+NCI60 = load_data('NCI60')
+```
+
+### R
+
+```r
+library(ISLR2)
+# Wage, Smarket, NCI60 are loaded automatically
+head(Wage)
+```
+
+:::
+
+# What Is Statistical Learning?
+
+## Three motivating examples
+
+| Data set | Input $X$ | Output $Y$ | Goal |
+|----------|-----------|------------|------|
+| Wage | age, year, education | wage | predict / understand wage drivers |
+| Stock market | yesterday's returns, volume | up / down | classify tomorrow's direction |
+| NCI60 gene expression | 6,830 gene measurements | cancer type | group cancer types (unsupervised) |
+
+## Wages vs. age, year, education
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+import matplotlib.pyplot as plt
+fig, axes = plt.subplots(1, 3, figsize=(12, 4))
+Wage.plot.scatter('age',  'wage', alpha=0.3, ax=axes[0])
+Wage.plot.scatter('year', 'wage', alpha=0.3, ax=axes[1])
+edu_levels = Wage['education'].cat.categories
+axes[2].boxplot(
+    [Wage.loc[Wage['education'] == e, 'wage'] for e in edu_levels],
+    tick_labels=edu_levels,  # matplotlib ≥3.9; was `labels=` before
+)
+axes[2].set_xlabel('Education'); axes[2].set_ylabel('Wage')
+axes[2].tick_params(axis='x', rotation=45)
+plt.tight_layout()
+```
+
+### R
+
+```r
+par(mfrow = c(1, 3))
+plot(Wage$age,       Wage$wage, col = "grey", pch = 20, xlab = "Age",       ylab = "Wage")
+plot(Wage$year,      Wage$wage, col = "grey", pch = 20, xlab = "Year",      ylab = "Wage")
+plot(Wage$education, Wage$wage, col = "grey", pch = 20, xlab = "Education", ylab = "Wage")
+```
+
+:::
+
+## The general setup
+
+We observe a response $Y$ and $p$ predictors $X = (X_1, \ldots, X_p)$.
+
+We assume:
+
+$$Y = f(X) + \varepsilon$$
+
+- $f$ is a fixed but unknown function of $X_1, \ldots, X_p$
+- $\varepsilon$ is a random error term, independent of $X$, with $E[\varepsilon] = 0$
+
+Statistical learning is a collection of approaches for estimating $f$.
+
+## Prediction vs. inference
+
+**Prediction** — we treat $f$ as a black box.
+
+$$\hat{Y} = \hat{f}(X)$$
+
+We care about accuracy, not the form of $\hat{f}$.
+
+**Inference** — we want to understand how $Y$ changes with $X$.
+
+- Which predictors are associated with the response?
+- What is the direction and magnitude of each association?
+- Can the relationship be summarised as linear, or is it more complex?
+
+# Estimating $f$
+
+## Parametric methods
+
+1. Assume a functional form for $f$, e.g., the linear model:
+   $$f(X) = \beta_0 + \beta_1 X_1 + \cdots + \beta_p X_p$$
+2. Use training data to fit (estimate) the parameters $\beta_0, \ldots, \beta_p$.
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+from sklearn.linear_model import LinearRegression
+import pandas as pd
+
+X = pd.get_dummies(Wage[['age', 'year', 'education']], drop_first=True)
+y = Wage['wage']
+
+lm = LinearRegression().fit(X, y)
+print(lm.coef_)
+```
+
+### R
+
+```r
+fit <- lm(wage ~ age + year + education, data = Wage)
+summary(fit)
+```
+
+:::
+
+## Non-parametric methods
+
+No explicit assumption about the form of $f$; seek an estimate that fits the
+data points as closely as possible without being too rough or wiggly.
+
+**Advantage** — can fit a wider range of shapes for $f$.
+
+**Disadvantage** — require many observations; harder to interpret.
+
+## The flexibility–interpretability trade-off
+
+More flexible models can fit more complex $f$, but are:
+
+- harder to interpret (less useful for inference)
+- more prone to *overfitting* (poor test performance)
+
+Less flexible models are more interpretable and often more accurate when the
+true $f$ is nearly linear.
+
+# Assessing Model Accuracy
+
+## Training vs. test MSE
+
+**Training MSE** — computed on data used to fit the model:
+
+$$\text{MSE}_{\text{train}} = \frac{1}{n}\sum_{i=1}^{n}(y_i - \hat{f}(x_i))^2$$
+
+We really care about **test MSE** — how well does $\hat{f}$ predict *new*
+observations?
+
+## Computing test MSE with a hold-out set
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import mean_squared_error
+
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42)
+
+lm.fit(X_train, y_train)
+mse_test = mean_squared_error(y_test, lm.predict(X_test))
+print(f"Test MSE: {mse_test:.2f}")
+```
+
+### R
+
+```r
+set.seed(42)
+train_idx <- sample(nrow(Wage), 0.8 * nrow(Wage))
+fit_train  <- lm(wage ~ age + year + education, data = Wage[train_idx, ])
+pred_test  <- predict(fit_train, Wage[-train_idx, ])
+mse_test   <- mean((Wage$wage[-train_idx] - pred_test)^2)
+cat("Test MSE:", mse_test, "\n")
+```
+
+:::
+
+## The bias-variance trade-off
+
+For any $x_0$ and any $\hat{f}$:
+
+$$E\!\left[(y_0 - \hat{f}(x_0))^2\right]
+  = \underbrace{\operatorname{Var}(\hat{f}(x_0))}_{\text{variance}}
+  + \underbrace{\left[\operatorname{Bias}(\hat{f}(x_0))\right]^2}_{\text{bias}^2}
+  + \underbrace{\operatorname{Var}(\varepsilon)}_{\text{irreducible}}$$
+
+- **Variance** — how much $\hat{f}$ changes across different training sets
+- **Bias** — error from assuming a wrong functional form for $f$
+- **Irreducible error** — noise in $Y$; cannot be reduced by any model
+
+## Bias-variance in practice
+
+As model flexibility increases:
+
+| | Variance | Bias |
+|-|----------|------|
+| Very flexible | High ↑ | Low ↓ |
+| Very inflexible | Low ↓ | High ↑ |
+
+The test MSE is minimised at the *sweet spot* where variance and bias² together
+are smallest — the bias-variance trade-off.
+
+# The Classification Setting
+
+## Error rates
+
+The response $Y$ is now qualitative (a *class label*).
+
+**Training error rate**:
+
+$$\frac{1}{n}\sum_{i=1}^{n} \mathbf{1}(y_i \neq \hat{y}_i)$$
+
+We care about the **test error rate**: how often does the classifier
+misclassify a new observation?
+
+## The Bayes classifier
+
+Assigns each observation to the most probable class given the predictor values:
+
+$$\hat{Y} = \arg\max_j \Pr(Y = j \mid X = x_0)$$
+
+The resulting **Bayes error rate** (analogous to irreducible error) is:
+
+$$1 - E\!\left[\max_j \Pr(Y = j \mid X)\right]$$
+
+In practice the true conditional probabilities $\Pr(Y = j \mid X)$ are unknown.
+KNN estimates them from data.
+
+## K-Nearest Neighbours
+
+For a test point $x_0$, identify the $K$ closest training observations
+$\mathcal{N}_0$ and estimate:
+
+$$\Pr(Y = j \mid X = x_0) = \frac{1}{K}\sum_{i \in \mathcal{N}_0}\mathbf{1}(y_i = j)$$
+
+::: {.panel-tabset}
+
+### Python
+
+```python
+from sklearn.neighbors import KNeighborsClassifier
+
+# Example: predict stock market direction with KNN (K = 3)
+X_smarket = Smarket[['Lag1', 'Lag2']]
+y_smarket = Smarket['Direction']
+
+X_tr, X_te, y_tr, y_te = train_test_split(
+    X_smarket, y_smarket, test_size=0.2, random_state=0)
+
+knn = KNeighborsClassifier(n_neighbors=3).fit(X_tr, y_tr)
+print("Test accuracy:", knn.score(X_te, y_te).round(3))
+```
+
+### R
+
+```r
+library(class)
+set.seed(0)
+train_idx <- sample(nrow(Smarket), 0.8 * nrow(Smarket))
+
+knn_pred <- knn(
+  train = Smarket[train_idx,  c("Lag1", "Lag2")],
+  test  = Smarket[-train_idx, c("Lag1", "Lag2")],
+  cl    = Smarket$Direction[train_idx],
+  k     = 3
+)
+mean(knn_pred == Smarket$Direction[-train_idx])
+```
+
+:::
+
+## KNN: the role of $K$
+
+- **Small $K$** (e.g., $K = 1$) — very flexible; low bias, high variance (overfit)
+- **Large $K$** (e.g., $K = n$) — inflexible; high bias, low variance (underfit)
+- **Optimal $K$** — minimises test error; found by cross-validation (Chapter 5)
+
+KNN illustrates the bias-variance trade-off in the classification setting just as
+smoothing splines do in regression.
+
+# Summary
+
+## Key takeaways
+
+1. Statistical learning: estimating $f$ in $Y = f(X) + \varepsilon$.
+2. Choice of method depends on the goal (prediction vs. inference) and the form
+   of $f$.
+3. More flexible models reduce bias but increase variance — there is no free
+   lunch.
+4. We assess a model on **test** data, not training data.
+5. The Bayes classifier sets the lower bound on test error; KNN approximates it
+   when the true conditional probabilities are unknown.
+
+## What's next
+
+- **Chapter 3**: Linear regression — the simplest parametric approach.
+- **Chapter 4**: Classification — logistic regression, LDA, QDA.
+- **Chapter 5**: Cross-validation and the bootstrap — how to properly estimate
+  test error.
