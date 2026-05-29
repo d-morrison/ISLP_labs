@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-html/tabby.min.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/light-border.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-15634bcf2e68342d4ad2dfa704d543f6.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.js"></script>
+<link href="../site_libs/quarto-contrib/div-anchors-1.0.0/div-anchors.css" rel="stylesheet"><meta charset="utf-8">
+  <meta name="generator" content="quarto-1.9.38">
+
+  <title>ISLP Labs — Student Worksheet – Chapter 3 — Linear Regression</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reset.css">
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/reveal.css">
+  <style>
+    /* Default styles provided by pandoc.
+    ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+    */
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    ul.task-list{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+      vertical-align: middle;
+    }
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      { color: #003b4f; background-color: #f1f3f5; }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span { color: #003b4f; } /* Normal */
+    code span.al { color: #ad0000; } /* Alert */
+    code span.an { color: #5e5e5e; } /* Annotation */
+    code span.at { color: #657422; } /* Attribute */
+    code span.bn { color: #ad0000; } /* BaseN */
+    code span.bu { } /* BuiltIn */
+    code span.cf { color: #003b4f; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #20794d; } /* Char */
+    code span.cn { color: #8f5902; } /* Constant */
+    code span.co { color: #5e5e5e; } /* Comment */
+    code span.cv { color: #5e5e5e; font-style: italic; } /* CommentVar */
+    code span.do { color: #5e5e5e; font-style: italic; } /* Documentation */
+    code span.dt { color: #ad0000; } /* DataType */
+    code span.dv { color: #ad0000; } /* DecVal */
+    code span.er { color: #ad0000; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #ad0000; } /* Float */
+    code span.fu { color: #4758ab; } /* Function */
+    code span.im { color: #00769e; } /* Import */
+    code span.in { color: #5e5e5e; } /* Information */
+    code span.kw { color: #003b4f; font-weight: bold; } /* Keyword */
+    code span.op { color: #5e5e5e; } /* Operator */
+    code span.ot { color: #003b4f; } /* Other */
+    code span.pp { color: #ad0000; } /* Preprocessor */
+    code span.sc { color: #5e5e5e; } /* SpecialChar */
+    code span.ss { color: #20794d; } /* SpecialString */
+    code span.st { color: #20794d; } /* String */
+    code span.va { color: #111111; } /* Variable */
+    code span.vs { color: #20794d; } /* VerbatimString */
+    code span.wa { color: #5e5e5e; font-style: italic; } /* Warning */
+  </style>
+  <link rel="stylesheet" href="../site_libs/revealjs/dist/theme/quarto-0427d8d92a431aa6a6430e53ec02a470.css">
+  <link href="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.css" rel="stylesheet">
+  <link href="../site_libs/revealjs/plugin/quarto-support/footer.css" rel="stylesheet">
+  <style type="text/css">
+    .reveal div.sourceCode {
+      margin: 0;
+      overflow: auto;
+    }
+    .reveal div.hanging-indent {
+      margin-left: 1em;
+      text-indent: -1em;
+    }
+    .reveal .slide:not(.center) {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide.scrollable {
+      overflow-y: auto;
+    }
+    .reveal .footnotes {
+      height: 100%;
+      overflow-y: auto;
+    }
+    .reveal .slide .absolute {
+      position: absolute;
+      display: block;
+    }
+    .reveal .footnotes ol {
+      counter-reset: ol;
+      list-style-type: none; 
+      margin-left: 0;
+    }
+    .reveal .footnotes ol li:before {
+      counter-increment: ol;
+      content: counter(ol) ". "; 
+    }
+    .reveal .footnotes ol li > p:first-child {
+      display: inline-block;
+    }
+    .reveal .slide ul,
+    .reveal .slide ol {
+      margin-bottom: 0.5em;
+    }
+    .reveal .slide ul li,
+    .reveal .slide ol li {
+      margin-top: 0.4em;
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide ul[role="tablist"] li {
+      margin-bottom: 0;
+    }
+    .reveal .slide ul li > *:first-child,
+    .reveal .slide ol li > *:first-child {
+      margin-block-start: 0;
+    }
+    .reveal .slide ul li > *:last-child,
+    .reveal .slide ol li > *:last-child {
+      margin-block-end: 0;
+    }
+    .reveal .slide .columns:nth-child(3) {
+      margin-block-start: 0.8em;
+    }
+    .reveal blockquote {
+      box-shadow: none;
+    }
+    .reveal .tippy-content>* {
+      margin-top: 0.2em;
+      margin-bottom: 0.7em;
+    }
+    .reveal .tippy-content>*:last-child {
+      margin-bottom: 0.2em;
+    }
+    .reveal .slide > img.stretch.quarto-figure-center,
+    .reveal .slide > img.r-stretch.quarto-figure-center {
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-left,
+    .reveal .slide > img.r-stretch.quarto-figure-left  {
+      display: block;
+      margin-left: 0;
+      margin-right: auto; 
+    }
+    .reveal .slide > img.stretch.quarto-figure-right,
+    .reveal .slide > img.r-stretch.quarto-figure-right  {
+      display: block;
+      margin-left: auto;
+      margin-right: 0; 
+    }
+  </style>
+</head>
+<body class="quarto-light">
+  <div class="reveal">
+    <div class="slides">
+
+<section id="title-slide" class="quarto-title-block center">
+  <h1 class="title">Chapter 3 — Linear Regression</h1>
+  <p class="subtitle">Introduction to Statistical Learning, 2nd ed.</p>
+
+<div class="quarto-title-authors">
+</div>
+
+  <p class="date">Last modified: 2026-05-29</p>
+</section>
+<section>
+<section id="overview" class="title-slide slide level1 center">
+<h1>Overview</h1>
+
+</section>
+<section id="what-we-will-cover" class="slide level2">
+<h2>What we will cover</h2>
+<ul>
+<li>Simple linear regression: one predictor, point and interval estimates</li>
+<li>Multiple linear regression: many predictors at once, the F-statistic</li>
+<li>Qualitative predictors via dummy encoding</li>
+<li>Two useful extensions: interactions and polynomial terms</li>
+<li>Diagnosing problems: non-linearity, non-constant variance, collinearity, outliers, leverage</li>
+<li>Linear regression vs.&nbsp;KNN regression</li>
+</ul>
+</section>
+<section id="a-motivating-data-set" class="slide level2">
+<h2>A motivating data set</h2>
+<p>The <code>Advertising</code> data set records sales of a single product (units in thousands) alongside three media-spend predictors (in thousands of dollars). We’ll use it to make every concept concrete.</p>
+<div class="panel-tabset">
+<ul id="tabset-1" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-1-1">Python</a></li><li><a href="#tabset-1-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-1-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a></a>ad <span class="op">=</span> pd.read_csv(</span>
+<span id="cb1-3"><a></a>    <span class="st">"https://www.statlearning.com/s/Advertising.csv"</span>,</span>
+<span id="cb1-4"><a></a>    index_col<span class="op">=</span><span class="dv">0</span>,</span>
+<span id="cb1-5"><a></a>)</span>
+<span id="cb1-6"><a></a>ad.head()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-1-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a></a>ad <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://www.statlearning.com/s/Advertising.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb2-2"><a></a><span class="fu">head</span>(ad)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="simple-linear-regression" class="title-slide slide level1 center">
+<h1>Simple Linear Regression</h1>
+
+</section>
+<section id="the-model" class="slide level2">
+<h2>The model</h2>
+<p>One quantitative predictor <span class="math inline">\(X\)</span>, one quantitative response <span class="math inline">\(Y\)</span>:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X + \varepsilon\]</span></p>
+<ul>
+<li><span class="math inline">\(\beta_0\)</span> — intercept (mean of <span class="math inline">\(Y\)</span> when <span class="math inline">\(X = 0\)</span>)</li>
+<li><span class="math inline">\(\beta_1\)</span> — slope (expected change in <span class="math inline">\(Y\)</span> per unit change in <span class="math inline">\(X\)</span>)</li>
+<li><span class="math inline">\(\varepsilon\)</span> — mean-zero error, independent of <span class="math inline">\(X\)</span>, often assumed <span class="math inline">\(N(0, \sigma^2)\)</span></li>
+</ul>
+<p>Goal: estimate <span class="math inline">\(\beta_0, \beta_1\)</span> from a sample and reason about their uncertainty.</p>
+</section>
+<section id="least-squares-estimation" class="slide level2">
+<h2>Least squares estimation</h2>
+<p>Pick <span class="math inline">\((\hat\beta_0, \hat\beta_1)\)</span> to minimise the residual sum of squares:</p>
+<p><span class="math display">\[\text{RSS} = \sum_{i=1}^n \bigl(y_i - \hat\beta_0 - \hat\beta_1 x_i\bigr)^2\]</span></p>
+<p>Closed-form solutions:</p>
+<p><span class="math display">\[\hat\beta_1 = \frac{\sum (x_i - \bar x)(y_i - \bar y)}{\sum (x_i - \bar x)^2}, \qquad
+  \hat\beta_0 = \bar y - \hat\beta_1 \bar x\]</span></p>
+</section>
+<section id="fitting-sales-tv" class="slide level2">
+<h2>Fitting <code>sales ~ TV</code></h2>
+<div class="panel-tabset">
+<ul id="tabset-2" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-2-1">Python</a></li><li><a href="#tabset-2-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-2-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a></a><span class="im">import</span> statsmodels.formula.api <span class="im">as</span> smf</span>
+<span id="cb3-2"><a></a>fit_tv <span class="op">=</span> smf.ols(<span class="st">"sales ~ TV"</span>, data<span class="op">=</span>ad).fit()</span>
+<span id="cb3-3"><a></a>fit_tv.params         <span class="co"># coefficient estimates</span></span>
+<span id="cb3-4"><a></a>fit_tv.bse            <span class="co"># standard errors</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-2-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a></a>fit_tv <span class="ot">&lt;-</span> <span class="fu">lm</span>(sales <span class="sc">~</span> TV, <span class="at">data =</span> ad)</span>
+<span id="cb4-2"><a></a><span class="fu">coef</span>(fit_tv)</span>
+<span id="cb4-3"><a></a><span class="fu">summary</span>(fit_tv)<span class="sc">$</span>coefficients[, <span class="st">"Std. Error"</span>]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="uncertainty-in-the-coefficients" class="slide level2">
+<h2>Uncertainty in the coefficients</h2>
+<p>Each <span class="math inline">\(\hat\beta_j\)</span> is a random variable. Its standard error decreases with sample size and with predictor spread; it increases with residual variance:</p>
+<p><span class="math display">\[\widehat{\text{SE}}(\hat\beta_1) = \sqrt{\dfrac{\hat\sigma^2}{\sum (x_i - \bar x)^2}},\qquad
+  \hat\sigma^2 = \frac{\text{RSS}}{n - 2}\]</span></p>
+<p>The <span class="math inline">\((1 - \alpha)\)</span> confidence interval is</p>
+<p><span class="math display">\[\hat\beta_1 \pm t_{n-2, \, 1 - \alpha/2} \cdot \widehat{\text{SE}}(\hat\beta_1).\]</span></p>
+</section>
+<section id="testing-for-no-association" class="slide level2">
+<h2>Testing for no association</h2>
+<p>Under <span class="math inline">\(H_0:\beta_1 = 0\)</span>, the studentised slope follows a <span class="math inline">\(t_{n-2}\)</span> distribution:</p>
+<p><span class="math display">\[t = \frac{\hat\beta_1}{\widehat{\text{SE}}(\hat\beta_1)} \;\sim\; t_{n-2}\]</span></p>
+<p>A small <span class="math inline">\(p\)</span>-value is evidence that <code>TV</code> spend and <code>sales</code> are associated.</p>
+<div class="panel-tabset">
+<ul id="tabset-3" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-3-1">Python</a></li><li><a href="#tabset-3-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-3-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb5"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a></a><span class="bu">print</span>(fit_tv.summary().tables[<span class="dv">1</span>])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-3-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a></a><span class="fu">summary</span>(fit_tv)<span class="sc">$</span>coefficients</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="goodness-of-fit" class="slide level2">
+<h2>Goodness of fit</h2>
+<p><strong>Residual standard error</strong> measures typical deviation between <span class="math inline">\(Y\)</span> and <span class="math inline">\(\hat Y\)</span>:</p>
+<p><span class="math display">\[\text{RSE} = \sqrt{\text{RSS} / (n - 2)}\]</span></p>
+<p><strong><span class="math inline">\(R^2\)</span></strong> is the fraction of variability in <span class="math inline">\(Y\)</span> explained by the model:</p>
+<p><span class="math display">\[R^2 = 1 - \frac{\text{RSS}}{\text{TSS}}, \qquad
+  \text{TSS} = \sum (y_i - \bar y)^2\]</span></p>
+<p>In simple linear regression <span class="math inline">\(R^2\)</span> equals the squared correlation <span class="math inline">\(\text{Cor}(X, Y)^2\)</span>.</p>
+</section></section>
+<section>
+<section id="multiple-linear-regression" class="title-slide slide level1 center">
+<h1>Multiple Linear Regression</h1>
+
+</section>
+<section id="the-general-model" class="slide level2">
+<h2>The general model</h2>
+<p>With <span class="math inline">\(p\)</span> predictors:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \cdots + \beta_p X_p + \varepsilon\]</span></p>
+<p>Coefficient <span class="math inline">\(\beta_j\)</span> is the expected change in <span class="math inline">\(Y\)</span> per unit change in <span class="math inline">\(X_j\)</span>, <strong>holding all other predictors fixed</strong>. That conditional-on-the-others interpretation is the whole reason to use a multiple regression rather than fitting each predictor alone.</p>
+</section>
+<section id="fitting-sales-tv-radio-newspaper" class="slide level2">
+<h2>Fitting <code>sales ~ TV + radio + newspaper</code></h2>
+<div class="panel-tabset">
+<ul id="tabset-4" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-4-1">Python</a></li><li><a href="#tabset-4-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-4-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a></a>fit_full <span class="op">=</span> smf.ols(<span class="st">"sales ~ TV + radio + newspaper"</span>, data<span class="op">=</span>ad).fit()</span>
+<span id="cb7-2"><a></a>fit_full.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-4-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a></a>fit_full <span class="ot">&lt;-</span> <span class="fu">lm</span>(sales <span class="sc">~</span> TV <span class="sc">+</span> radio <span class="sc">+</span> newspaper, <span class="at">data =</span> ad)</span>
+<span id="cb8-2"><a></a><span class="fu">coef</span>(fit_full)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="matrix-form" class="slide level2">
+<h2>Matrix form</h2>
+<p>Stack the <span class="math inline">\(p + 1\)</span> coefficients into <span class="math inline">\(\boldsymbol{\beta}\)</span>, the design matrix into <span class="math inline">\(\mathbf X\)</span> (with a column of ones for the intercept), and the responses into <span class="math inline">\(\mathbf y\)</span>:</p>
+<p><span class="math display">\[\mathbf y = \mathbf X \boldsymbol{\beta} + \boldsymbol{\varepsilon}\]</span></p>
+<p>The OLS estimator solves the normal equations <span class="math inline">\(\mathbf X^\top \mathbf X \, \hat{\boldsymbol{\beta}} = \mathbf X^\top \mathbf y\)</span>:</p>
+<p><span class="math display">\[\hat{\boldsymbol{\beta}} = (\mathbf X^\top \mathbf X)^{-1}\mathbf X^\top \mathbf y\]</span></p>
+<p>assuming <span class="math inline">\(\mathbf X^\top \mathbf X\)</span> is invertible (no perfect collinearity).</p>
+</section>
+<section id="is-any-predictor-useful" class="slide level2">
+<h2>Is <em>any</em> predictor useful?</h2>
+<p>Test <span class="math inline">\(H_0:\beta_1 = \cdots = \beta_p = 0\)</span> with the <strong>F-statistic</strong>:</p>
+<p><span class="math display">\[F = \frac{(\text{TSS} - \text{RSS})/p}{\text{RSS}/(n - p - 1)} \;\sim\; F_{p, \, n - p - 1}\]</span></p>
+<p>A large <span class="math inline">\(F\)</span> (and small <span class="math inline">\(p\)</span>-value) says at least one predictor is associated with <span class="math inline">\(Y\)</span>. The individual <span class="math inline">\(t\)</span>-tests on each <span class="math inline">\(\hat\beta_j\)</span> then ask which ones.</p>
+<div class="panel-tabset">
+<ul id="tabset-5" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-5-1">Python</a></li><li><a href="#tabset-5-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-5-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a></a><span class="bu">print</span>(fit_full.summary().tables[<span class="dv">0</span>])    <span class="co"># F-statistic + p-value</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-5-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a></a><span class="fu">summary</span>(fit_full)<span class="sc">$</span>fstatistic</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="selecting-which-predictors-to-include" class="slide level2">
+<h2>Selecting which predictors to include</h2>
+<p>With <span class="math inline">\(p\)</span> candidates there are <span class="math inline">\(2^p\)</span> subsets — too many to try when <span class="math inline">\(p\)</span> grows. Practical strategies for small to moderate <span class="math inline">\(p\)</span>:</p>
+<ul>
+<li><strong>Forward selection</strong> — start empty, add the predictor that most reduces RSS, repeat.</li>
+<li><strong>Backward selection</strong> — start with all, drop the predictor with the largest <span class="math inline">\(p\)</span>-value, repeat.</li>
+<li><strong>Mixed / stepwise</strong> — alternate forward and backward steps.</li>
+</ul>
+<p>For large <span class="math inline">\(p\)</span>, use the shrinkage and dimension-reduction methods of Chapter 6 (ridge, lasso, PCR, PLS) instead.</p>
+</section></section>
+<section>
+<section id="qualitative-predictors" class="title-slide slide level1 center">
+<h1>Qualitative Predictors</h1>
+
+</section>
+<section id="two-level-factor" class="slide level2">
+<h2>Two-level factor</h2>
+<p>For a binary predictor (e.g., own/rent) use one dummy:</p>
+<p><span class="math display">\[x_i = \begin{cases} 1 &amp; \text{own} \\ 0 &amp; \text{rent} \end{cases}\]</span></p>
+<p>so <span class="math inline">\(\beta_0\)</span> is the rent-group mean and <span class="math inline">\(\beta_0 + \beta_1\)</span> is the own-group mean. The choice of reference level affects the <em>sign</em> of <span class="math inline">\(\hat\beta_1\)</span> but not its <span class="math inline">\(p\)</span>-value or the fitted values.</p>
+</section>
+<section id="three-or-more-level-factor" class="slide level2">
+<h2>Three-or-more-level factor</h2>
+<p>For a factor with <span class="math inline">\(k\)</span> levels create <span class="math inline">\(k - 1\)</span> dummies, leaving one as the reference. Each coefficient is the contrast against that baseline.</p>
+<div class="panel-tabset">
+<ul id="tabset-6" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-6-1">Python</a></li><li><a href="#tabset-6-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-6-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a></a>credit <span class="op">=</span> pd.read_csv(<span class="st">"https://www.statlearning.com/s/Credit.csv"</span>, index_col<span class="op">=</span><span class="dv">0</span>)</span>
+<span id="cb11-2"><a></a>fit_eth <span class="op">=</span> smf.ols(<span class="st">"Balance ~ C(Ethnicity)"</span>, data<span class="op">=</span>credit).fit()</span>
+<span id="cb11-3"><a></a>fit_eth.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-6-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a></a>credit <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"https://www.statlearning.com/s/Credit.csv"</span>)[, <span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb12-2"><a></a>fit_eth <span class="ot">&lt;-</span> <span class="fu">lm</span>(Balance <span class="sc">~</span> Ethnicity, <span class="at">data =</span> credit)</span>
+<span id="cb12-3"><a></a><span class="fu">coef</span>(fit_eth)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="extensions-of-the-linear-model" class="title-slide slide level1 center">
+<h1>Extensions of the Linear Model</h1>
+
+</section>
+<section id="interactions" class="slide level2">
+<h2>Interactions</h2>
+<p>If the effect of <span class="math inline">\(X_1\)</span> on <span class="math inline">\(Y\)</span> depends on the value of <span class="math inline">\(X_2\)</span>, add a product term:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_1 X_2 + \varepsilon\]</span></p>
+<p>The conditional slope of <span class="math inline">\(Y\)</span> in <span class="math inline">\(X_1\)</span> becomes <span class="math inline">\(\beta_1 + \beta_3 X_2\)</span> — it shifts with <span class="math inline">\(X_2\)</span>. <em>Hierarchy principle</em>: keep the main effects whenever an interaction is in the model, even if their individual <span class="math inline">\(p\)</span>-values are large.</p>
+</section>
+<section id="fitting-an-interaction" class="slide level2">
+<h2>Fitting an interaction</h2>
+<div class="panel-tabset">
+<ul id="tabset-7" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-7-1">Python</a></li><li><a href="#tabset-7-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-7-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a></a>fit_int <span class="op">=</span> smf.ols(<span class="st">"sales ~ TV * radio"</span>, data<span class="op">=</span>ad).fit()</span>
+<span id="cb13-2"><a></a>fit_int.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-7-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a></a>fit_int <span class="ot">&lt;-</span> <span class="fu">lm</span>(sales <span class="sc">~</span> TV <span class="sc">*</span> radio, <span class="at">data =</span> ad)</span>
+<span id="cb14-2"><a></a><span class="fu">coef</span>(fit_int)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+<p>In both languages <code>TV * radio</code> expands to <code>TV + radio + TV:radio</code>.</p>
+</section>
+<section id="polynomial-regression" class="slide level2">
+<h2>Polynomial regression</h2>
+<p>A simple way to fit a non-linear function of one predictor is to add powers of it:</p>
+<p><span class="math display">\[Y = \beta_0 + \beta_1 X + \beta_2 X^2 + \cdots + \beta_d X^d + \varepsilon\]</span></p>
+<p>This is still <em>linear in the parameters</em>, so standard OLS theory applies. (More flexible non-linear approaches come in Chapter 7.)</p>
+<div class="panel-tabset">
+<ul id="tabset-8" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-8-1">Python</a></li><li><a href="#tabset-8-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-8-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a></a>fit_poly <span class="op">=</span> smf.ols(<span class="st">"sales ~ TV + I(TV**2)"</span>, data<span class="op">=</span>ad).fit()</span>
+<span id="cb15-2"><a></a>fit_poly.params</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-8-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a></a>fit_poly <span class="ot">&lt;-</span> <span class="fu">lm</span>(sales <span class="sc">~</span> TV <span class="sc">+</span> <span class="fu">I</span>(TV<span class="sc">^</span><span class="dv">2</span>), <span class="at">data =</span> ad)</span>
+<span id="cb16-2"><a></a><span class="fu">coef</span>(fit_poly)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="diagnosing-problems" class="title-slide slide level1 center">
+<h1>Diagnosing Problems</h1>
+
+</section>
+<section id="non-linearity-of-the-responsepredictor-relationship" class="slide level2">
+<h2>1. Non-linearity of the response–predictor relationship</h2>
+<p>The straight-line assumption is wrong when a residuals-vs-fitted plot shows a systematic curve. Fixes: transform a predictor (log, square root), add a polynomial term, or move to a non-linear method.</p>
+<div class="panel-tabset">
+<ul id="tabset-9" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-9-1">Python</a></li><li><a href="#tabset-9-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-9-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb17-2"><a></a>plt.scatter(fit_full.fittedvalues, fit_full.resid, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb17-3"><a></a>plt.axhline(<span class="dv">0</span>, ls<span class="op">=</span><span class="st">"--"</span>, lw<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb17-4"><a></a>plt.xlabel(<span class="st">"Fitted value"</span>)<span class="op">;</span> plt.ylabel(<span class="st">"Residual"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-9-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a></a><span class="fu">plot</span>(fit_full, <span class="at">which =</span> <span class="dv">1</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section>
+<section id="non-constant-variance-heteroscedasticity" class="slide level2">
+<h2>2. Non-constant variance (heteroscedasticity)</h2>
+<p>If the residual spread grows or shrinks with the fitted value, OLS standard errors are wrong (typically too small). Common remedies: log-transform <span class="math inline">\(Y\)</span>, use weighted least squares, or use a sandwich (HC) standard-error estimator.</p>
+</section>
+<section id="correlation-of-error-terms" class="slide level2">
+<h2>3. Correlation of error terms</h2>
+<p>Time-ordered or clustered data often have correlated residuals (today’s error predicts tomorrow’s). Confidence intervals shrink artificially. Address with specific models for autocorrelation (e.g.&nbsp;ARIMA, GLS with an AR(1) structure) or with cluster-robust standard errors.</p>
+</section>
+<section id="outliers" class="slide level2">
+<h2>4. Outliers</h2>
+<p>An <em>outlier</em> has a large standardised residual — <span class="math inline">\(|r_i| &gt; 3\)</span> is a common flag. Outliers inflate the RSE (and hence shrink <span class="math inline">\(R^2\)</span>). Investigate before deleting: a data-entry error is genuine cleanup, a real observation is data.</p>
+</section>
+<section id="high-leverage-observations" class="slide level2">
+<h2>5. High-leverage observations</h2>
+<p>A <em>high-leverage</em> point has an extreme combination of predictor values (<span class="math inline">\(X\)</span>-space outlier). Influence on the fit grows with the <em>leverage</em></p>
+<p><span class="math display">\[h_i = \mathbf x_i^\top (\mathbf X^\top \mathbf X)^{-1} \mathbf x_i,
+  \qquad 0 \le h_i \le 1, \quad \bar h = (p + 1)/n.\]</span></p>
+<p>Values much larger than <span class="math inline">\(\bar h\)</span> deserve a closer look.</p>
+</section>
+<section id="collinearity" class="slide level2">
+<h2>6. Collinearity</h2>
+<p>When two (or more) predictors carry nearly the same information, <span class="math inline">\(\mathbf X^\top \mathbf X\)</span> becomes ill-conditioned: coefficients flip sign, standard errors explode, and individual <span class="math inline">\(t\)</span>-tests become uninformative.</p>
+<p>The <strong>variance inflation factor</strong></p>
+<p><span class="math display">\[\text{VIF}(\hat\beta_j) = \frac{1}{1 - R^2_{X_j \mid X_{-j}}}\]</span></p>
+<p>flags it; rule of thumb is to be wary of <span class="math inline">\(\text{VIF} &gt; 5\)</span> (or <span class="math inline">\(&gt; 10\)</span>).</p>
+<div class="panel-tabset">
+<ul id="tabset-10" class="panel-tabset-tabby"><li><a data-tabby-default="" href="#tabset-10-1">Python</a></li><li><a href="#tabset-10-2">R</a></li></ul>
+<div class="tab-content">
+<div id="tabset-10-1">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb19-2"><a></a><span class="im">from</span> statsmodels.stats.outliers_influence <span class="im">import</span> variance_inflation_factor</span>
+<span id="cb19-3"><a></a>X <span class="op">=</span> sm.add_constant(credit[[<span class="st">"Limit"</span>, <span class="st">"Rating"</span>, <span class="st">"Age"</span>]])</span>
+<span id="cb19-4"><a></a>[variance_inflation_factor(X.values, i) <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, X.shape[<span class="dv">1</span>])]</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="tabset-10-2">
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a></a><span class="fu">library</span>(car)</span>
+<span id="cb20-2"><a></a>fit_credit <span class="ot">&lt;-</span> <span class="fu">lm</span>(Balance <span class="sc">~</span> Limit <span class="sc">+</span> Rating <span class="sc">+</span> Age, <span class="at">data =</span> credit)</span>
+<span id="cb20-3"><a></a><span class="fu">vif</span>(fit_credit)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</div>
+</div>
+</section></section>
+<section>
+<section id="linear-regression-vs.-knn-regression" class="title-slide slide level1 center">
+<h1>Linear Regression vs.&nbsp;KNN Regression</h1>
+
+</section>
+<section id="knn-regression-in-a-nutshell" class="slide level2">
+<h2>KNN regression in a nutshell</h2>
+<p>For a test point <span class="math inline">\(x_0\)</span>, find the <span class="math inline">\(K\)</span> closest training points and average their <span class="math inline">\(Y\)</span> values:</p>
+<p><span class="math display">\[\hat f(x_0) = \frac{1}{K} \sum_{i \in \mathcal N_0(x_0)} y_i\]</span></p>
+<p>Parametric (linear) vs.&nbsp;non-parametric (KNN) trade-off:</p>
+<ul>
+<li>If the true <span class="math inline">\(f\)</span> is nearly linear, linear regression wins — lower variance, no curse of dimensionality.</li>
+<li>If <span class="math inline">\(f\)</span> is strongly non-linear and <span class="math inline">\(n\)</span> is large, KNN can win — at the cost of much-reduced interpretability.</li>
+</ul>
+</section>
+<section id="the-curse-of-dimensionality" class="slide level2">
+<h2>The curse of dimensionality</h2>
+<p>KNN’s nearest “neighbours” become far away once <span class="math inline">\(p\)</span> is large: in <span class="math inline">\(\mathbb R^p\)</span> the volume of a ball of radius <span class="math inline">\(r\)</span> shrinks relative to the volume of the predictor space, so to get <span class="math inline">\(K\)</span> truly local observations you need a sample size that grows exponentially in <span class="math inline">\(p\)</span>. Linear regression sidesteps the issue by imposing structure.</p>
+</section></section>
+<section>
+<section id="summary" class="title-slide slide level1 center">
+<h1>Summary</h1>
+
+</section>
+<section id="key-takeaways" class="slide level2 scrollable">
+<h2>Key takeaways</h2>
+<ol type="1">
+<li>Linear regression estimates <span class="math inline">\(\beta_0, \ldots, \beta_p\)</span> by minimising RSS, with closed-form solutions and an exact <span class="math inline">\(F\)</span>-distribution for the omnibus test under normal errors.</li>
+<li>Coefficient interpretation in multiple regression is <em>conditional on the other predictors</em> — not the same as the simple-regression slope.</li>
+<li>Qualitative predictors enter via <span class="math inline">\(k - 1\)</span> dummies against a reference level.</li>
+<li>Interactions and polynomial terms expand the model class while keeping OLS theory intact (linear in the parameters).</li>
+<li>Always inspect residual, leverage, and collinearity diagnostics before trusting the fit.</li>
+<li>Linear regression and KNN sit at opposite ends of the flexibility-interpretability trade-off; the right choice depends on <span class="math inline">\(n\)</span>, <span class="math inline">\(p\)</span>, and how non-linear <span class="math inline">\(f\)</span> is.</li>
+</ol>
+</section>
+<section id="whats-next" class="slide level2">
+<h2>What’s next</h2>
+<ul>
+<li><strong>Chapter 4</strong> — Classification: logistic regression, LDA, QDA, naïve Bayes.</li>
+<li><strong>Chapter 5</strong> — Resampling: cross-validation and the bootstrap, used to honestly estimate test error and standard errors when the parametric formulas are not available.</li>
+<li><strong>Chapter 6</strong> — Selecting predictors when <span class="math inline">\(p\)</span> is large: subset selection, ridge, lasso, PCR, and PLS.</li>
+</ul>
+
+
+<script>
+function getQuartoHeadingAnchorIcon() {
+  const afterBodyScript = document.getElementById("quarto-html-after-body");
+  if (!afterBodyScript) {
+    return null;
+  }
+
+  const match = afterBodyScript.textContent.match(/const icon = ["']([^"']+)["']/);
+  return match ? match[1] : null;
+}
+
+// Quarto chain-link glyph from Bootstrap Icons.
+const chainLinkIconFallback = "\ue9cb";
+const headingAnchorIcon = getQuartoHeadingAnchorIcon();
+const defaultAnchorIconFallback =
+  headingAnchorIcon && headingAnchorIcon !== "#" ? headingAnchorIcon : chainLinkIconFallback;
+
+function getDefaultAnchorTemplate() {
+  // Prefer Quarto heading anchors first so the visible chain-link icon is reused.
+  const defaultAnchor =
+    document.querySelector(".anchored > a.anchorjs-link") ||
+    document.querySelector("a.anchorjs-link[data-anchorjs-icon]");
+  if (!defaultAnchor) {
+    return null;
+  }
+
+  return {
+    // Detect icon value from the template anchor's attribute or text.
+    icon: defaultAnchor.getAttribute("data-anchorjs-icon") || defaultAnchor.textContent.trim(),
+    hasDataIcon: defaultAnchor.hasAttribute("data-anchorjs-icon"),
+    style: defaultAnchor.getAttribute("style")
+  };
+}
+
+function normalizeAnchorIcon(icon) {
+  if (!icon || icon === "#") {
+    return defaultAnchorIconFallback;
+  }
+
+  return icon;
+}
+
+function createChainLinkSvgIcon() {
+  const svgNs = "http://www.w3.org/2000/svg";
+  const svg = document.createElementNS(svgNs, "svg");
+  svg.setAttribute("viewBox", "0 0 16 16");
+  svg.setAttribute("fill", "currentColor");
+  svg.setAttribute("aria-hidden", "true");
+  svg.setAttribute("focusable", "false");
+  svg.setAttribute("class", "equation-anchor-icon");
+
+  [
+    "M6.354 5.5H4a3 3 0 0 0 0 6h3a3 3 0 0 0 2.83-2H11a4 4 0 0 1-4 3H4a4 4 0 0 1 0-8h2.354z",
+    "M9.646 10.5H12a3 3 0 1 0 0-6H9a3 3 0 0 0-2.83 2H5a4 4 0 0 1 4-3h3a4 4 0 0 1 0 8H9.646z",
+    "M5.5 8a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1H6a.5.5 0 0 1-.5-.5"
+  ].forEach(function (pathData) {
+    const path = document.createElementNS(svgNs, "path");
+    path.setAttribute("d", pathData);
+    svg.appendChild(path);
+  });
+
+  return svg;
+}
+
+function alignEquationAnchorWithDefault(anchor, template) {
+  if (!anchor) {
+    return;
+  }
+
+  anchor.classList.remove("external");
+  anchor.classList.add("no-external");
+
+  const normalizedIcon = normalizeAnchorIcon(template && template.icon);
+  if (normalizedIcon === chainLinkIconFallback) {
+    anchor.removeAttribute("data-anchorjs-icon");
+    anchor.textContent = "";
+    anchor.appendChild(createChainLinkSvgIcon());
+  } else if (template && template.hasDataIcon) {
+    anchor.setAttribute("data-anchorjs-icon", normalizedIcon);
+    anchor.textContent = normalizedIcon;
+  } else {
+    anchor.removeAttribute("data-anchorjs-icon");
+    anchor.textContent = normalizedIcon;
+  }
+
+  if (template && template.style) {
+    anchor.setAttribute("style", template.style);
+  } else {
+    anchor.removeAttribute("style");
+  }
+}
+
+function alignEquationAnchorsWithDefault() {
+  const template = getDefaultAnchorTemplate();
+  document.querySelectorAll("a.equation-anchor").forEach(function (anchor) {
+    alignEquationAnchorWithDefault(anchor, template);
+  });
+}
+
+function ensureEquationAnchorStyles() {
+  if (document.getElementById("equation-anchor-styles")) {
+    return;
+  }
+
+  const style = document.createElement("style");
+  style.id = "equation-anchor-styles";
+  style.textContent = `
+    .equation-anchor-target {
+      --equation-anchor-offset: 1.2rem;
+      position: relative;
+      display: block;
+    }
+    .equation-anchor {
+      position: absolute;
+      left: calc(-1 * var(--equation-anchor-offset));
+      top: 50%;
+      transform: translateY(-50%);
+      text-decoration: none;
+      opacity: 0.7;
+      font-size: 0.9em;
+    }
+    .equation-anchor:hover {
+      opacity: 1;
+    }
+    .equation-anchor-icon {
+      width: 0.9em;
+      height: 0.9em;
+      vertical-align: -0.125em;
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+document.addEventListener("DOMContentLoaded", function () {
+  ensureEquationAnchorStyles();
+
+  let counter = 0;
+
+  document.querySelectorAll(".math.display").forEach(function (mathEl) {
+    // For labeled equations, Quarto wraps the math display span in an eq-* span.
+    // For unlabeled equations, use the parent element (typically a <p>).
+    const labeledContainer = mathEl.closest("[id^='eq-']");
+    const target = labeledContainer || mathEl.parentElement;
+
+    if (!target) {
+      return;
+    }
+
+    // Skip if already processed.
+    if (target.querySelector(".equation-anchor")) {
+      return;
+    }
+
+    // Use the labeled container's id, or assign an auto-generated id.
+    let id = labeledContainer ? labeledContainer.id : target.id;
+    if (!id) {
+      counter++;
+      id = "eq-anchor-" + counter;
+      target.id = id;
+    }
+
+    target.classList.add("equation-anchor-target");
+
+    const anchor = document.createElement("a");
+    anchor.className = "equation-anchor anchorjs-link";
+    anchor.href = "#" + id;
+    anchor.setAttribute("aria-label", "Permalink to this equation");
+    target.appendChild(anchor);
+  });
+
+  alignEquationAnchorsWithDefault();
+});
+
+window.addEventListener("load", alignEquationAnchorsWithDefault);
+</script>
+
+</section></section>
+    </div>
+  <div class="quarto-auto-generated-content" style="display: none;">
+<div class="footer footer-default">
+
+</div>
+</div></div>
+
+  <script>window.backupDefine = window.define; window.define = undefined;</script>
+  <script src="../site_libs/revealjs/dist/reveal.js"></script>
+  <!-- reveal.js plugins -->
+  <script src="../site_libs/revealjs/plugin/quarto-line-highlight/line-highlight.js"></script>
+  <script src="../site_libs/revealjs/plugin/pdf-export/pdfexport.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/reveal-menu/quarto-menu.js"></script>
+  <script src="../site_libs/revealjs/plugin/quarto-support/support.js"></script>
+  
+
+  <script src="../site_libs/revealjs/plugin/notes/notes.js"></script>
+  <script src="../site_libs/revealjs/plugin/search/search.js"></script>
+  <script src="../site_libs/revealjs/plugin/zoom/zoom.js"></script>
+  <script src="../site_libs/revealjs/plugin/math/math.js"></script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script>
+
+  <script>
+
+      // Full list of configuration options available at:
+      // https://revealjs.com/config/
+      Reveal.initialize({
+'controlsAuto': true,
+'previewLinksAuto': true,
+'pdfSeparateFragments': false,
+'autoAnimateEasing': "ease",
+'autoAnimateDuration': 1,
+'autoAnimateUnmatched': true,
+'jumpToSlide': true,
+'menu': {"side":"left","useTextContentForMissingTitles":true,"markers":false,"loadIcons":false,"custom":[{"title":"Tools","icon":"<i class=\"fas fa-gear\"></i>","content":"<ul class=\"slide-menu-items\">\n<li class=\"slide-tool-item active\" data-item=\"0\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.fullscreen(event)\"><kbd>f</kbd> Fullscreen</a></li>\n<li class=\"slide-tool-item\" data-item=\"1\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.speakerMode(event)\"><kbd>s</kbd> Speaker View</a></li>\n<li class=\"slide-tool-item\" data-item=\"2\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.overview(event)\"><kbd>o</kbd> Slide Overview</a></li>\n<li class=\"slide-tool-item\" data-item=\"3\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.togglePdfExport(event)\"><kbd>e</kbd> PDF Export Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"4\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.toggleScrollView(event)\"><kbd>r</kbd> Scroll View Mode</a></li>\n<li class=\"slide-tool-item\" data-item=\"5\"><a href=\"#\" onclick=\"RevealMenuToolHandlers.keyboardHelp(event)\"><kbd>?</kbd> Keyboard Help</a></li>\n</ul>"}],"openButton":true},
+'smaller': true,
+ 
+        // Display controls in the bottom right corner
+        controls: false,
+
+        // Help the user learn the controls by providing hints, for example by
+        // bouncing the down arrow when they first encounter a vertical slide
+        controlsTutorial: false,
+
+        // Determines where controls appear, "edges" or "bottom-right"
+        controlsLayout: 'edges',
+
+        // Visibility rule for backwards navigation arrows; "faded", "hidden"
+        // or "visible"
+        controlsBackArrows: 'faded',
+
+        // Display a presentation progress bar
+        progress: true,
+
+        // Display the page number of the current slide
+        slideNumber: 'c/t',
+
+        // 'all', 'print', or 'speaker'
+        showSlideNumber: 'all',
+
+        // Add the current slide number to the URL hash so that reloading the
+        // page/copying the URL will return you to the same slide
+        hash: true,
+
+        // Start with 1 for the hash rather than 0
+        hashOneBasedIndex: false,
+
+        // Flags if we should monitor the hash and change slides accordingly
+        respondToHashChanges: true,
+
+        // Push each slide change to the browser history
+        history: true,
+
+        // Enable keyboard shortcuts for navigation
+        keyboard: true,
+
+        // Enable the slide overview mode
+        overview: true,
+
+        // Disables the default reveal.js slide layout (scaling and centering)
+        // so that you can use custom CSS layout
+        disableLayout: false,
+
+        // Vertical centering of slides
+        center: false,
+
+        // Enables touch navigation on devices with touch input
+        touch: true,
+
+        // Loop the presentation
+        loop: false,
+
+        // Change the presentation direction to be RTL
+        rtl: false,
+
+        // see https://revealjs.com/vertical-slides/#navigation-mode
+        navigationMode: 'linear',
+
+        // Randomizes the order of slides each time the presentation loads
+        shuffle: false,
+
+        // Turns fragments on and off globally
+        fragments: true,
+
+        // Flags whether to include the current fragment in the URL,
+        // so that reloading brings you to the same fragment position
+        fragmentInURL: false,
+
+        // Flags if the presentation is running in an embedded mode,
+        // i.e. contained within a limited portion of the screen
+        embedded: false,
+
+        // Flags if we should show a help overlay when the questionmark
+        // key is pressed
+        help: true,
+
+        // Flags if it should be possible to pause the presentation (blackout)
+        pause: true,
+
+        // Flags if speaker notes should be visible to all viewers
+        showNotes: false,
+
+        // Global override for autoplaying embedded media (null/true/false)
+        autoPlayMedia: null,
+
+        // Global override for preloading lazy-loaded iframes (null/true/false)
+        preloadIframes: null,
+
+        // Number of milliseconds between automatically proceeding to the
+        // next slide, disabled when set to 0, this value can be overwritten
+        // by using a data-autoslide attribute on your slides
+        autoSlide: 0,
+
+        // Stop auto-sliding after user input
+        autoSlideStoppable: true,
+
+        // Use this method for navigation when auto-sliding
+        autoSlideMethod: null,
+
+        // Specify the average time in seconds that you think you will spend
+        // presenting each slide. This is used to show a pacing timer in the
+        // speaker view
+        defaultTiming: null,
+
+        // Enable slide navigation via mouse wheel
+        mouseWheel: false,
+
+        // The display mode that will be used to show slides
+        display: 'block',
+
+        // Hide cursor if inactive
+        hideInactiveCursor: true,
+
+        // Time before the cursor is hidden (in ms)
+        hideCursorTime: 5000,
+
+        // Opens links in an iframe preview overlay
+        previewLinks: false,
+
+        // Transition style (none/fade/slide/convex/concave/zoom)
+        transition: 'slide',
+
+        // Transition speed (default/fast/slow)
+        transitionSpeed: 'default',
+
+        // Transition style for full page slide backgrounds
+        // (none/fade/slide/convex/concave/zoom)
+        backgroundTransition: 'none',
+
+        // Number of slides away from the current that are visible
+        viewDistance: 3,
+
+        // Number of slides away from the current that are visible on mobile
+        // devices. It is advisable to set this to a lower number than
+        // viewDistance in order to save resources.
+        mobileViewDistance: 2,
+
+        // The "normal" size of the presentation, aspect ratio will be preserved
+        // when the presentation is scaled to fit different resolutions. Can be
+        // specified using percentage units.
+        width: 1050,
+
+        height: 700,
+
+        // Factor of the display size that should remain empty around the content
+        margin: 0.1,
+
+        math: {
+          mathjax: 'https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js',
+          config: 'TeX-AMS_HTML-full',
+          tex2jax: {
+            inlineMath: [['\\(','\\)']],
+            displayMath: [['\\[','\\]']],
+            balanceBraces: true,
+            processEscapes: false,
+            processRefs: true,
+            processEnvironments: true,
+            preview: 'TeX',
+            skipTags: ['script','noscript','style','textarea','pre','code'],
+            ignoreClass: 'tex2jax_ignore',
+            processClass: 'tex2jax_process'
+          },
+        },
+
+        // reveal.js plugins
+        plugins: [QuartoLineHighlight, PdfExport, RevealMenu, QuartoSupport,
+
+          RevealMath,
+          RevealNotes,
+          RevealSearch,
+          RevealZoom
+        ]
+      });
+    </script>
+    <script id="quarto-html-after-body" type="application/javascript">
+      window.document.addEventListener("DOMContentLoaded", function (event) {
+        const tabsets =  window.document.querySelectorAll(".panel-tabset-tabby")
+        tabsets.forEach(function(tabset) {
+          const tabby = new Tabby('#' + tabset.id);
+        });
+        const isCodeAnnotation = (el) => {
+          for (const clz of el.classList) {
+            if (clz.startsWith('code-annotation-')) {                     
+              return true;
+            }
+          }
+          return false;
+        }
+        const onCopySuccess = function(e) {
+          // button target
+          const button = e.trigger;
+          // don't keep focus
+          button.blur();
+          // flash "checked"
+          button.classList.add('code-copy-button-checked');
+          var currentTitle = button.getAttribute("title");
+          button.setAttribute("title", "Copied!");
+          let tooltip;
+          if (window.bootstrap) {
+            button.setAttribute("data-bs-toggle", "tooltip");
+            button.setAttribute("data-bs-placement", "left");
+            button.setAttribute("data-bs-title", "Copied!");
+            tooltip = new bootstrap.Tooltip(button, 
+              { trigger: "manual", 
+                customClass: "code-copy-button-tooltip",
+                offset: [0, -8]});
+            tooltip.show();    
+          }
+          setTimeout(function() {
+            if (tooltip) {
+              tooltip.hide();
+              button.removeAttribute("data-bs-title");
+              button.removeAttribute("data-bs-toggle");
+              button.removeAttribute("data-bs-placement");
+            }
+            button.setAttribute("title", currentTitle);
+            button.classList.remove('code-copy-button-checked');
+          }, 1000);
+          // clear code selection
+          e.clearSelection();
+        }
+        const getTextToCopy = function(trigger) {
+          const outerScaffold = trigger.parentElement.cloneNode(true);
+          const codeEl = outerScaffold.querySelector('code');
+          for (const childEl of codeEl.children) {
+            if (isCodeAnnotation(childEl)) {
+              childEl.remove();
+            }
+          }
+          return codeEl.innerText;
+        }
+        const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+          text: getTextToCopy
+        });
+        clipboard.on('success', onCopySuccess);
+        if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+          const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+            text: getTextToCopy,
+            container: window.document.getElementById('quarto-embedded-source-code-modal')
+          });
+          clipboardModal.on('success', onCopySuccess);
+        }
+          var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+          var mailtoRegex = new RegExp(/^mailto:/);
+            var filterRegex = new RegExp('/' + window.location.host + '/');
+          var isInternal = (href) => {
+              return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+          }
+          // Inspect non-navigation links and adorn them if external
+         var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+          for (var i=0; i<links.length; i++) {
+            const link = links[i];
+            if (!isInternal(link.href)) {
+              // undo the damage that might have been done by quarto-nav.js in the case of
+              // links that we want to consider external
+              if (link.dataset.originalHref !== undefined) {
+                link.href = link.dataset.originalHref;
+              }
+            }
+          }
+        function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+          const config = {
+            allowHTML: true,
+            maxWidth: 500,
+            delay: 100,
+            arrow: false,
+            appendTo: function(el) {
+                return el.closest('section.slide') || el.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'light-border',
+            placement: 'bottom-start',
+          };
+          if (contentFn) {
+            config.content = contentFn;
+          }
+          if (onTriggerFn) {
+            config.onTrigger = onTriggerFn;
+          }
+          if (onUntriggerFn) {
+            config.onUntrigger = onUntriggerFn;
+          }
+            config['offset'] = [0,0];
+            config['maxWidth'] = 700;
+          window.tippy(el, config); 
+        }
+        const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+        for (var i=0; i<noterefs.length; i++) {
+          const ref = noterefs[i];
+          tippyHover(ref, function() {
+            // use id or data attribute instead here
+            let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+            try { href = new URL(href).hash; } catch {}
+            const id = href.replace(/^#\/?/, "");
+            const note = window.document.getElementById(id);
+            if (note) {
+              return note.innerHTML;
+            } else {
+              return "";
+            }
+          });
+        }
+        const findCites = (el) => {
+          const parentEl = el.parentElement;
+          if (parentEl) {
+            const cites = parentEl.dataset.cites;
+            if (cites) {
+              return {
+                el,
+                cites: cites.split(' ')
+              };
+            } else {
+              return findCites(el.parentElement)
+            }
+          } else {
+            return undefined;
+          }
+        };
+        var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+        for (var i=0; i<bibliorefs.length; i++) {
+          const ref = bibliorefs[i];
+          const citeInfo = findCites(ref);
+          if (citeInfo) {
+            tippyHover(citeInfo.el, function() {
+              var popup = window.document.createElement('div');
+              citeInfo.cites.forEach(function(cite) {
+                var citeDiv = window.document.createElement('div');
+                citeDiv.classList.add('hanging-indent');
+                citeDiv.classList.add('csl-entry');
+                var biblioDiv = window.document.getElementById('ref-' + cite);
+                if (biblioDiv) {
+                  citeDiv.innerHTML = biblioDiv.innerHTML;
+                }
+                popup.appendChild(citeDiv);
+              });
+              return popup.innerHTML;
+            });
+          }
+        }
+      });
+      </script>
+    
+
+</body></html>
